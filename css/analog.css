@@ -1,0 +1,312 @@
+/* ============================================================
+   LADDER LOGIC TRAINER — analog.css
+   Estilos para señales y bloques analógicos.
+   Agregar en <head> DESPUÉS de components.css
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   PALETA ANALÓGICA
+   Variables de color que mantienen coherencia con el tema dark
+---------------------------------------------------------- */
+:root {
+  --analog-primary:    #1a9eb5;   /* azul-cian base */
+  --analog-bright:     #22d3ee;   /* activo / energizado */
+  --analog-bg:         #0d1e24;   /* fondo de bloque */
+  --analog-hdr:        #0f2a32;   /* fondo de header */
+  --analog-bar-bg:     #0e3040;   /* fondo barra de progreso */
+  --analog-text:       #8aacb8;   /* texto inactivo */
+  --analog-text-on:    #e2f8ff;   /* texto activo */
+  --analog-label:      #3a6a78;   /* etiqueta de campo */
+  --analog-label-on:   #5ab8cc;   /* etiqueta activa */
+}
+
+/* ----------------------------------------------------------
+   CELDA ANALÓGICA — contenedor
+   Diferencia visual clara respecto a los bloques digitales
+---------------------------------------------------------- */
+.lad-cell--analog {
+  border-left: 2px solid var(--analog-primary);
+}
+
+.lad-cell--analog.lad-cell--on {
+  border-left-color: var(--analog-bright);
+}
+
+/* ----------------------------------------------------------
+   BLOQUE ANALÓGICO — caja
+---------------------------------------------------------- */
+.cell-block--analog {
+  background:    var(--analog-bg);
+  border:        1px solid var(--analog-primary);
+  border-radius: var(--radius-sm);
+  min-width:     110px;
+}
+
+.lad-cell--on .cell-block--analog {
+  border-color: var(--analog-bright);
+  box-shadow:   0 0 6px rgba(34, 211, 238, 0.15);
+}
+
+/* ----------------------------------------------------------
+   HEADER ANALÓGICO
+---------------------------------------------------------- */
+.cell-block__hdr--analog {
+  background:      var(--analog-hdr);
+  border-bottom:   1px solid var(--analog-primary);
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  padding:         3px 6px;
+}
+
+.lad-cell--on .cell-block__hdr--analog {
+  border-bottom-color: var(--analog-bright);
+}
+
+.cell-block__hdr--analog b {
+  color:      var(--analog-primary);
+  font-size:  var(--text-xs);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.lad-cell--on .cell-block__hdr--analog b {
+  color: var(--analog-bright);
+}
+
+/* Símbolo del operador: >, <, +, ×, etc. */
+.cell-block__op {
+  font-size:   13px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color:       var(--analog-primary);
+  line-height: 1;
+}
+
+.lad-cell--on .cell-block__op {
+  color: var(--analog-bright);
+}
+
+/* ----------------------------------------------------------
+   FILAS DE DATOS
+---------------------------------------------------------- */
+.cell-block--analog .cell-block__row {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  padding:         1px 6px;
+  min-height:      13px;
+}
+
+.cell-block__lbl {
+  font-size:   7px;
+  font-family: var(--font-mono);
+  color:       var(--analog-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.lad-cell--on .cell-block__lbl {
+  color: var(--analog-label-on);
+}
+
+.cell-block__val {
+  font-size:     8px;
+  font-family:   var(--font-mono);
+  color:         var(--analog-text);
+  text-align:    right;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+  white-space:   nowrap;
+  max-width:     80px;
+}
+
+.lad-cell--on .cell-block__val {
+  color: var(--analog-text-on);
+}
+
+/* Fila de resultado — ligeramente destacada */
+.cell-block__row--result {
+  background:    rgba(26, 158, 181, 0.06);
+  border-top:    1px solid rgba(26, 158, 181, 0.15);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+
+.cell-block__row--result .cell-block__val {
+  color:       var(--analog-primary);
+  font-weight: 700;
+  font-size:   9px;
+}
+
+.lad-cell--on .cell-block__row--result .cell-block__val {
+  color: var(--analog-bright);
+}
+
+/* ----------------------------------------------------------
+   PANEL I/O — fila de señal analógica
+   Muestra el valor numérico en lugar de 0/1
+---------------------------------------------------------- */
+.io-row--analog {
+  border-left: 2px solid var(--analog-primary);
+  display:        flex;
+  flex-direction: column;
+  gap:            4px;
+  padding:        6px 8px;
+}
+
+.io-row--analog .io-address {
+  font-size:   var(--text-xs);
+  color:       var(--analog-primary);
+  font-family: var(--font-mono);
+}
+
+.io-row--analog .io-name {
+  font-size: var(--text-xs);
+  color:     var(--text-secondary);
+}
+
+.io-row--analog .io-row__header {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+}
+
+.io-row--analog .io-value {
+  color:       var(--analog-primary);
+  font-weight: 600;
+  min-width:   52px;
+  text-align:  right;
+}
+
+.io-row--analog.io-row--on .io-value {
+  color: var(--analog-bright);
+}
+
+/* Indicador de fuerza analógica */
+.io-row--analog.io-row--forced {
+  background: rgba(26, 158, 181, 0.08);
+}
+
+/* Mini barra de nivel dentro de la fila I/O analógica */
+.io-analog-bar {
+  flex: 1;
+  height:        4px;
+  background:    var(--analog-bar-bg);
+  border-radius: 2px;
+  overflow:      hidden;
+  margin:        0 8px;
+  min-width:     40px;
+}
+
+.io-analog-bar__fill {
+  height:           100%;
+  background:       var(--analog-primary);
+  border-radius:    2px;
+  transition:       width 0.1s ease;
+  will-change:      width;
+}
+
+.io-row--on .io-analog-bar__fill {
+  background: var(--analog-bright);
+}
+
+/* ----------------------------------------------------------
+   BARRA DE HERRAMIENTAS — botones de categoría analógica
+---------------------------------------------------------- */
+.tool-group[data-category="analog"] {
+  border-top: 1px solid rgba(26, 158, 181, 0.2);
+  padding-top: var(--space-2);
+  margin-top:  var(--space-1);
+}
+
+.tool-group[data-category="analog"] .tool-group__label {
+  color: var(--analog-primary);
+}
+
+.tool-group[data-category="analog"] .component-btn {
+  border-color: rgba(26, 158, 181, 0.2);
+}
+
+.tool-group[data-category="analog"] .component-btn:hover,
+.tool-group[data-category="analog"] .component-btn.selected {
+  background:   rgba(26, 158, 181, 0.12);
+  border-color: var(--analog-primary);
+  color:        var(--analog-bright);
+}
+
+/* ----------------------------------------------------------
+   TABLA DE VARIABLES — columna de tipo analógico
+---------------------------------------------------------- */
+#var-table-body td:nth-child(3)[data-type="analog"] {
+  color:       var(--analog-primary);
+  font-weight: 600;
+}
+
+/* ----------------------------------------------------------
+   MODAL AGREGAR SEÑAL ANALÓGICA
+   Campos extra: min, max, unit
+---------------------------------------------------------- */
+.modal__field--analog {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.modal__analog-badge {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           4px;
+  font-size:     var(--text-xs);
+  color:         var(--analog-primary);
+  border:        1px solid rgba(26, 158, 181, 0.3);
+  border-radius: var(--radius-sm);
+  padding:       1px 6px;
+  margin-bottom: var(--space-1);
+}
+
+/* ----------------------------------------------------------
+   SLIDER DE VALOR ANALÓGICO FORZADO
+   Aparece en el panel I/O al hacer force en una señal analógica
+---------------------------------------------------------- */
+.io-analog-slider {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+  padding:     4px 0;
+  width:       100%;
+}
+
+.io-analog-slider input[type="range"] {
+  flex:         1;
+  accent-color: var(--analog-primary);
+  height:       4px;
+  cursor:       pointer;
+}
+
+.io-analog-slider__value {
+  font-size:   var(--text-xs);
+  font-family: var(--font-mono);
+  color:       var(--analog-primary);
+  min-width:   52px;
+  text-align:  right;
+}
+
+/* ----------------------------------------------------------
+   TOOLTIP DE VALOR ANALÓGICO en canvas (futuro)
+   Preparado para mostrar bubble al hacer hover en RUN
+---------------------------------------------------------- */
+.analog-tooltip {
+  position:      fixed;
+  background:    var(--analog-hdr);
+  border:        1px solid var(--analog-primary);
+  border-radius: var(--radius-sm);
+  padding:       4px 8px;
+  font-size:     var(--text-xs);
+  font-family:   var(--font-mono);
+  color:         var(--analog-bright);
+  pointer-events: none;
+  z-index:       9999;
+  box-shadow:    0 2px 8px rgba(0, 0, 0, 0.4);
+}

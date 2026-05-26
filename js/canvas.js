@@ -48,6 +48,15 @@
     COL_BTN_CLOSE:'#c97d1a',
     COL_DOT:      '#39c960',
     COL_HINT:     '#3a4a38',
+
+    // Analógico
+    COL_ANALOG:     '#1a9eb5',   // azul-cian industrial
+    COL_ANALOG_ON:  '#22d3ee',   // cian brillante cuando activo
+    COL_ANALOG_BG:  '#0d1e24',   // fondo del bloque analógico
+    COL_ANALOG_HDR: '#0f2a32',   // fondo del header analógico
+    COL_ANALOG_BAR: '#0e3040',   // fondo de la barra de progreso
+    COL_ANALOG_FILL:'#1a9eb5',   // relleno de la barra
+    ANALOG_BLOCK_W: 110,         // ancho de bloque analógico (más ancho que digital)
   };
 
   /* ----------------------------------------------------------
@@ -316,8 +325,9 @@
   ---------------------------------------------------------- */
   function _drawCell(cell, rungId, x, wireY, on) {
     const def  = components.getDef(cell.type);
-    const isBlock = def && def.isBlock;
-    const cw   = isBlock ? C.BLOCK_W : C.CELL_W;
+    const isBlock  = def && def.isBlock;
+    const isAnalog = def && def.isAnalog;
+    const cw   = isAnalog ? C.ANALOG_BLOCK_W : (isBlock ? C.BLOCK_W : C.CELL_W);
     const cx   = x + cw / 2;
     const col  = on ? C.COL_ON : C.COL_CONTACT;
 
@@ -335,7 +345,11 @@
     _ctx.lineCap     = 'round';
 
     if (isBlock) {
-      _drawBlock(cell, cx, wireY, on, cw, rungId);
+      if (isAnalog) {
+        _drawAnalogBlock(cell, cx, wireY, on, cw, rungId);
+      } else {
+        _drawBlock(cell, cx, wireY, on, cw, rungId);
+      }
     } else {
       // Borrar la línea del hilo que pasa por detrás del símbolo
       const symH = C.CELL_H + 4;
@@ -563,6 +577,172 @@
   }
 
   /* ----------------------------------------------------------
+     FORMATO NUMÉRICO — helper interno del canvas
+  ---------------------------------------------------------- */
+  function _fmtAnalog(n) {
+    if (n === undefined || n === null) return '—';
+    if (typeof n !== 'number') return String(n);
+    return Number.isInteger(n) ? String(n) : n.toFixed(2);
+  }
+
+  /* ----------------------------------------------------------
+     DIBUJAR BLOQUE ANALÓGICO
+     Bloques CMP, MATH, SCALE y MOVE-A. Paleta azul-cian.
+  ---------------------------------------------------------- */
+  function _drawAnalogBlock(cell, cx, cy, on, bw, rungId) {
+    const OP_SYM = {
+      'cmp-gt':'>','cmp-lt':'<','cmp-ge':'≥','cmp-le':'≤','cmp-eq':'=','cmp-ne':'≠',
+      'math-add':'+','math-sub':'-','math-mul':'×','math-div':'÷','math-mod':'%',
+    };
+    const HDR_LABEL = {
+      'cmp-gt':'CMP','cmp-lt':'CMP','cmp-ge':'CMP','cmp-le':'CMP','cmp-eq':'CMP','cmp-ne':'CMP',
+      'math-add':'ADD','math-sub':'SUB','math-mul':'MUL','math-div':'DIV','math-mod':'MOD',
+      'scale':'SCALE','move-a':'MOVE',
+    };
+
+    const colBorder = on ? C.COL_ANALOG_ON  : C.COL_ANALOG;
+    const colText   = on ? C.COL_ANALOG_ON  : '#6a8a98';
+    const colLabel  = on ? '#5ab8cc'         : '#3a6a78';
+    const colValue  = on ? '#e2f8ff'         : '#8aacb8';
+
+    const hdr = HDR_LABEL[cell.type] || cell.type.toUpperCase();
+    const op  = OP_SYM[cell.type] || '';
+
+    // Filas de datos según tipo
+    let rows = [];
+    if (cell.type.startsWith('cmp-')) {
+      const in2 = cell.address2 || _fmtAnalog(cell.setpoint ?? 0);
+      rows = [
+        { lbl: 'IN1', val: cell.address || '???' },
+        { lbl: 'IN2', val: in2 },
+        { lbl: 'VAL', val: _fmtAnalog(cell.currentVal), isResult: true },
+      ];
+    } else if (cell.type.startsWith('math-')) {
+      const in2 = cell.address2 || _fmtAnalog(cell.operand2 ?? 0);
+      rows = [
+        { lbl: 'IN1', val: cell.address || '???' },
+        { lbl: 'IN2', val: in2 },
+        { lbl: 'OUT', val: cell.addrOut || '???' },
+        { lbl: 'RES', val: _fmtAnalog(cell.result), isResult: true },
+      ];
+    } else if (cell.type === 'scale') {
+      rows = [
+        { lbl: 'IN',  val: cell.address || '???' },
+        { lbl: 'RAW', val: `${cell.rawMin ?? 0}…${cell.rawMax ?? 27648}` },
+        { lbl: 'ENG', val: `${cell.engMin ?? 0}…${cell.engMax ?? 100}` },
+        { lbl: 'OUT', val: cell.addrOut || '???' },
+        { lbl: 'VAL', val: _fmtAnalog(cell.result), isResult: true },
+      ];
+    } else if (cell.type === 'move-a') {
+      rows = [
+        { lbl: 'IN',  val: cell.address || '???' },
+        { lbl: 'OUT', val: cell.addrOut || '???' },
+        { lbl: 'VAL', val: _fmtAnalog(cell.result), isResult: true },
+      ];
+    }
+
+    const rowH = 13;
+    const hdrH = 16;
+    const padV = 4;
+    const barH = 4;
+    const bh   = hdrH + rows.length * rowH + padV * 2 + barH + 2;
+
+    const boxX = cx - bw / 2;
+    const boxY = cy - bh / 2;
+
+    // Wires
+    _drawWire(cx - bw / 2 - 10, cy, boxX, cy, on);
+    _drawWire(cx + bw / 2, cy, cx + bw / 2 + 10, cy, on);
+
+    // Fondo
+    _ctx.fillStyle   = C.COL_ANALOG_BG;
+    _ctx.strokeStyle = colBorder;
+    _ctx.lineWidth   = 1.5;
+    _roundRect(boxX, boxY, bw, bh, 3);
+    _ctx.fill();
+    _ctx.stroke();
+
+    // Header
+    _ctx.fillStyle = C.COL_ANALOG_HDR;
+    _roundRect(boxX, boxY, bw, hdrH, 3);
+    _ctx.fill();
+
+    // Separador header
+    _ctx.strokeStyle = colBorder;
+    _ctx.lineWidth   = 0.5;
+    _ctx.beginPath();
+    _ctx.moveTo(boxX,      boxY + hdrH);
+    _ctx.lineTo(boxX + bw, boxY + hdrH);
+    _ctx.stroke();
+
+    // Texto header
+    _ctx.fillStyle = colText;
+    _ctx.font      = 'bold 9px monospace';
+    _ctx.textAlign = 'left';
+    _ctx.fillText(hdr, boxX + 5, boxY + hdrH - 4);
+    if (op) {
+      _ctx.fillStyle = on ? '#22d3ee' : '#2a8a9a';
+      _ctx.font      = 'bold 11px monospace';
+      _ctx.textAlign = 'right';
+      _ctx.fillText(op, boxX + bw - 4, boxY + hdrH - 3);
+    }
+
+    // Filas
+    rows.forEach((row, i) => {
+      const ry = boxY + hdrH + padV + i * rowH + rowH - 3;
+      _ctx.fillStyle = colLabel;
+      _ctx.font      = '7px monospace';
+      _ctx.textAlign = 'left';
+      _ctx.fillText(row.lbl, boxX + 4, ry);
+
+      const isResult = !!row.isResult;
+      _ctx.fillStyle = isResult ? (on ? '#22d3ee' : '#2a9ab5') : colValue;
+      _ctx.font      = isResult ? 'bold 8px monospace' : '8px monospace';
+      _ctx.textAlign = 'right';
+      const v = String(row.val);
+      _ctx.fillText(v.length > 13 ? v.slice(0, 12) + '…' : v, boxX + bw - 4, ry);
+    });
+
+    // Barra de progreso
+    let ratio = 0;
+    if (cell.type === 'scale') {
+      const range = (cell.engMax ?? 100) - (cell.engMin ?? 0);
+      ratio = range !== 0 ? (cell.result - (cell.engMin ?? 0)) / range : 0;
+    } else if (cell.type.startsWith('cmp-')) {
+      const sig = cell.address ? state.getSignal(cell.address) : null;
+      if (sig && sig.type === 'analog') {
+        const range = (sig.max ?? 27648) - (sig.min ?? 0);
+        ratio = range !== 0 ? ((cell.currentVal ?? 0) - (sig.min ?? 0)) / range : 0;
+      }
+    } else if (cell.type.startsWith('math-') || cell.type === 'move-a') {
+      const sig = cell.address ? state.getSignal(cell.address) : null;
+      if (sig && sig.type === 'analog') {
+        const range = (sig.max ?? 27648) - (sig.min ?? 0);
+        ratio = range !== 0 ? ((cell.result ?? 0) - (sig.min ?? 0)) / range : 0;
+      }
+    }
+    ratio = Math.max(0, Math.min(1, ratio));
+
+    const barY = boxY + bh - barH - 2;
+    const barW = bw - 8;
+    const barX = boxX + 4;
+
+    _ctx.fillStyle = C.COL_ANALOG_BAR;
+    _roundRect(barX, barY, barW, barH, 2);
+    _ctx.fill();
+    if (ratio > 0) {
+      _ctx.fillStyle = on ? C.COL_ANALOG_ON : C.COL_ANALOG_FILL;
+      _roundRect(barX, barY, barW * ratio, barH, 2);
+      _ctx.fill();
+    }
+
+    _ctx.textAlign = 'left';
+
+    // Hit area
+    _addHit(boxX, boxY, bw, bh, 'cell', { cellId: cell.id, rungId, type: cell.type });
+  }
+
+  /* ----------------------------------------------------------
      DIBUJAR RAMA PARALELA
      Retorna el nuevo X.
   ---------------------------------------------------------- */
@@ -574,7 +754,9 @@
       let w = 0;
       row.forEach(cell => {
         const def = components.getDef(cell.type);
-        w += (def && def.isBlock ? C.BLOCK_W : C.CELL_W) + 28; // 28 = spacers
+        const cw  = def && def.isAnalog ? C.ANALOG_BLOCK_W
+                   : (def && def.isBlock ? C.BLOCK_W : C.CELL_W);
+        w += cw + 28; // 28 = spacers
       });
       return Math.max(w, C.CELL_W + 28);
     });

@@ -3,6 +3,7 @@
    Store central de la aplicación. Gestiona:
    - Programa (rungs y elementos)
    - Señales I/O (entradas, salidas, marcas)
+   - Señales analógicas (AIW, AQW, MW analógicas)
    - Modo de ejecución (STOP / RUN / STEP)
    - Selección del editor
    - Historial para undo/redo
@@ -18,23 +19,34 @@
      ESTADO INICIAL
   ---------------------------------------------------------- */
 
-  /** Señal individual de I/O */
+  /** Señal individual de I/O (digital o analógica) */
   function createSignal(address, name, type) {
-    return {
-      address,           // 'I0.0', 'Q0.0', 'M0.0', etc.
+    const base = {
+      address,           // 'I0.0', 'Q0.0', 'M0.0', 'AIW0', 'AQW0', etc.
       name,              // nombre simbólico editable
-      type,              // 'input' | 'output' | 'mark' | 'timer' | 'counter'
-      value:    false,   // valor lógico actual
+      type,              // 'input' | 'output' | 'mark' | 'timer' | 'counter' | 'analog'
+      value:    false,   // valor lógico actual (digital)
       forced:   false,   // true si está forzado manualmente
-      forceVal: false,   // valor forzado
+      forceVal: false,   // valor forzado (digital)
     };
+
+    // Propiedades extra para señales analógicas
+    if (type === 'analog') {
+      base.value    = 0;       // valor numérico actual (reemplaza el boolean)
+      base.forceVal = 0;       // valor forzado numérico
+      base.min      = 0;       // rango mínimo (informativo)
+      base.max      = 27648;   // rango máximo (0–27648 = estándar S7 para 0–10V / 4–20mA)
+      base.unit     = '';      // unidad de ingeniería (ej: '°C', 'bar', '%')
+    }
+
+    return base;
   }
 
   /** Elemento dentro de un rung */
   function createCell(type, address = '', name = '') {
     const base = {
       id:      utils.uid('cell'),
-      type,              // 'contact-no' | 'contact-nc' | 'coil' | etc.
+      type,              // 'contact-no' | 'contact-nc' | 'coil' | 'cmp-gt' | 'math-add' | etc.
       address: utils.normalizeAddress(address),
       name,
       energized: false,  // calculado por el simulador en cada scan
@@ -46,10 +58,51 @@
       base.elapsed = 0;
       base.done    = false;
     }
+    if (type === 'timer-pulse') {
+      base.preset  = 1000;
+      base.elapsed = 0;
+      base.done    = false;
+    }
     if (type === 'counter-up' || type === 'counter-dn') {
       base.preset  = 10;
       base.count   = 0;
       base.done    = false;
+    }
+
+    // ── Bloques analógicos: comparadores ──
+    // Comparan una señal analógica con un umbral (setpoint)
+    if (type === 'cmp-gt' || type === 'cmp-lt' || type === 'cmp-ge' ||
+        type === 'cmp-le' || type === 'cmp-eq' || type === 'cmp-ne') {
+      base.address2  = '';     // segunda señal analógica (opcional; vacío → usar setpoint)
+      base.setpoint  = 0;      // umbral de comparación (si address2 está vacío)
+      base.result    = false;  // resultado booleano (energiza el rung si true)
+    }
+
+    // ── Bloques analógicos: operaciones matemáticas ──
+    // IN1 OP IN2 → OUT
+    if (type === 'math-add' || type === 'math-sub' ||
+        type === 'math-mul' || type === 'math-div' || type === 'math-mod') {
+      base.address2  = '';     // segunda operando (puede ser constante si está vacío)
+      base.operand2  = 0;      // constante usada si address2 está vacío
+      base.addrOut   = '';     // señal de salida analógica (AQW o MW)
+      base.result    = 0;      // resultado numérico (muestra en bloque)
+    }
+
+    // ── Bloque de escalado lineal: convierte rango PLC → rango físico ──
+    // Fórmula: OUT = (IN - rawMin) / (rawMax - rawMin) * (engMax - engMin) + engMin
+    if (type === 'scale') {
+      base.rawMin    = 0;
+      base.rawMax    = 27648;
+      base.engMin    = 0;
+      base.engMax    = 100;
+      base.addrOut   = '';     // señal de salida analógica
+      base.result    = 0;
+    }
+
+    // ── Bloque MOVE analógico: copia valor de una señal a otra ──
+    if (type === 'move-a') {
+      base.addrOut   = '';
+      base.result    = 0;
     }
 
     return base;
@@ -87,8 +140,6 @@
 
   /* ----------------------------------------------------------
      TABLA DE SEÑALES — empieza vacía
-     Las señales se crean al asignar direcciones a componentes
-     o manualmente desde el panel de Variables.
   ---------------------------------------------------------- */
 
   function defaultSignals() {
@@ -100,40 +151,25 @@
   ---------------------------------------------------------- */
 
   let _state = {
-    // Programa activo
     program:       createProgram(),
-
-    // Tabla de señales { 'I0.0': Signal, ... }
     signals:       defaultSignals(),
-
-    // Modo del PLC simulado
-    mode:          'STOP',   // 'STOP' | 'RUN' | 'STEP'
-
-    // Ciclo de scan actual
+    mode:          'STOP',
     scanCycle:     0,
     lastScanMs:    0,
-
-    // Editor: componente seleccionado para insertar
-    selectedTool:  null,   // string: 'contact-no', 'coil', etc.
-
-    // Editor: celda o rung seleccionado en el canvas
+    selectedTool:  null,
     selectedCellId: null,
     selectedRungId: null,
-
-    // Ejercicio activo
     activeExercise: null,
-
-    // Historial undo/redo
     _history:   [],
     _future:    [],
     _maxHistory: 50,
   };
 
   /* ----------------------------------------------------------
-     SUSCRIPTORES (patrón Observer simple)
+     SUSCRIPTORES
   ---------------------------------------------------------- */
 
-  const _listeners = {};   // { eventName: [fn, fn, ...] }
+  const _listeners = {};
 
   function emit(event, payload) {
     (_listeners[event] || []).forEach(fn => fn(payload));
@@ -148,12 +184,6 @@
 
   /* ── Suscripción ── */
 
-  /**
-   * Suscribirse a un evento del store.
-   * @param {string} event - nombre del evento o '*' para todos
-   * @param {Function} fn
-   * @returns {Function} unsuscribe
-   */
   state.on = function (event, fn) {
     if (!_listeners[event]) _listeners[event] = [];
     _listeners[event].push(fn);
@@ -241,10 +271,6 @@
 
   /* ── Elementos (celdas) ── */
 
-  /**
-   * Agrega una celda a un rung en la posición indicada.
-   * Si branchId se especifica, inserta dentro de esa rama.
-   */
   state.addCell = function (rungId, type, address, name, atIndex, branchId, branchRow) {
     _snapshot();
     const rung = state.getRung(rungId);
@@ -253,7 +279,6 @@
     const cell = createCell(type, address, name);
 
     if (branchId !== undefined) {
-      // Insertar dentro de una rama paralela
       const branch = rung.elements.find(el => el.id === branchId);
       if (!branch || !branch.rows) return null;
       const rowIndex = branchRow || 0;
@@ -275,7 +300,6 @@
     const rung = state.getRung(rungId);
     if (!rung) return;
 
-    // Busca en elementos directos
     const idx = rung.elements.findIndex(el => el.id === cellId);
     if (idx !== -1) {
       rung.elements = utils.arrayRemove(rung.elements, idx);
@@ -283,7 +307,6 @@
       return;
     }
 
-    // Busca dentro de ramas
     for (const el of rung.elements) {
       if (el.rows) {
         for (let r = 0; r < el.rows.length; r++) {
@@ -307,9 +330,6 @@
     emit('rung:updated', state.getRung(rungId));
   };
 
-  /**
-   * Busca una celda por id dentro de un rung (incluyendo ramas).
-   */
   state.findCell = function (rungId, cellId) {
     const rung = state.getRung(rungId);
     if (!rung) return null;
@@ -347,7 +367,7 @@
     emit('rung:updated', rung);
   };
 
-  /* ── Señales I/O ── */
+  /* ── Señales I/O digitales ── */
 
   state.getSignals = () => _state.signals;
 
@@ -356,19 +376,65 @@
   state.getSignalValue = function (address) {
     const sig = _state.signals[address];
     if (!sig) return false;
+    if (sig.type === 'analog') return sig.forced ? sig.forceVal : sig.value; // devuelve número
     return sig.forced ? sig.forceVal : sig.value;
   };
 
   state.setSignalValue = function (address, value) {
     if (!_state.signals[address]) return;
-    _state.signals[address].value = !!value;
-    emit('signal:changed', { address, value: !!value });
+    const sig = _state.signals[address];
+    if (sig.type === 'analog') {
+      sig.value = typeof value === 'number' ? value : 0;
+    } else {
+      sig.value = !!value;
+    }
+    emit('signal:changed', { address, value: sig.value });
+  };
+
+  /* ── Señales analógicas ── */
+
+  /**
+   * Lee el valor numérico de una señal analógica.
+   * Si la señal no existe o no es analógica, devuelve 0.
+   */
+  state.getAnalogValue = function (address) {
+    const sig = _state.signals[address];
+    if (!sig || sig.type !== 'analog') return 0;
+    return sig.forced ? sig.forceVal : sig.value;
+  };
+
+  /**
+   * Escribe un valor numérico en una señal analógica.
+   */
+  state.setAnalogValue = function (address, value) {
+    const sig = _state.signals[address];
+    if (!sig || sig.type !== 'analog') return;
+    const clamped = typeof value === 'number' ? value : 0;
+    sig.value = clamped;
+    emit('signal:changed', { address, value: clamped });
+  };
+
+  /**
+   * Fuerza una señal analógica a un valor fijo.
+   */
+  state.forceAnalogSignal = function (address, value) {
+    const sig = _state.signals[address];
+    if (!sig || sig.type !== 'analog') return;
+    sig.forced   = true;
+    sig.forceVal = typeof value === 'number' ? value : 0;
+    emit('signal:forced', { address, value: sig.forceVal });
+    emit('signal:changed', { address, value: sig.forceVal });
   };
 
   state.forceSignal = function (address, value) {
     if (!_state.signals[address]) return;
-    _state.signals[address].forced   = true;
-    _state.signals[address].forceVal = !!value;
+    const sig = _state.signals[address];
+    if (sig.type === 'analog') {
+      state.forceAnalogSignal(address, value);
+      return;
+    }
+    sig.forced   = true;
+    sig.forceVal = !!value;
     emit('signal:forced', { address, value: !!value });
     emit('signal:changed', { address, value: !!value });
   };
@@ -379,10 +445,24 @@
     emit('signal:unforced', { address });
   };
 
-  state.addSignal = function (address, name, type) {
+  state.addSignal = function (address, name, type, extra) {
     const normalized = utils.normalizeAddress(address);
-    if (_state.signals[normalized]) return false;   // ya existe
-    _state.signals[normalized] = createSignal(normalized, name, type);
+    if (_state.signals[normalized]) return false;
+
+    // Validar direcciones analógicas: deben ser pares y >= 10
+    if (type === 'analog') {
+      const num = parseInt(normalized.replace(/^[A-Z]+/, ''));
+      if (isNaN(num) || num % 2 !== 0 || num < 10) return false;
+    }
+
+    const sig = createSignal(normalized, name, type);
+    // Propiedades opcionales para analógicas (min, max, unit)
+    if (extra && type === 'analog') {
+      if (extra.min  !== undefined) sig.min  = extra.min;
+      if (extra.max  !== undefined) sig.max  = extra.max;
+      if (extra.unit !== undefined) sig.unit = extra.unit;
+    }
+    _state.signals[normalized] = sig;
     emit('signals:changed', _state.signals);
     return true;
   };
@@ -403,6 +483,10 @@
       if (sig.type === 'output' || sig.type === 'mark') {
         sig.value = false;
       }
+      // Las salidas analógicas (AQW) se resetean a 0
+      if (sig.type === 'analog' && sig.address && sig.address.startsWith('AQW')) {
+        sig.value = 0;
+      }
     }
     emit('signals:reset', null);
   };
@@ -420,7 +504,7 @@
 
   /* ── Scan stats ── */
 
-  state.getScanCycle = () => _state.scanCycle;
+  state.getScanCycle  = () => _state.scanCycle;
   state.getLastScanMs = () => _state.lastScanMs;
 
   state.updateScanStats = function (ms) {
@@ -489,7 +573,7 @@
     if (_state._history.length > _state._maxHistory) {
       _state._history.shift();
     }
-    _state._future = [];   // nueva acción borra el futuro
+    _state._future = [];
   }
 
   state.undo = function () {
@@ -536,7 +620,35 @@
   }
 
   /* ----------------------------------------------------------
-     EXPONER CONSTRUCTORES (útiles para el editor y simulador)
+     HELPERS PÚBLICOS: detectar si una señal es analógica
+  ---------------------------------------------------------- */
+
+  /**
+   * Devuelve true si la dirección corresponde a una señal analógica.
+   * Soporta: AIW0, AIW2, AQW0, AQW2 (palabras analógicas S7)
+   * y MW analógicas (marcas de palabra).
+   */
+  state.isAnalogAddress = function (address) {
+    if (!address) return false;
+    const a = address.trim().toUpperCase();
+    return /^AIW\d+$/.test(a) || /^AQW\d+$/.test(a) || /^MW\d+$/.test(a);
+  };
+
+  /**
+   * Retorna el tipo de señal adecuado para la dirección.
+   * Extiende utils.getAddressType con soporte analógico.
+   */
+  state.getSignalTypeForAddress = function (address) {
+    if (!address) return null;
+    const a = address.trim().toUpperCase();
+    if (/^AIW\d+$/.test(a)) return 'analog'; // entrada analógica
+    if (/^AQW\d+$/.test(a)) return 'analog'; // salida analógica
+    if (/^MW\d+$/.test(a))  return 'analog'; // marca de palabra (analógica)
+    return utils.getAddressType(address);
+  };
+
+  /* ----------------------------------------------------------
+     EXPONER CONSTRUCTORES
   ---------------------------------------------------------- */
   state._createCell   = createCell;
   state._createRung   = createRung;

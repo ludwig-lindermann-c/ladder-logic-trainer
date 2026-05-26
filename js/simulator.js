@@ -4,6 +4,12 @@
      1. Reset salidas Q (no marcas M)
      2. Evaluar cada rung
      3. Escribir salidas via _processOutputs
+
+   Bloques analógicos añadidos:
+     Comparadores : cmp-gt, cmp-lt, cmp-ge, cmp-le, cmp-eq, cmp-ne
+     Matemáticas  : math-add, math-sub, math-mul, math-div, math-mod
+     Escalado     : scale
+     Movimiento   : move-a
    ============================================================ */
 
 (function (global) {
@@ -57,13 +63,10 @@
   function _scan(ts) {
     const rungs = state.getRungs();
 
-    // Fase 1: solo resetear estado visual (energized)
-    // NO resetear señales Q — las bobinas las sobreescriben en la fase 2
-    // Esto permite que los contactos Q lean el valor del scan anterior (enclavamiento)
+    // Fase 1: reset visual
     rungs.forEach(rung => {
       _walk(rung.elements, cell => {
         cell.energized = false;
-        // Reset visual de timer/counter cells
         if (cell.type === 'timer-on' || cell.type === 'timer-off' || cell.type === 'timer-pulse') {
           cell.done = false;
         }
@@ -115,6 +118,18 @@
   }
 
   /* ----------------------------------------------------------
+     HELPER: leer valor numérico de una señal (analógica o digital)
+  ---------------------------------------------------------- */
+  function _readNum(address) {
+    if (!address) return 0;
+    const sig = state.getSignal(address);
+    if (!sig) return 0;
+    if (sig.type === 'analog') return state.getAnalogValue(address);
+    // Digital leída como número: false=0, true=1
+    return state.getSignalValue(address) ? 1 : 0;
+  }
+
+  /* ----------------------------------------------------------
      EVALUAR CELDA
   ---------------------------------------------------------- */
   function _evalCell(cell, powerIn, ts) {
@@ -122,7 +137,7 @@
 
     switch (cell.type) {
 
-      // ── Contactos ──
+      // ── Contactos ──────────────────────────────────────────
       case 'contact-no':
         passes = powerIn && !!state.getSignalValue(cell.address);
         break;
@@ -147,7 +162,7 @@
         break;
       }
 
-      // ── Bobinas (no interrumpen el flujo) ──
+      // ── Bobinas ────────────────────────────────────────────
       case 'coil':
       case 'coil-set':
       case 'coil-reset':
@@ -155,12 +170,12 @@
         passes = powerIn;
         break;
 
-      // ── Hilo ──
+      // ── Hilo ───────────────────────────────────────────────
       case 'wire-h':
         passes = powerIn;
         break;
 
-      // ── TON: retardador de partida ──
+      // ── TON ────────────────────────────────────────────────
       case 'timer-on': {
         const m = getMem(cell.id);
         if (powerIn) {
@@ -191,10 +206,9 @@
         break;
       }
 
-      // ── TOF: retardador de parada ──
+      // ── TOF ────────────────────────────────────────────────
       case 'timer-off': {
         const m = getMem(cell.id);
-        // TOF arranca "expirado" — salida OFF hasta primer ON
         if (m.done === false && !m.running && !m.wasOn) m.done = true;
         if (powerIn) {
           m.running    = false;
@@ -225,19 +239,15 @@
         break;
       }
 
-      // ── TP: pulso de duración fija ──
+      // ── TP ─────────────────────────────────────────────────
       case 'timer-pulse': {
         const m = getMem(cell.id);
-
-        // Flanco de subida → arrancar solo si no está corriendo y el anterior terminó
         if (powerIn && !m.wasOn && !m.running) {
           m.running   = true;
           m.startTime = ts;
           m.elapsed   = 0;
           m.done      = false;
         }
-
-        // El timer corre independiente de powerIn
         if (m.running) {
           m.elapsed    = ts - m.startTime;
           cell.elapsed = Math.min(m.elapsed, cell.preset || 0);
@@ -248,73 +258,55 @@
             cell.elapsed = 0;
           }
         }
-
         m.wasOn = powerIn;
-
         const tpOut = m.running;
         cell.done = m.done;
-        // Escribir salida directamente — sin pasar por _processCoils
         if (cell.address) state.setSignalValue(cell.address, tpOut);
-        // Propagar continuidad siempre que el timer corre
         passes = tpOut;
         break;
       }
 
-      // ── CTU: contador ascendente ──
+      // ── CTU ────────────────────────────────────────────────
       case 'counter-up': {
         const m = getMem(cell.id);
         if (m.count === undefined) m.count = 0;
-        // Flanco de subida → incrementar
-        if (powerIn && !m.wasOn) {
-          m.count++;
-        }
+        if (powerIn && !m.wasOn) m.count++;
         m.wasOn    = powerIn;
         m.done     = m.count >= (cell.preset || 0);
         cell.count = m.count;
         cell.done  = m.done;
-        // Escribir señal del contador — se usa como contacto en otro rung
         if (cell.address) state.setSignalValue(cell.address, m.done);
-        // Estilo TIA Portal — pasa continuidad cuando done=true
         passes = m.done;
         break;
       }
 
-      // ── CTD: contador descendente ──
+      // ── CTD ────────────────────────────────────────────────
       case 'counter-dn': {
         const m = getMem(cell.id);
-        // Arrancar cargado con el preset
         if (m.count === undefined) m.count = cell.preset || 0;
-        // Si el preset cambió, recargar
         if (m.count === 0 && !m.done && !m.wasOn) m.count = cell.preset || 0;
-        // Flanco de subida → decrementar
-        if (powerIn && !m.wasOn) {
-          m.count = Math.max(0, m.count - 1);
-        }
+        if (powerIn && !m.wasOn) m.count = Math.max(0, m.count - 1);
         m.wasOn    = powerIn;
         m.done     = m.count === 0;
         cell.count = m.count;
         cell.done  = m.done;
         if (cell.address) state.setSignalValue(cell.address, m.done);
-        // Estilo TIA Portal — pasa continuidad cuando done=true
         passes = m.done;
         break;
       }
 
-      // ── RST: reset de contador ──
+      // ── RST ────────────────────────────────────────────────
       case 'counter-rst': {
         if (powerIn && !getMem(cell.id).wasOn) {
-          // Buscar el contador asociado y resetearlo según su tipo
           state.getRungs().forEach(rung => {
             _walk(rung.elements, c => {
               if ((c.type === 'counter-up' || c.type === 'counter-dn') &&
                    c.address === cell.address) {
                 const m = getMem(c.id);
                 if (c.type === 'counter-dn') {
-                  // CTD: cargar PV
                   m.count = c.preset || 0;
                   c.count = c.preset || 0;
                 } else {
-                  // CTU: resetear a 0
                   m.count = 0;
                   c.count = 0;
                 }
@@ -327,6 +319,113 @@
         }
         getMem(cell.id).wasOn = powerIn;
         passes = powerIn;
+        break;
+      }
+
+      // ══════════════════════════════════════════════════════
+      //  BLOQUES ANALÓGICOS
+      // ══════════════════════════════════════════════════════
+
+      // ── Comparadores ───────────────────────────────────────
+      // Leen IN1 (cell.address) y lo comparan con IN2 (cell.address2 o cell.setpoint)
+      // Si powerIn = true Y la comparación es verdadera → passes = true
+      case 'cmp-gt':
+      case 'cmp-lt':
+      case 'cmp-ge':
+      case 'cmp-le':
+      case 'cmp-eq':
+      case 'cmp-ne': {
+        if (!powerIn) { cell.result = false; passes = false; break; }
+
+        const in1 = _readNum(cell.address);
+        const in2 = cell.address2 ? _readNum(cell.address2) : (cell.setpoint || 0);
+
+        let cmpResult = false;
+        switch (cell.type) {
+          case 'cmp-gt': cmpResult = in1 >  in2; break;
+          case 'cmp-lt': cmpResult = in1 <  in2; break;
+          case 'cmp-ge': cmpResult = in1 >= in2; break;
+          case 'cmp-le': cmpResult = in1 <= in2; break;
+          case 'cmp-eq': cmpResult = in1 === in2; break;
+          case 'cmp-ne': cmpResult = in1 !== in2; break;
+        }
+
+        // Guardar IN1 para mostrar en el bloque
+        cell.currentVal = in1;
+        cell.result     = cmpResult;
+        passes = cmpResult;
+        break;
+      }
+
+      // ── Operaciones matemáticas ────────────────────────────
+      // IN1 OP IN2 → OUT (sólo ejecuta si powerIn)
+      case 'math-add':
+      case 'math-sub':
+      case 'math-mul':
+      case 'math-div':
+      case 'math-mod': {
+        if (!powerIn) { passes = false; break; }
+
+        const in1 = _readNum(cell.address);
+        const in2 = cell.address2 ? _readNum(cell.address2) : (cell.operand2 || 0);
+
+        let mathResult = 0;
+        switch (cell.type) {
+          case 'math-add': mathResult = in1 + in2; break;
+          case 'math-sub': mathResult = in1 - in2; break;
+          case 'math-mul': mathResult = in1 * in2; break;
+          case 'math-div': mathResult = in2 !== 0 ? in1 / in2 : 0; break;
+          case 'math-mod': mathResult = in2 !== 0 ? in1 % in2 : 0; break;
+        }
+
+        // Redondear a 4 decimales para evitar ruido flotante
+        mathResult = Math.round(mathResult * 10000) / 10000;
+
+        cell.result = mathResult;
+
+        // Escribir en señal de salida si está definida
+        if (cell.addrOut) state.setAnalogValue(cell.addrOut, mathResult);
+
+        passes = true;  // MATH siempre propaga la energía si powerIn
+        break;
+      }
+
+      // ── Escalado lineal ────────────────────────────────────
+      // Convierte el valor crudo de cell.address (rawMin..rawMax)
+      // al rango de ingeniería (engMin..engMax) y lo escribe en cell.addrOut
+      case 'scale': {
+        if (!powerIn) { passes = false; break; }
+
+        const raw    = _readNum(cell.address);
+        const rawMin = cell.rawMin !== undefined ? cell.rawMin : 0;
+        const rawMax = cell.rawMax !== undefined ? cell.rawMax : 27648;
+        const engMin = cell.engMin !== undefined ? cell.engMin : 0;
+        const engMax = cell.engMax !== undefined ? cell.engMax : 100;
+
+        let scaled = 0;
+        const rawRange = rawMax - rawMin;
+        if (rawRange !== 0) {
+          scaled = ((raw - rawMin) / rawRange) * (engMax - engMin) + engMin;
+        }
+        scaled = Math.round(scaled * 100) / 100;   // 2 decimales
+
+        cell.result    = scaled;
+        cell.currentVal = raw;
+
+        if (cell.addrOut) state.setAnalogValue(cell.addrOut, scaled);
+
+        passes = true;
+        break;
+      }
+
+      // ── MOVE analógico ─────────────────────────────────────
+      // Copia cell.address → cell.addrOut (si powerIn)
+      case 'move-a': {
+        if (!powerIn) { passes = false; break; }
+        const val = _readNum(cell.address);
+        cell.result = val;
+        if (cell.addrOut) state.setAnalogValue(cell.addrOut, val);
+        passes = true;
         break;
       }
 
@@ -354,12 +453,10 @@
           break;
         case 'coil-set':
           if (continuity && cell.address) state.setSignalValue(cell.address, true);
-          // Bobina S/R: muestra el estado actual de la señal, no la continuidad del rung
           cell.energized = cell.address ? !!state.getSignalValue(cell.address) : continuity;
           break;
         case 'coil-reset':
           if (continuity && cell.address) state.setSignalValue(cell.address, false);
-          // Bobina S/R: muestra el estado actual de la señal
           cell.energized = cell.address ? !!state.getSignalValue(cell.address) : !continuity;
           break;
       }
@@ -367,7 +464,7 @@
   }
 
   /* ----------------------------------------------------------
-     WALK — recorre elementos incluyendo ramas
+     WALK
   ---------------------------------------------------------- */
   function _walk(elements, fn) {
     elements.forEach(el => {
@@ -400,9 +497,11 @@
       rung.energized = false;
       _walk(rung.elements, c => {
         c.energized = false;
-        if (c.elapsed !== undefined) c.elapsed = 0;
-        if (c.done    !== undefined) c.done    = false;
-        if (c.count   !== undefined) c.count   = 0;
+        if (c.elapsed     !== undefined) c.elapsed     = 0;
+        if (c.done        !== undefined) c.done        = false;
+        if (c.count       !== undefined) c.count       = 0;
+        if (c.result      !== undefined) c.result      = (typeof c.result === 'number') ? 0 : false;
+        if (c.currentVal  !== undefined) c.currentVal  = 0;
       });
     });
     state.resetAllOutputs();

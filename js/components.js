@@ -2,6 +2,8 @@
    LADDER LOGIC TRAINER — components.js
    Renderiza rungs como HTML. Cada espacio entre elementos
    tiene dos botones: ↳ (abrir rama) y ↱ (cerrar rama).
+
+   Añadido: catálogo de bloques analógicos (CMP, MATH, SCALE, MOVE-A)
    ============================================================ */
 
 (function (global) {
@@ -13,25 +15,95 @@
      CATÁLOGO
   ---------------------------------------------------------- */
   const CATALOG = {
+    // ── Contactos ──
     'contact-no':  { label: 'Contacto NO',     category: 'contacts', hasAddress: true  },
     'contact-nc':  { label: 'Contacto NC',     category: 'contacts', hasAddress: true  },
     'contact-pos': { label: 'Flanco +',        category: 'contacts', hasAddress: true  },
     'contact-neg': { label: 'Flanco -',        category: 'contacts', hasAddress: true  },
+
+    // ── Bobinas ──
     'coil':        { label: 'Bobina',          category: 'coils',    hasAddress: true  },
     'coil-set':    { label: 'Bobina Set',      category: 'coils',    hasAddress: true  },
     'coil-reset':  { label: 'Bobina Reset',    category: 'coils',    hasAddress: true  },
     'coil-not':    { label: 'Bobina /',        category: 'coils',    hasAddress: true  },
-    'timer-on':    { label: 'TON',             category: 'blocks',   hasAddress: true, isBlock: true },
-    'timer-off':   { label: 'TOF',             category: 'blocks',   hasAddress: true, isBlock: true },
-    'counter-up':  { label: 'CTU',             category: 'blocks',   hasAddress: true, isBlock: true },
-    'counter-dn':  { label: 'CTD',             category: 'blocks',   hasAddress: true, isBlock: true },
-    'timer-pulse': { label: 'TP',              category: 'blocks',   hasAddress: true, isBlock: true },
-    'counter-rst': { label: 'Reset/Load',      category: 'blocks',   hasAddress: true, isBlock: true },
+
+    // ── Bloques digitales ──
+    'timer-on':    { label: 'TON',             category: 'blocks',   hasAddress: true,  isBlock: true },
+    'timer-off':   { label: 'TOF',             category: 'blocks',   hasAddress: true,  isBlock: true },
+    'counter-up':  { label: 'CTU',             category: 'blocks',   hasAddress: true,  isBlock: true },
+    'counter-dn':  { label: 'CTD',             category: 'blocks',   hasAddress: true,  isBlock: true },
+    'timer-pulse': { label: 'TP',              category: 'blocks',   hasAddress: true,  isBlock: true },
+    'counter-rst': { label: 'Reset/Load',      category: 'blocks',   hasAddress: true,  isBlock: true },
+
+    // ── Hilo ──
     'wire-h':      { label: 'Hilo',            category: 'wires',    hasAddress: false },
+
+    // ── Bloques analógicos: Comparadores ──
+    // IN1 (address) comparado con IN2 (address2) o setpoint
+    'cmp-gt':      { label: 'CMP >',           category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+    'cmp-lt':      { label: 'CMP <',           category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+    'cmp-ge':      { label: 'CMP ≥',           category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+    'cmp-le':      { label: 'CMP ≤',           category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+    'cmp-eq':      { label: 'CMP =',           category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+    'cmp-ne':      { label: 'CMP ≠',           category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+
+    // ── Bloques analógicos: Operaciones matemáticas ──
+    // IN1 (address) OP IN2 (address2 o operand2) → OUT (addrOut)
+    'math-add':    { label: 'MATH +',          category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+    'math-sub':    { label: 'MATH -',          category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+    'math-mul':    { label: 'MATH ×',          category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+    'math-div':    { label: 'MATH ÷',          category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+    'math-mod':    { label: 'MATH %',          category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+
+    // ── Escalado lineal ──
+    'scale':       { label: 'SCALE',           category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
+
+    // ── MOVE analógico ──
+    'move-a':      { label: 'MOVE',            category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
   };
 
   /* ----------------------------------------------------------
-     SVG SÍMBOLOS
+     ETIQUETAS DE TIPO → nombre corto para la UI
+  ---------------------------------------------------------- */
+  const TYPE_LABEL = {
+    'timer-on':   'TON',
+    'timer-off':  'TOF',
+    'timer-pulse':'TP',
+    'counter-up': 'CTU',
+    'counter-dn': 'CTD',
+    'counter-rst':'RST',
+    'cmp-gt':     'CMP',
+    'cmp-lt':     'CMP',
+    'cmp-ge':     'CMP',
+    'cmp-le':     'CMP',
+    'cmp-eq':     'CMP',
+    'cmp-ne':     'CMP',
+    'math-add':   'ADD',
+    'math-sub':   'SUB',
+    'math-mul':   'MUL',
+    'math-div':   'DIV',
+    'math-mod':   'MOD',
+    'scale':      'SCALE',
+    'move-a':     'MOVE',
+  };
+
+  // Símbolo del operador para comparadores y matemáticas
+  const OP_SYMBOL = {
+    'cmp-gt':  '>',
+    'cmp-lt':  '<',
+    'cmp-ge':  '≥',
+    'cmp-le':  '≤',
+    'cmp-eq':  '=',
+    'cmp-ne':  '≠',
+    'math-add':'+',
+    'math-sub':'-',
+    'math-mul':'×',
+    'math-div':'÷',
+    'math-mod':'%',
+  };
+
+  /* ----------------------------------------------------------
+     SVG SÍMBOLOS (elementos digitales, sin cambios)
   ---------------------------------------------------------- */
   function symbolSVG(type, on) {
     const c  = on ? 'var(--rung-wire-active)' : 'var(--contact-no-stroke)';
@@ -115,6 +187,16 @@
   }
 
   /* ----------------------------------------------------------
+     FORMATO NUMÉRICO para bloques analógicos
+  ---------------------------------------------------------- */
+  function _fmtNum(n) {
+    if (n === undefined || n === null) return '—';
+    if (typeof n !== 'number') return String(n);
+    // Si es entero, sin decimales; si tiene parte decimal, máx 2
+    return Number.isInteger(n) ? String(n) : n.toFixed(2);
+  }
+
+  /* ----------------------------------------------------------
      RENDER DE CELDA
   ---------------------------------------------------------- */
   function renderCell(cell, rungId) {
@@ -124,7 +206,7 @@
     const on  = !!cell.energized;
 
     const div = document.createElement('div');
-    div.className = `lad-cell${on ? ' lad-cell--on' : ''}`;
+    div.className = `lad-cell${on ? ' lad-cell--on' : ''}${def.isAnalog ? ' lad-cell--analog' : ''}`;
     div.dataset.cellId  = cell.id;
     div.dataset.rungId  = rungId;
     div.dataset.type    = cell.type;
@@ -133,10 +215,11 @@
     div.setAttribute('title', `${def.label || cell.type}${cell.address ? ' — ' + cell.address : ''}`);
 
     if (def.isBlock) {
-      const isTimer  = cell.type.startsWith('timer') || cell.type === 'timer-pulse';
-      const typeLabel = { 'timer-on':'TON','timer-off':'TOF','counter-up':'CTU','counter-dn':'CTD','timer-pulse':'TP','counter-rst':'RST' }[cell.type] || '';
+      const typeLabel = TYPE_LABEL[cell.type] || cell.type.toUpperCase();
+      const isTimer   = cell.type.startsWith('timer');
+      const isAnalog  = !!def.isAnalog;
 
-      // El RST solo muestra dirección — sin PV ni CV
+      // ── RST ──
       if (cell.type === 'counter-rst') {
         div.innerHTML = `
           <span class="cell-addr">${cell.address || '???'}</span>
@@ -148,6 +231,117 @@
               <span style="color:var(--text-secondary)">${cell.address || '???'}</span>
             </div>
           </div>`;
+
+      // ── Comparadores ──
+      } else if (cell.type.startsWith('cmp-')) {
+        const op   = OP_SYMBOL[cell.type] || '?';
+        const in2  = cell.address2 || _fmtNum(cell.setpoint ?? 0);
+        const curV = _fmtNum(cell.currentVal);
+        div.innerHTML = `
+          <span class="cell-addr">${cell.address || '???'}</span>
+          <div class="cell-block cell-block--analog">
+            <div class="cell-block__hdr cell-block__hdr--analog">
+              <b>${typeLabel}</b><span class="cell-block__op">${op}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">IN1</span>
+              <span class="cell-block__val mono" data-field="in1">${cell.address || '???'}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">IN2</span>
+              <span class="cell-block__val mono" data-field="in2">${in2}</span>
+            </div>
+            <div class="cell-block__row cell-block__row--result">
+              <span class="cell-block__lbl">VAL</span>
+              <span class="cell-block__val mono" data-field="curval">${curV}</span>
+            </div>
+          </div>
+          ${nm ? `<span class="cell-name">${nm}</span>` : ''}`;
+
+      // ── Matemáticas ──
+      } else if (cell.type.startsWith('math-')) {
+        const op  = OP_SYMBOL[cell.type] || '?';
+        const in2 = cell.address2 || _fmtNum(cell.operand2 ?? 0);
+        div.innerHTML = `
+          <span class="cell-addr">${cell.address || '???'}</span>
+          <div class="cell-block cell-block--analog">
+            <div class="cell-block__hdr cell-block__hdr--analog">
+              <b>${typeLabel}</b><span class="cell-block__op">${op}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">IN1</span>
+              <span class="cell-block__val mono">${cell.address || '???'}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">IN2</span>
+              <span class="cell-block__val mono">${in2}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">OUT</span>
+              <span class="cell-block__val mono">${cell.addrOut || '???'}</span>
+            </div>
+            <div class="cell-block__row cell-block__row--result">
+              <span class="cell-block__lbl">RES</span>
+              <span class="cell-block__val mono" data-field="result">${_fmtNum(cell.result)}</span>
+            </div>
+          </div>
+          ${nm ? `<span class="cell-name">${nm}</span>` : ''}`;
+
+      // ── Escalado ──
+      } else if (cell.type === 'scale') {
+        div.innerHTML = `
+          <span class="cell-addr">${cell.address || '???'}</span>
+          <div class="cell-block cell-block--analog">
+            <div class="cell-block__hdr cell-block__hdr--analog">
+              <b>SCALE</b>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">IN</span>
+              <span class="cell-block__val mono">${cell.address || '???'}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">RAW</span>
+              <span class="cell-block__val mono">${cell.rawMin ?? 0}…${cell.rawMax ?? 27648}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">ENG</span>
+              <span class="cell-block__val mono">${cell.engMin ?? 0}…${cell.engMax ?? 100}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">OUT</span>
+              <span class="cell-block__val mono">${cell.addrOut || '???'}</span>
+            </div>
+            <div class="cell-block__row cell-block__row--result">
+              <span class="cell-block__lbl">VAL</span>
+              <span class="cell-block__val mono" data-field="result">${_fmtNum(cell.result)}</span>
+            </div>
+          </div>
+          ${nm ? `<span class="cell-name">${nm}</span>` : ''}`;
+
+      // ── MOVE analógico ──
+      } else if (cell.type === 'move-a') {
+        div.innerHTML = `
+          <span class="cell-addr">${cell.address || '???'}</span>
+          <div class="cell-block cell-block--analog">
+            <div class="cell-block__hdr cell-block__hdr--analog">
+              <b>MOVE</b>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">IN</span>
+              <span class="cell-block__val mono">${cell.address || '???'}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">OUT</span>
+              <span class="cell-block__val mono">${cell.addrOut || '???'}</span>
+            </div>
+            <div class="cell-block__row cell-block__row--result">
+              <span class="cell-block__lbl">VAL</span>
+              <span class="cell-block__val mono" data-field="result">${_fmtNum(cell.result)}</span>
+            </div>
+          </div>
+          ${nm ? `<span class="cell-name">${nm}</span>` : ''}`;
+
+      // ── TON / TOF / TP / CTU / CTD (sin cambios) ──
       } else {
         div.innerHTML = `
           <span class="cell-addr">${cell.address || '???'}</span>
@@ -167,7 +361,9 @@
           </div>
           ${nm ? `<span class="cell-name">${nm}</span>` : ''}`;
       }
+
     } else {
+      // Elementos no-bloque (contactos, bobinas, hilo)
       div.innerHTML = `
         ${def.hasAddress ? `<span class="cell-addr">${cell.address || '???'}</span>` : ''}
         ${symbolSVG(cell.type, on)}
@@ -178,11 +374,9 @@
   }
 
   /* ----------------------------------------------------------
-     SPACER — espacio entre elementos con botones ↳ y ↱
-     Aparece antes de cada elemento y al final del rung.
+     SPACER — sin cambios
   ---------------------------------------------------------- */
   function renderSpacer(rungId, insertIdx, branchCtx) {
-    // branchCtx = { branchId, rowIdx } si estamos dentro de una rama
     const sp = document.createElement('div');
     sp.className = 'rung-spacer';
 
@@ -216,10 +410,7 @@
   }
 
   /* ----------------------------------------------------------
-     RENDER DE RAMA PARALELA
-     Una rama tiene:
-       - fila principal (row 0): mismos elementos del rung principal entre los puntos de apertura/cierre
-       - filas alternas  (row 1..N): contactos en serie que cuelgan abajo
+     RENDER DE RAMA PARALELA — sin cambios
   ---------------------------------------------------------- */
   function renderBranch(branch, rungId) {
     const rows = branch.rows || [[]];
@@ -235,7 +426,6 @@
       rowDiv.dataset.branchId  = branch.id;
       rowDiv.dataset.rungId    = rungId;
 
-      // Spacer inicial
       rowDiv.appendChild(renderSpacer(rungId, 0, { branchId: branch.id, rowIdx }));
 
       row.forEach((cell, ci) => {
@@ -253,7 +443,6 @@
       div.appendChild(rowDiv);
     });
 
-    // Botón agregar fila
     const addRow = document.createElement('button');
     addRow.className        = 'branch-add-row';
     addRow.textContent      = '↳ agregar fila paralela';
@@ -265,7 +454,7 @@
   }
 
   /* ----------------------------------------------------------
-     RENDER DE RUNG COMPLETO
+     RENDER DE RUNG COMPLETO — sin cambios
   ---------------------------------------------------------- */
   function renderRung(rung) {
     const wrap = document.createElement('div');
@@ -273,22 +462,18 @@
     wrap.dataset.rungId    = rung.id;
     wrap.dataset.rungIndex = rung.index;
 
-    // Número
     const num = document.createElement('span');
     num.className   = 'rung__num';
     num.textContent = rung.index;
     wrap.appendChild(num);
 
-    // Rail L+
     const railL = document.createElement('div');
     railL.className = 'rung__rail rung__rail--left';
     wrap.appendChild(railL);
 
-    // Cuerpo
     const body = document.createElement('div');
     body.className = 'rung__body';
 
-    // Spacer inicial (posición 0)
     body.appendChild(renderSpacer(rung.id, 0));
 
     rung.elements.forEach((item, idx) => {
@@ -297,13 +482,11 @@
       } else {
         body.appendChild(renderCell(item, rung.id));
       }
-      // Spacer después de cada elemento
       body.appendChild(renderSpacer(rung.id, idx + 1));
     });
 
     wrap.appendChild(body);
 
-    // Rail N
     const railR = document.createElement('div');
     railR.className = 'rung__rail rung__rail--right';
     wrap.appendChild(railR);
@@ -312,7 +495,7 @@
   }
 
   /* ----------------------------------------------------------
-     PATCH ENERGIZADO
+     PATCH ENERGIZADO — actualiza valores analógicos en el DOM
   ---------------------------------------------------------- */
   function patchRungEnergy(rungEl, rung) {
     rungEl.classList.toggle('rung--powered', !!rung.energized);
@@ -344,13 +527,23 @@
           if (tmp.firstElementChild) svg.replaceWith(tmp.firstElementChild);
         }
       }
-      // Valores de bloque
+
+      // ── Actualizar valores digitales ──
       const presetEl  = cellEl.querySelector('[data-field="preset"]');
       const elapsedEl = cellEl.querySelector('[data-field="elapsed"]');
       if (presetEl && cell.preset !== undefined)
         presetEl.textContent = cell.type.startsWith('timer') ? utils.formatTime(cell.preset) : String(cell.preset);
       if (elapsedEl)
         elapsedEl.textContent = cell.type.startsWith('timer') ? utils.formatTime(cell.elapsed||0) : String(cell.count||0);
+
+      // ── Actualizar valores analógicos ──
+      const resultEl = cellEl.querySelector('[data-field="result"]');
+      if (resultEl && cell.result !== undefined)
+        resultEl.textContent = _fmtNum(cell.result);
+
+      const curvalEl = cellEl.querySelector('[data-field="curval"]');
+      if (curvalEl && cell.currentVal !== undefined)
+        curvalEl.textContent = _fmtNum(cell.currentVal);
     });
   }
 

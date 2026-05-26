@@ -33,12 +33,15 @@
   ---------------------------------------------------------- */
 
   const ADDRESS_PATTERNS = {
-    input:   /^I\d+\.\d+$/,
-    output:  /^Q\d+\.\d+$/,
-    mark:    /^M\d+\.\d+$/,
+    input:   /^I\d+\.[0-7]$/,
+    output:  /^Q\d+\.[0-7]$/,
+    mark:    /^M\d+\.[0-7]$/,
     timer:   /^T\d+$/,
     counter: /^C\d+$/,
     db:      /^DB\d+\.DB[XWDB]\d+(\.\d+)?$/,
+    aiw:     /^AIW\d+$/,
+    aqw:     /^AQW\d+$/,
+    mw:      /^MW\d+$/,
   };
 
   /**

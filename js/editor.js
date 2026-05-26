@@ -199,11 +199,18 @@
       if (!addrEl || !nameEl) { _showAddVarModal(); return; }
       const addr = addrEl.value.trim().toUpperCase();
       const name = nameEl.value.trim();
-      if (!utils.isValidAddress(addr)) {
+      const isAnalog = state.isAnalogAddress(addr);
+      if (!isAnalog && !utils.isValidAddress(addr)) {
         utils.toast('Dirección inválida', 'error', 2500);
         addrEl.focus(); return;
       }
-      const ok = state.addSignal(addr, name || addr, utils.getAddressType(addr));
+      if (isAnalog) {
+        const num = parseInt(addr.replace(/^[A-Z]+/, ''));
+        if (num % 2 !== 0) { utils.toast('Dirección inválida — debe ser par: 10, 12…', 'error', 4000); addrEl.focus(); return; }
+        if (num < 10) { utils.toast('Dirección inválida — las analógicas parten desde 10', 'error', 4000); addrEl.focus(); return; }
+      }
+      const sigType = state.getSignalTypeForAddress(addr);
+      const ok = state.addSignal(addr, name || addr, sigType);
       if (ok) {
         utils.toast(`${addr} agregada`, 'success', 1500);
         addrEl.value = '';
@@ -566,8 +573,15 @@
     document.getElementById('v-ok').onclick = () => {
       const addr = document.getElementById('v-addr').value.trim().toUpperCase();
       const name = document.getElementById('v-name').value.trim();
-      if (!utils.isValidAddress(addr)) { utils.toast('Dirección inválida', 'error', 2500); return; }
-      state.addSignal(addr, name || addr, utils.getAddressType(addr))
+      const isAnalog = state.isAnalogAddress(addr);
+      if (!isAnalog && !utils.isValidAddress(addr)) { utils.toast('Dirección inválida', 'error', 2500); return; }
+      if (isAnalog) {
+        const num = parseInt(addr.replace(/^[A-Z]+/, ''));
+        if (num % 2 !== 0) { utils.toast(`Dirección inválida — debe ser par: AIW10, AIW12…`, 'error', 4000); return; }
+        if (num < 10) { utils.toast(`Dirección inválida — las analógicas parten desde AIW10`, 'error', 4000); return; }
+      }
+      const sigType = state.getSignalTypeForAddress(addr);
+      state.addSignal(addr, name || addr, sigType)
         ? utils.toast(`${addr} agregada`, 'success', 2000)
         : utils.toast('Señal ya existe', 'warning', 2000);
       modal.remove();
