@@ -1,0 +1,480 @@
+{
+  "version": "1.0",
+  "exercises": [
+    {
+      "id": "ex_00",
+      "title": "Panel de exploración libre",
+      "level": 0,
+      "description": "Panel con 4 pulsadores, 4 interruptores y 8 lámparas. Experimenta libremente.",
+      "objective": "No hay objetivo fijo — conecta entradas y salidas como quieras y observa el comportamiento en la escena.",
+      "signals": [
+        { "address": "I0.0", "name": "Pulsador_1",    "type": "input",  "initial": false },
+        { "address": "I0.1", "name": "Pulsador_2",    "type": "input",  "initial": false },
+        { "address": "I0.2", "name": "Pulsador_3",    "type": "input",  "initial": false },
+        { "address": "I0.3", "name": "Pulsador_4",    "type": "input",  "initial": false },
+        { "address": "I0.4", "name": "Interruptor_1", "type": "input",  "initial": false },
+        { "address": "I0.5", "name": "Interruptor_2", "type": "input",  "initial": false },
+        { "address": "I0.6", "name": "Interruptor_3", "type": "input",  "initial": false },
+        { "address": "I0.7", "name": "Interruptor_4", "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Lampara_1",     "type": "output", "initial": false },
+        { "address": "Q0.1", "name": "Lampara_2",     "type": "output", "initial": false },
+        { "address": "Q0.2", "name": "Lampara_3",     "type": "output", "initial": false },
+        { "address": "Q0.3", "name": "Lampara_4",     "type": "output", "initial": false },
+        { "address": "Q0.4", "name": "Lampara_5",     "type": "output", "initial": false },
+        { "address": "Q0.5", "name": "Lampara_6",     "type": "output", "initial": false },
+        { "address": "Q0.6", "name": "Lampara_7",     "type": "output", "initial": false },
+        { "address": "Q0.7", "name": "Lampara_8",     "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "Los pulsadores (I0.0–I0.3) son momentáneos.",
+        "Los interruptores (I0.4–I0.7) son toggle.",
+        "Las lámparas (Q0.0–Q0.7) reflejan el estado de las salidas.",
+        "Prueba dos interruptores en serie — AND.",
+        "Prueba dos interruptores en paralelo — OR."
+      ],
+      "validation": null
+    },
+
+    {
+      "id": "ex_01",
+      "title": "Control de una luz",
+      "level": 1,
+      "description": "Un pulsador activa una lámpara. El bloque fundamental de toda lógica ladder.",
+      "objective": "Cuando I0.0 esté activo, Q0.0 debe encenderse. Cuando I0.0 esté inactivo, Q0.0 debe apagarse.",
+      "signals": [
+        { "address": "I0.0", "name": "Pulsador_Marcha", "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Lampara",         "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "Agrega un rung vacío.",
+        "Coloca un contacto NO y asígnale I0.0.",
+        "Coloca una bobina ( ) al final del rung y asígnale Q0.0.",
+        "Pon el simulador en RUN y presiona el pulsador."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Pulsador suelto → lámpara apagada",       "set": { "I0.0": false }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Pulsador presionado → lámpara encendida", "set": { "I0.0": true },  "wait_ms": 100, "expect": { "Q0.0": true  } },
+          { "label": "Pulsador suelto → lámpara apagada",       "set": { "I0.0": false }, "wait_ms": 100, "expect": { "Q0.0": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_02",
+      "title": "Paro de emergencia",
+      "level": 1,
+      "description": "Un botón NC en serie corta la alimentación del motor ante una emergencia.",
+      "objective": "Q0.0 debe estar encendido por defecto. Al activar I0.1 (paro de emergencia), Q0.0 debe apagarse.",
+      "signals": [
+        { "address": "I0.0", "name": "Btn_Marcha",    "type": "input",  "initial": false },
+        { "address": "I0.1", "name": "Btn_Emergencia","type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Motor",         "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "El botón de emergencia es NC — en reposo permite paso de corriente.",
+        "Coloca en serie: contacto NO (I0.0) + contacto NC (I0.1) → bobina Q0.0.",
+        "En reposo I0.1=0 el NC está cerrado, el motor puede arrancar con I0.0.",
+        "Al presionar emergencia I0.1=1 el NC se abre y corta el motor."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Sin señales → motor apagado",                          "set": { "I0.0": false, "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Marcha activa, sin emergencia → motor encendido",      "set": { "I0.0": true,  "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": true  } },
+          { "label": "Marcha activa + emergencia → motor apagado",           "set": { "I0.0": true,  "I0.1": true  }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Solo emergencia activa → motor apagado",               "set": { "I0.0": false, "I0.1": true  }, "wait_ms": 100, "expect": { "Q0.0": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_03",
+      "title": "Puerta con dos sensores",
+      "level": 1,
+      "description": "Una puerta industrial solo abre si el sensor de posición Y el sensor de seguridad están activos simultáneamente.",
+      "objective": "Q0.0 debe activarse solo cuando I0.0 e I0.1 estén activos al mismo tiempo (AND).",
+      "signals": [
+        { "address": "I0.0", "name": "Sensor_Posicion",  "type": "input",  "initial": false },
+        { "address": "I0.1", "name": "Sensor_Seguridad", "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Valvula_Puerta",   "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "Coloca dos contactos NO en serie en el mismo rung.",
+        "Asigna I0.0 al primer contacto e I0.1 al segundo.",
+        "La bobina Q0.0 al final del rung.",
+        "Solo habrá continuidad cuando ambos contactos estén cerrados."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Ningún sensor → puerta cerrada",         "set": { "I0.0": false, "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Solo posición activo → puerta cerrada",  "set": { "I0.0": true,  "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Solo seguridad activo → puerta cerrada", "set": { "I0.0": false, "I0.1": true  }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Ambos sensores → puerta abre",           "set": { "I0.0": true,  "I0.1": true  }, "wait_ms": 100, "expect": { "Q0.0": true  } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_04",
+      "title": "Alarma con dos detectores",
+      "level": 1,
+      "description": "Dos detectores de humo en paralelo: cualquiera de los dos activa la sirena.",
+      "objective": "Q0.0 debe activarse cuando I0.0 O I0.1 estén activos (OR).",
+      "signals": [
+        { "address": "I0.0", "name": "Detector_1", "type": "input",  "initial": false },
+        { "address": "I0.1", "name": "Detector_2", "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Sirena",     "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "Necesitas dos contactos NO en paralelo.",
+        "Agrega una rama paralela al rung.",
+        "Asigna I0.0 a la fila principal e I0.1 a la fila alterna.",
+        "La bobina Q0.0 fuera de la rama, al final del rung."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Ningún detector → sirena apagada",      "set": { "I0.0": false, "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Solo detector 1 → sirena activa",       "set": { "I0.0": true,  "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": true  } },
+          { "label": "Solo detector 2 → sirena activa",       "set": { "I0.0": false, "I0.1": true  }, "wait_ms": 100, "expect": { "Q0.0": true  } },
+          { "label": "Ambos detectores → sirena activa",      "set": { "I0.0": true,  "I0.1": true  }, "wait_ms": 100, "expect": { "Q0.0": true  } },
+          { "label": "Ningún detector → sirena apagada",      "set": { "I0.0": false, "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+     {
+      "id": "ex_05",
+      "title": "Válvula set / reset",
+      "level": 2,
+      "description": "Un botón abre la válvula (Set), otro la cierra (Reset). Permanece en estado aunque se corte la señal.",
+      "objective": "I0.0 activa Q0.0 con bobina S. I0.1 desactiva Q0.0 con bobina R.",
+      "signals": [
+        { "address": "I0.0", "name": "Btn_Abrir",  "type": "input",  "initial": false },
+        { "address": "I0.1", "name": "Btn_Cerrar", "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Valvula",    "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "Rung 1: contacto NO (I0.0) → bobina (S) Q0.0.",
+        "Rung 2: contacto NO (I0.1) → bobina (R) Q0.0.",
+        "La bobina S setea Q0.0 y permanece aunque I0.0 se suelte.",
+        "La bobina R resetea Q0.0 y permanece aunque I0.1 se suelte."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Estado inicial → válvula cerrada",          "set": { "I0.0": false, "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Pulso abrir → válvula abre",                "set": { "I0.0": true  }, "wait_ms": 100, "expect": { "Q0.0": true  } },
+          { "label": "Suelta abrir → válvula permanece abierta",  "set": { "I0.0": false }, "wait_ms": 100, "expect": { "Q0.0": true  } },
+          { "label": "Pulso cerrar → válvula cierra",             "set": { "I0.1": true  }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Suelta cerrar → válvula permanece cerrada", "set": { "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_06",
+      "title": "Motor con inversión de giro",
+      "level": 2,
+      "description": "Motor industrial con dos contactores — adelante y atrás. Sin enclavamiento cruzado el motor se daña si se activan ambos simultáneamente.",
+      "objective": "I0.0 activa Q0.0 (adelante). I0.1 activa Q0.1 (atrás). I0.2 para todo. Q0.0 y Q0.1 nunca deben estar activos al mismo tiempo.",
+      "signals": [
+        { "address": "I0.0", "name": "Btn_Adelante",        "type": "input",  "initial": false },
+        { "address": "I0.1", "name": "Btn_Atras",           "type": "input",  "initial": false },
+        { "address": "I0.2", "name": "Btn_Paro",            "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Contactor_Adelante",  "type": "output", "initial": false },
+        { "address": "Q0.1", "name": "Contactor_Atras",     "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "Rung 1: [I0.0 NO][Q0.0 NO paralelo][Q0.1 NC][I0.2 NC] → bobina Q0.0.",
+        "Rung 2: [I0.1 NO][Q0.1 NO paralelo][Q0.0 NC][I0.2 NC] → bobina Q0.1.",
+        "El contacto NC de Q0.1 en el rung de Q0.0 es el enclavamiento cruzado.",
+        "Si Q0.0 está activo, su NC en el rung de Q0.1 impide que Q0.1 arranque."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Estado inicial → ambos contactores apagados",       "set": { "I0.0": false, "I0.1": false, "I0.2": false }, "wait_ms": 100, "expect": { "Q0.0": false, "Q0.1": false } },
+          { "label": "Adelante → Q0.0 activo, Q0.1 inactivo",            "set": { "I0.0": true  }, "wait_ms": 100, "expect": { "Q0.0": true,  "Q0.1": false } },
+          { "label": "Suelta adelante → Q0.0 se mantiene",               "set": { "I0.0": false }, "wait_ms": 100, "expect": { "Q0.0": true,  "Q0.1": false } },
+          { "label": "Paro → ambos apagados",                            "set": { "I0.2": true  }, "wait_ms": 100, "expect": { "Q0.0": false, "Q0.1": false } },
+          { "label": "Suelta paro",                                       "set": { "I0.2": false }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Atrás → Q0.1 activo, Q0.0 inactivo",              "set": { "I0.1": true  }, "wait_ms": 100, "expect": { "Q0.0": false, "Q0.1": true  } },
+          { "label": "Suelta atrás → Q0.1 se mantiene",                 "set": { "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": false, "Q0.1": true  } },
+          { "label": "Enclavamiento — adelante no interrumpe atrás",     "set": { "I0.0": true  }, "wait_ms": 100, "expect": { "Q0.0": false, "Q0.1": true  } },
+          { "label": "Paro final",                                        "set": { "I0.2": true  }, "wait_ms": 100, "expect": { "Q0.0": false, "Q0.1": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_07",
+      "title": "Banda con retardo de arranque",
+      "level": 3,
+      "description": "La banda arranca 3 s después de presionar marcha, dando tiempo al operador para alejarse.",
+      "objective": "Al activar I0.0, Q0.0 debe permanecer apagado 3 s y luego encenderse. Al soltar I0.0, Q0.0 se apaga.",
+      "signals": [
+        { "address": "I0.0", "name": "Btn_Marcha",     "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Motor_Banda",    "type": "output", "initial": false },
+        { "address": "T0",   "name": "Timer_Arranque", "type": "timer",  "initial": false }
+      ],
+      "hint_steps": [
+        "Rung 1: contacto NO (I0.0) → bloque TON T0 con PT = 3000 ms.",
+        "Rung 2: contacto NO del bit Q de T0 → bobina Q0.0.",
+        "Cuando I0.0 se suelte, el TON se resetea y Q0.0 se apaga."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Sin señal → motor apagado",                          "set": { "I0.0": false }, "wait_ms": 100,  "expect": { "Q0.0": false } },
+          { "label": "Marcha activa → motor aún apagado (dentro retardo)", "set": { "I0.0": true  }, "wait_ms": 1500, "expect": { "Q0.0": false } },
+          { "label": "Retardo cumplido → motor encendido",                                           "wait_ms": 2000, "expect": { "Q0.0": true  } },
+          { "label": "Marcha suelta → motor apagado",                      "set": { "I0.0": false }, "wait_ms": 100,  "expect": { "Q0.0": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_08",
+      "title": "Ventilador de enfriamiento",
+      "level": 3,
+      "description": "El ventilador sigue corriendo 5 s después de apagar la máquina para disipar el calor residual.",
+      "objective": "Q0.0 se activa con I0.0. Al desactivar I0.0, Q0.0 debe permanecer activo 5 s más y luego apagarse.",
+      "signals": [
+        { "address": "I0.0", "name": "Maquina_ON",      "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Ventilador",      "type": "output", "initial": false },
+        { "address": "T0",   "name": "Timer_Enfriamiento", "type": "timer", "initial": false }
+      ],
+      "hint_steps": [
+        "Rung 1: contacto NO (I0.0) → bloque TOF T0 con PT = 5000 ms.",
+        "Rung 2: contacto NO del bit Q de T0 → bobina Q0.0.",
+        "El TOF mantiene su salida activa durante PT ms después del flanco de bajada de I0.0."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Máquina apagada → ventilador apagado",               "set": { "I0.0": false }, "wait_ms": 100,  "expect": { "Q0.0": false } },
+          { "label": "Máquina encendida → ventilador encendido",           "set": { "I0.0": true  }, "wait_ms": 100,  "expect": { "Q0.0": true  } },
+          { "label": "Máquina apagada → ventilador aún encendido",         "set": { "I0.0": false }, "wait_ms": 2000, "expect": { "Q0.0": true  } },
+          { "label": "Retardo cumplido → ventilador apagado",                                        "wait_ms": 4000, "expect": { "Q0.0": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_09",
+      "title": "Señal de advertencia con pulso",
+      "level": 3,
+      "description": "Al detectar una falla, una luz destella exactamente 2 s independiente de cuánto dure la falla.",
+      "objective": "En el flanco de subida de I0.0, Q0.0 debe activarse exactamente 2 s y luego apagarse.",
+      "signals": [
+        { "address": "I0.0", "name": "Sensor_Falla", "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Luz_Aviso",   "type": "output", "initial": false },
+        { "address": "T0",   "name": "Timer_Pulso", "type": "timer",  "initial": false }
+      ],
+      "hint_steps": [
+        "Usa un bloque TP con PT = 2000 ms.",
+        "Rung 1: contacto NO (I0.0) → bloque TP T0.",
+        "Rung 2: contacto NO del bit Q de T0 → bobina Q0.0.",
+        "El TP corre independiente de I0.0 una vez iniciado."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Sin falla → luz apagada",                      "set": { "I0.0": false }, "wait_ms": 100,  "expect": { "Q0.0": false } },
+          { "label": "Falla detectada → luz encendida",              "set": { "I0.0": true  }, "wait_ms": 200,  "expect": { "Q0.0": true  } },
+          { "label": "Falla resuelta → luz sigue encendida (pulso)", "set": { "I0.0": false }, "wait_ms": 500,  "expect": { "Q0.0": true  } },
+          { "label": "Pulso cumplido → luz apagada",                                           "wait_ms": 2000, "expect": { "Q0.0": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_10",
+      "title": "Contador de piezas en línea",
+      "level": 4,
+      "description": "Un sensor detecta cada pieza. Al llegar a 10, una luz indica lote completo y el contador se resetea.",
+      "objective": "Q0.0 debe activarse cuando CTU llegue a 10. I0.1 resetea el contador.",
+      "signals": [
+        { "address": "I0.0", "name": "Sensor_Pieza",     "type": "input",   "initial": false },
+        { "address": "I0.1", "name": "Btn_Reset",         "type": "input",   "initial": false },
+        { "address": "Q0.0", "name": "Luz_Lote_Completo", "type": "output",  "initial": false },
+        { "address": "C0",   "name": "Contador_Piezas",   "type": "counter", "initial": false }
+      ],
+      "hint_steps": [
+        "Rung 1: contacto NO (I0.0) → bloque CTU C0 con PV = 10.",
+        "Rung 2: contacto NO del bit Q de C0 → bobina Q0.0.",
+        "Rung 3: contacto NO (I0.1) → bloque R/L C0 para resetear.",
+        "El CTU cuenta flancos de subida de I0.0."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Sin piezas → luz apagada",    "set":    { "I0.0": false, "I0.1": false }, "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "9 pulsos → luz aún apagada",  "pulses": { "I0.0": 9 },                   "wait_ms": 100, "expect": { "Q0.0": false } },
+          { "label": "Pulso 10 → luz encendida",    "pulses": { "I0.0": 1 },                   "wait_ms": 100, "expect": { "Q0.0": true  } },
+          { "label": "Reset → luz apagada",         "set":    { "I0.1": true  },               "wait_ms": 100, "expect": { "Q0.0": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_11",
+      "title": "Semáforo secuencial",
+      "level": 4,
+      "description": "Rojo → Verde → Amarillo con tiempos distintos en ciclo continuo.",
+      "objective": "Q0.0 Rojo (4 s) → Q0.1 Verde (4 s) → Q0.2 Amarillo (2 s) → repite.",
+      "signals": [
+        { "address": "I0.0", "name": "Btn_Inicio",  "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "Luz_Roja",    "type": "output", "initial": false },
+        { "address": "Q0.1", "name": "Luz_Verde",   "type": "output", "initial": false },
+        { "address": "Q0.2", "name": "Luz_Amarilla","type": "output", "initial": false },
+        { "address": "M0.0", "name": "Fase_Rojo",   "type": "mark",   "initial": false },
+        { "address": "M0.1", "name": "Fase_Verde",  "type": "mark",   "initial": false },
+        { "address": "M0.2", "name": "Fase_Amarillo","type": "mark",  "initial": false },
+        { "address": "T0",   "name": "Timer_Rojo",  "type": "timer",  "initial": false },
+        { "address": "T1",   "name": "Timer_Verde", "type": "timer",  "initial": false },
+        { "address": "T2",   "name": "Timer_Amarillo","type": "timer","initial": false }
+      ],
+      "hint_steps": [
+        "Usa marcas M0.0, M0.1, M0.2 para identificar la fase activa.",
+        "I0.0 inicia el ciclo seteando M0.0 (fase rojo).",
+        "Cada fase tiene un TON. Al completarse, resetea la fase actual y setea la siguiente.",
+        "La fase amarillo al completarse vuelve a fase rojo — ciclo continuo."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Inicio → luz roja encendida",         "set": { "I0.0": true  }, "wait_ms": 200,  "expect": { "Q0.0": true, "Q0.1": false, "Q0.2": false } },
+          { "label": "Suelta inicio",                       "set": { "I0.0": false }, "wait_ms": 100,  "expect": { "Q0.0": true  } },
+          { "label": "4 s → cambia a verde",                                          "wait_ms": 4200, "expect": { "Q0.0": false, "Q0.1": true, "Q0.2": false } },
+          { "label": "4 s → cambia a amarillo",                                       "wait_ms": 4200, "expect": { "Q0.0": false, "Q0.1": false, "Q0.2": true  } },
+          { "label": "2 s → vuelve a rojo",                                           "wait_ms": 2200, "expect": { "Q0.0": true, "Q0.1": false, "Q0.2": false  } }
+        ],
+        "pass_threshold": 1.0
+      }
+    },
+
+    {
+      "id": "ex_12",
+      "title": "Mezclador automático de dos componentes",
+      "level": 5,
+      "description": "Estanque con dos electroválvulas de entrada (EVA1, EVA2) y una de salida (EVA3). El sistema llena con componente A hasta nivel medio, luego con componente B hasta nivel alto.",
+      "objective": "I0.3 inicia la mezcla. EVA1 llena hasta I0.1, EVA2 llena hasta I0.2. I0.4 abre EVA3, I0.5 la cierra.",
+      "signals": [
+        { "address": "I0.0", "name": "Sensor_Bajo",   "type": "input",  "initial": false },
+        { "address": "I0.1", "name": "Sensor_Medio",  "type": "input",  "initial": false },
+        { "address": "I0.2", "name": "Sensor_Alto",   "type": "input",  "initial": false },
+        { "address": "I0.3", "name": "Btn_Iniciar",   "type": "input",  "initial": false },
+        { "address": "I0.4", "name": "Btn_Abrir_EVA3","type": "input",  "initial": false },
+        { "address": "I0.5", "name": "Btn_Cerrar_EVA3","type": "input", "initial": false },
+        { "address": "Q0.0", "name": "EVA1",          "type": "output", "initial": false },
+        { "address": "Q0.1", "name": "EVA2",          "type": "output", "initial": false },
+        { "address": "Q0.2", "name": "EVA3",          "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "Usa bobinas S/R para controlar cada electroválvula.",
+        "Rung 1: [I0.0 NO][I0.3 ↑P] → (S) Q0.0 — inicia EVA1 si estanque vacío.",
+        "Rung 2: [I0.1 NO] → (R) Q0.0 + (S) Q0.1 — nivel medio cierra EVA1 y abre EVA2.",
+        "Rung 3: [I0.2 NO] → (R) Q0.1 — nivel alto cierra EVA2.",
+        "Rung 4: [I0.4 ↑P] → (S) Q0.2 — abre EVA3.",
+        "Rung 5: [I0.5 ↑P] → (R) Q0.2 — cierra EVA3."
+      ],
+      "validation": {
+        "mode": "stimulus_response",
+        "stimuli": [
+          { "label": "Estado inicial → todas las EVA cerradas",          "set": { "I0.0": true, "I0.1": false, "I0.2": false }, "wait_ms": 100, "expect": { "Q0.0": false, "Q0.1": false, "Q0.2": false } },
+          { "label": "Iniciar mezcla → EVA1 abre",                      "pulses": { "I0.3": 1 },  "wait_ms": 100, "expect": { "Q0.0": true,  "Q0.1": false } },
+          { "label": "Nivel medio → EVA1 cierra, EVA2 abre",            "set": { "I0.0": false, "I0.1": true }, "wait_ms": 100, "expect": { "Q0.0": false, "Q0.1": true  } },
+          { "label": "Nivel alto → EVA2 cierra",                        "set": { "I0.1": true,  "I0.2": true }, "wait_ms": 100, "expect": { "Q0.0": false, "Q0.1": false } },
+          { "label": "Abrir EVA3 → Q0.2 activo",                       "pulses": { "I0.4": 1 },  "wait_ms": 100, "expect": { "Q0.2": true  } },
+          { "label": "Cerrar EVA3 → Q0.2 inactivo",                    "pulses": { "I0.5": 1 },  "wait_ms": 100, "expect": { "Q0.2": false } }
+        ],
+        "pass_threshold": 1.0
+      }
+    }
+
+    ,{
+      "id": "ex_13",
+      "title": "Montacargas 3 pisos",
+      "level": 5,
+      "description": "Montacargas industrial con botonera de 3 pisos, sensores de posición y motor con inversión de giro.",
+      "objective": "Al presionar S1, S2 o S3 el montacargas debe desplazarse al piso correspondiente y detenerse al llegar al sensor.",
+      "signals": [
+        { "address": "I0.0", "name": "S1_Piso1",  "type": "input",  "initial": false },
+        { "address": "I0.1", "name": "S2_Piso2",  "type": "input",  "initial": false },
+        { "address": "I0.2", "name": "S3_Piso3",  "type": "input",  "initial": false },
+        { "address": "I0.3", "name": "S4_Sensor1","type": "input",  "initial": false },
+        { "address": "I0.4", "name": "S5_Sensor2","type": "input",  "initial": false },
+        { "address": "I0.5", "name": "S6_Sensor3","type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "KM1_Sube",  "type": "output", "initial": false },
+        { "address": "Q0.1", "name": "KM2_Baja",  "type": "output", "initial": false },
+        { "address": "Q0.2", "name": "Luz_Piso1", "type": "output", "initial": false },
+        { "address": "Q0.3", "name": "Luz_Piso2", "type": "output", "initial": false },
+        { "address": "Q0.4", "name": "Luz_Piso3", "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "Usa marcas M0.0, M0.1, M0.2 para memorizar el piso destino.",
+        "KM1 sube cuando el piso destino es mayor al piso actual.",
+        "KM2 baja cuando el piso destino es menor al piso actual.",
+        "El motor se detiene cuando el sensor del piso destino se activa.",
+        "Enclavamiento cruzado entre KM1 y KM2 — nunca deben estar activos juntos.",
+        "Las luces piloto Q0.2-Q0.4 se activan con los sensores I0.3-I0.5."
+      ],
+      "validation": null
+    }
+
+    ,{
+      "id": "ex_14",
+      "title": "Puente grúa — ciclo automático",
+      "level": 5,
+      "description": "Puente grúa con ciclo automático de 6 estados. El gancho recorre un trayecto cuadrado: sube, va a la derecha, baja, sube, vuelve a la izquierda y baja.",
+      "objective": "Al presionar Start el sistema debe completar el ciclo automáticamente deteniéndose en cada sensor.",
+      "signals": [
+        { "address": "I0.0", "name": "Btn_Start",   "type": "input",  "initial": false },
+        { "address": "I0.1", "name": "S1_Abajo",    "type": "input",  "initial": false },
+        { "address": "I0.2", "name": "S2_Arriba",   "type": "input",  "initial": false },
+        { "address": "I0.3", "name": "S3_Izquierda","type": "input",  "initial": false },
+        { "address": "I0.4", "name": "S4_Derecha",  "type": "input",  "initial": false },
+        { "address": "Q0.0", "name": "KM1_Sube",    "type": "output", "initial": false },
+        { "address": "Q0.1", "name": "KM2_Baja",    "type": "output", "initial": false },
+        { "address": "Q0.2", "name": "KM3_Izquierda","type": "output","initial": false },
+        { "address": "Q0.3", "name": "KM4_Derecha", "type": "output", "initial": false },
+        { "address": "M0.0", "name": "Fase_1_Sube", "type": "mark",   "initial": false },
+        { "address": "M0.1", "name": "Fase_2_Derecha","type": "mark", "initial": false },
+        { "address": "M0.2", "name": "Fase_3_Baja", "type": "mark",   "initial": false },
+        { "address": "M0.3", "name": "Fase_4_Sube", "type": "mark",   "initial": false },
+        { "address": "M0.4", "name": "Fase_5_Izquierda","type": "mark","initial": false },
+        { "address": "M0.5", "name": "Fase_6_Baja", "type": "mark",   "initial": false },
+        { "address": "C0",   "name": "Contador_Ciclos", "type": "counter", "initial": false },
+        { "address": "Q0.4", "name": "Luz_Limite_Uso",  "type": "output",  "initial": false }
+      ],
+      "hint_steps": [
+        "Usa marcas M0.0-M0.5 para identificar cada fase del ciclo.",
+        "Start + S1 + S3 activos → setea M0.0 (fase 1: sube).",
+        "Fase 1: KM1 activo. Cuando S2 se activa → resetea M0.0, setea M0.1.",
+        "Fase 2: KM4 activo. Cuando S4 se activa → resetea M0.1, setea M0.2.",
+        "Fase 3: KM2 activo. Cuando S1 se activa → resetea M0.2, setea M0.3.",
+        "Fase 4: KM1 activo. Cuando S2 se activa → resetea M0.3, setea M0.4.",
+        "Fase 5: KM3 activo. Cuando S3 se activa → resetea M0.4, setea M0.5.",
+        "Fase 6: KM2 activo. Cuando S1 se activa → resetea M0.5 — ciclo completo.",
+        "Agrega un CTU C0 que cuente cada ciclo completo (flanco de subida de M0.5 al terminar).",
+        "Cuando C0 alcanza PV, activa Q0.4 con bobina S. Un reset limpia el contador."
+      ],
+      "validation": null
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+/* ============================================================
+   LADDER LOGIC TRAINER — Design Tokens
+   Tema: Dark Industrial / HMI Panel Aesthetic
+   Fuentes: JetBrains Mono (monoespaciada) + Barlow Condensed (UI)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap');
+
+:root {
+
+  /* ----------------------------------------------------------
+     PALETA BASE — Escala de grises industriales
+     Inspirada en paneles HMI Siemens / Allen-Bradley
+  ---------------------------------------------------------- */
+  --clr-bg-deep:       #0d0f0e;   /* fondo más oscuro — detrás del canvas */
+  --clr-bg-base:       #131614;   /* fondo del canvas editor */
+  --clr-bg-panel:      #1a1d1b;   /* paneles laterales / toolbar */
+  --clr-bg-surface:    #222622;   /* tarjetas, celdas, inputs */
+  --clr-bg-elevated:   #2b302a;   /* hover states, dropdowns */
+  --clr-bg-overlay:    #343a33;   /* tooltips, modales */
+
+  --clr-border-subtle: #2a2e29;   /* separadores muy suaves */
+  --clr-border-mid:    #3a3f38;   /* bordes de componentes */
+  --clr-border-strong: #505650;   /* bordes activos / seleccionados */
+
+  /* ----------------------------------------------------------
+     ACENTO PRIMARIO — Verde PLC (señal energizada)
+  ---------------------------------------------------------- */
+  --clr-green-dim:     #1a3320;
+  --clr-green-dark:    #1f4a28;
+  --clr-green:         #2d9e4f;   /* estado ON / energizado */
+  --clr-green-bright:  #39c960;   /* señal activa, pulse */
+  --clr-green-glow:    rgba(57, 201, 96, 0.18);
+
+  /* ----------------------------------------------------------
+     ACENTO SECUNDARIO — Ámbar (advertencia / forzado)
+  ---------------------------------------------------------- */
+  --clr-amber-dim:     #2e2010;
+  --clr-amber:         #c97d1a;
+  --clr-amber-bright:  #f0a030;
+  --clr-amber-glow:    rgba(240, 160, 48, 0.15);
+
+  /* ----------------------------------------------------------
+     ESTADOS SEMÁNTICOS
+  ---------------------------------------------------------- */
+  --clr-error:         #d94040;   /* fallo / cortocircuito */
+  --clr-error-dim:     #2a1010;
+  --clr-error-glow:    rgba(217, 64, 64, 0.15);
+
+  --clr-info:          #3a8fc7;   /* información / referencia */
+  --clr-info-dim:      #0e2030;
+
+  --clr-forced:        #c040c0;   /* forzado manual (override) */
+  --clr-forced-dim:    #220e22;
+
+  /* ----------------------------------------------------------
+     TIPOGRAFÍA
+  ---------------------------------------------------------- */
+  --font-mono:         'JetBrains Mono', 'Courier New', monospace;
+  --font-ui:           'Barlow Condensed', 'Arial Narrow', sans-serif;
+
+  --text-xxs:          10px;
+  --text-xs:           11px;
+  --text-sm:           12px;
+  --text-base:         14px;
+  --text-md:           15px;
+  --text-lg:           18px;
+  --text-xl:           22px;
+  --text-2xl:          28px;
+
+  --weight-light:      300;
+  --weight-normal:     400;
+  --weight-medium:     500;
+  --weight-semibold:   600;
+  --weight-bold:       700;
+
+  /* ----------------------------------------------------------
+     TEXTO
+  ---------------------------------------------------------- */
+  --text-primary:      #c8d0c6;   /* texto principal */
+  --text-secondary:    #8a9488;   /* etiquetas secundarias */
+  --text-muted:        #566054;   /* texto deshabilitado */
+  --text-inverse:      #0d0f0e;   /* texto sobre fondos claros */
+  --text-accent:       #39c960;   /* texto de acento / valores activos */
+  --text-amber:        #f0a030;
+  --text-error:        #e06060;
+
+  /* ----------------------------------------------------------
+     COMPONENTES LADDER — Elementos del diagrama
+  ---------------------------------------------------------- */
+
+  /* Rail (línea de alimentación vertical) */
+  --rail-width:        3px;
+  --rail-color:        #3a3f38;
+  --rail-color-power:  #2d9e4f;   /* rail energizado */
+
+  /* Rung (escalón horizontal) */
+  --rung-height:       80px;
+  --rung-gap:          12px;
+  --rung-wire-color:   #444a42;
+  --rung-wire-active:  #39c960;
+  --rung-wire-width:   2px;
+
+  /* Celda de componente en la grilla */
+  --cell-width:        96px;
+  --cell-height:       64px;
+  --cell-gap:          4px;
+
+  /* Contacto NO (Normally Open) */
+  --contact-no-stroke:        #6a7a68;
+  --contact-no-stroke-active: #39c960;
+  --contact-no-fill:          transparent;
+
+  /* Contacto NC (Normally Closed) */
+  --contact-nc-stroke:        #6a7a68;
+  --contact-nc-stroke-active: #39c960;
+
+  /* Bobina (coil) */
+  --coil-stroke:        #6a7a68;
+  --coil-stroke-active: #39c960;
+  --coil-fill-active:   rgba(57, 201, 96, 0.12);
+
+  /* Bloques funcionales (timers, contadores) */
+  --block-bg:           #1e2420;
+  --block-border:       #3a4a38;
+  --block-border-active:#2d9e4f;
+  --block-header-bg:    #253023;
+
+  /* ----------------------------------------------------------
+     LAYOUT — Dimensiones de los paneles
+  ---------------------------------------------------------- */
+  --toolbar-width:     220px;
+  --io-panel-width:    260px;
+  --statusbar-height:  28px;
+  --titlebar-height:   44px;
+
+  /* ----------------------------------------------------------
+     ESPACIADO
+  ---------------------------------------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+
+  /* ----------------------------------------------------------
+     BORDES Y RADIOS
+  ---------------------------------------------------------- */
+  --radius-sm:   3px;
+  --radius-md:   5px;
+  --radius-lg:   8px;
+  --radius-pill: 999px;
+
+  /* ----------------------------------------------------------
+     SOMBRAS / ELEVACIÓN
+  ---------------------------------------------------------- */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.5);
+  --shadow-lg:  0 8px 24px rgba(0,0,0,0.6);
+  --shadow-glow-green: 0 0 8px var(--clr-green-glow), 0 0 2px var(--clr-green);
+  --shadow-glow-amber: 0 0 8px var(--clr-amber-glow), 0 0 2px var(--clr-amber);
+  --shadow-glow-error: 0 0 8px var(--clr-error-glow), 0 0 2px var(--clr-error);
+
+  /* ----------------------------------------------------------
+     TRANSICIONES
+  ---------------------------------------------------------- */
+  --transition-fast:   80ms ease;
+  --transition-base:   160ms ease;
+  --transition-slow:   300ms ease;
+
+  /* ----------------------------------------------------------
+     Z-INDEX
+  ---------------------------------------------------------- */
+  --z-canvas:    1;
+  --z-overlay:   10;
+  --z-dropdown:  20;
+  --z-modal:     30;
+  --z-toast:     40;
+}

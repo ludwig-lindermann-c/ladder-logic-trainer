@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ladder Logic Trainer</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+  <!-- =====================================================
+       TITLEBAR — Barra superior de la aplicación
+  ====================================================== -->
+  <header class="titlebar" role="banner">
+    <div class="titlebar__brand">
+      <span class="titlebar__logo" aria-hidden="true">⬛</span>
+      <span class="titlebar__name">Ladder Logic <strong>Trainer</strong></span>
+    </div>
+
+    <nav class="titlebar__menu" aria-label="Menú principal">
+      <button class="menu-btn" data-action="new">Nuevo</button>
+      <button class="menu-btn" data-action="open">Abrir</button>
+      <button class="menu-btn" data-action="save">Guardar</button>
+      <button class="menu-btn" data-action="export">Exportar</button>
+    </nav>
+
+    <div class="titlebar__controls">
+      <span class="plc-status" id="plc-status" data-state="stop">
+        <span class="plc-status__dot" aria-hidden="true"></span>
+        <span class="plc-status__label">STOP</span>
+      </span>
+      <button class="ctrl-btn ctrl-btn--run"  id="btn-run"  aria-label="Iniciar simulación">RUN</button>
+      <button class="ctrl-btn ctrl-btn--stop" id="btn-stop" aria-label="Detener simulación">STOP</button>
+
+    </div>
+  </header>
+
+  <!-- =====================================================
+       APP SHELL — Tres columnas principales
+  ====================================================== -->
+  <div class="app-shell" role="main">
+
+    <!-- -------------------------------------------------
+         PANEL IZQUIERDO — Toolbar de componentes Ladder
+    -------------------------------------------------- -->
+    <aside class="toolbar" aria-label="Componentes Ladder">
+
+      <section class="toolbar__group" aria-labelledby="grp-contacts">
+        <h2 class="toolbar__group-title" id="grp-contacts">Contactos</h2>
+        <div class="component-grid">
+          <button class="component-btn" data-component="contact-no" title="Contacto Normalmente Abierto">
+            <svg class="component-icon" viewBox="0 0 48 32" aria-hidden="true">
+              <line x1="0"  y1="16" x2="14" y2="16" stroke="currentColor" stroke-width="2"/>
+              <line x1="14" y1="6"  x2="14" y2="26" stroke="currentColor" stroke-width="2"/>
+              <line x1="34" y1="6"  x2="34" y2="26" stroke="currentColor" stroke-width="2"/>
+              <line x1="34" y1="16" x2="48" y2="16" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span class="component-label">NO</span>
+          </button>
+
+          <button class="component-btn" data-component="contact-nc" title="Contacto Normalmente Cerrado">
+            <svg class="component-icon" viewBox="0 0 48 32" aria-hidden="true">
+              <line x1="0"  y1="16" x2="14" y2="16" stroke="currentColor" stroke-width="2"/>
+              <line x1="14" y1="6"  x2="14" y2="26" stroke="currentColor" stroke-width="2"/>
+              <line x1="34" y1="6"  x2="34" y2="26" stroke="currentColor" stroke-width="2"/>
+              <line x1="34" y1="16" x2="48" y2="16" stroke="currentColor" stroke-width="2"/>
+              <line x1="14" y1="6"  x2="34" y2="26" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <span class="component-label">NC</span>
+          </button>
+
+          <button class="component-btn" data-component="contact-pos" title="Detección flanco positivo">
+            <svg class="component-icon" viewBox="0 0 48 32" aria-hidden="true">
+              <line x1="0"  y1="16" x2="14" y2="16" stroke="currentColor" stroke-width="2"/>
+              <line x1="14" y1="6"  x2="14" y2="26" stroke="currentColor" stroke-width="2"/>
+              <line x1="34" y1="6"  x2="34" y2="26" stroke="currentColor" stroke-width="2"/>
+              <line x1="34" y1="16" x2="48" y2="16" stroke="currentColor" stroke-width="2"/>
+              <text x="24" y="20" text-anchor="middle" font-size="10" fill="currentColor">P</text>
+            </svg>
+            <span class="component-label">↑P</span>
+          </button>
+
+          <button class="component-btn" data-component="contact-neg" title="Detección flanco negativo">
+            <svg class="component-icon" viewBox="0 0 48 32" aria-hidden="true">
+              <line x1="0"  y1="16" x2="14" y2="16" stroke="currentColor" stroke-width="2"/>
+              <line x1="14" y1="6"  x2="14" y2="26" stroke="currentColor" stroke-width="2"/>
+              <line x1="34" y1="6"  x2="34" y2="26" stroke="currentColor" stroke-width="2"/>
+              <line x1="34" y1="16" x2="48" y2="16" stroke="currentColor" stroke-width="2"/>
+              <text x="24" y="20" text-anchor="middle" font-size="10" fill="currentColor">N</text>
+            </svg>
+            <span class="component-label">↓N</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="toolbar__group" aria-labelledby="grp-coils">
+        <h2 class="toolbar__group-title" id="grp-coils">Bobinas</h2>
+        <div class="component-grid">
+          <button class="component-btn" data-component="coil" title="Bobina de salida">
+            <svg class="component-icon" viewBox="0 0 48 32" aria-hidden="true">
+              <line x1="0"  y1="16" x2="12" y2="16" stroke="currentColor" stroke-width="2"/>
+              <circle cx="24" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+              <line x1="36" y1="16" x2="48" y2="16" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span class="component-label">( )</span>
+          </button>
+
+          <button class="component-btn" data-component="coil-set" title="Bobina Set">
+            <svg class="component-icon" viewBox="0 0 48 32" aria-hidden="true">
+              <line x1="0"  y1="16" x2="12" y2="16" stroke="currentColor" stroke-width="2"/>
+              <circle cx="24" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+              <line x1="36" y1="16" x2="48" y2="16" stroke="currentColor" stroke-width="2"/>
+              <text x="24" y="20" text-anchor="middle" font-size="10" fill="currentColor">S</text>
+            </svg>
+            <span class="component-label">(S)</span>
+          </button>
+
+          <button class="component-btn" data-component="coil-reset" title="Bobina Reset">
+            <svg class="component-icon" viewBox="0 0 48 32" aria-hidden="true">
+              <line x1="0"  y1="16" x2="12" y2="16" stroke="currentColor" stroke-width="2"/>
+              <circle cx="24" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+              <line x1="36" y1="16" x2="48" y2="16" stroke="currentColor" stroke-width="2"/>
+              <text x="24" y="20" text-anchor="middle" font-size="10" fill="currentColor">R</text>
+            </svg>
+            <span class="component-label">(R)</span>
+          </button>
+
+          <button class="component-btn" data-component="coil-not" title="Bobina negada">
+            <svg class="component-icon" viewBox="0 0 48 32" aria-hidden="true">
+              <line x1="0"  y1="16" x2="12" y2="16" stroke="currentColor" stroke-width="2"/>
+              <circle cx="24" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+              <line x1="36" y1="16" x2="48" y2="16" stroke="currentColor" stroke-width="2"/>
+              <text x="24" y="20" text-anchor="middle" font-size="10" fill="currentColor">/</text>
+            </svg>
+            <span class="component-label">(/)</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="toolbar__group" aria-labelledby="grp-blocks">
+        <h2 class="toolbar__group-title" id="grp-blocks">Bloques</h2>
+        <div class="component-grid component-grid--blocks">
+          <button class="component-btn component-btn--block" data-component="timer-on" title="Timer On-Delay">
+            <span class="block-label-top">TON</span>
+            <span class="component-label">Timer ON</span>
+          </button>
+          <button class="component-btn component-btn--block" data-component="timer-off" title="Timer Off-Delay">
+            <span class="block-label-top">TOF</span>
+            <span class="component-label">Timer OFF</span>
+          </button>
+          <button class="component-btn component-btn--block" data-component="timer-pulse" title="Timer Pulso">
+            <span class="block-label-top">TP</span>
+            <span class="component-label">Timer Pulso</span>
+          </button>
+          <button class="component-btn component-btn--block" data-component="counter-up" title="Contador ascendente">
+            <span class="block-label-top">CTU</span>
+            <span class="component-label">Count UP</span>
+          </button>
+          <button class="component-btn component-btn--block" data-component="counter-dn" title="Contador descendente">
+            <span class="block-label-top">CTD</span>
+            <span class="component-label">Count DN</span>
+          </button>
+          <button class="component-btn component-btn--block" data-component="counter-rst" title="Reset (CTU) / Load (CTD)">
+            <span class="block-label-top">R/L</span>
+            <span class="component-label">Reset/Load</span>
+          </button>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- -------------------------------------------------
+         PANEL CENTRAL — Canvas del editor Ladder
+    -------------------------------------------------- -->
+    <section class="canvas-area" aria-label="Editor Ladder">
+
+      <div class="canvas-toolbar">
+        <div class="canvas-toolbar__left">
+          <span class="canvas-info" id="canvas-program-name">SIN_NOMBRE</span>
+          <span class="canvas-info canvas-info--muted" id="canvas-rung-count">0 rungs</span>
+        </div>
+        <div class="canvas-toolbar__right">
+          <button class="icon-btn" id="btn-add-rung"    title="Agregar rung">+ Rung</button>
+          <button class="icon-btn" id="btn-delete-rung" title="Eliminar rung seleccionado">− Rung</button>
+          <button class="icon-btn" id="btn-zoom-in"     title="Acercar">＋</button>
+          <button class="icon-btn" id="btn-zoom-out"    title="Alejar">－</button>
+          <button class="icon-btn" id="btn-zoom-fit"    title="Ajustar vista">⊡</button>
+        </div>
+      </div>
+
+      <div class="canvas-viewport" id="canvas-viewport" tabindex="0" aria-label="Canvas de diagrama Ladder">
+        <div class="canvas-content" id="canvas-content">
+          <div class="rung rung--empty rung--placeholder" aria-label="Agrega componentes para comenzar">
+            <div class="rung__rail rung__rail--left"  aria-hidden="true"></div>
+            <div class="rung__body">
+              <span class="rung__hint">Haz click en un componente del panel izquierdo para comenzar</span>
+            </div>
+            <div class="rung__rail rung__rail--right" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- -------------------------------------------------
+         PANEL DERECHO — Variables I/O y estado
+    -------------------------------------------------- -->
+    <aside class="io-panel" aria-label="Variables y estado">
+
+      <div class="io-panel__tabs" role="tablist">
+        <button class="io-tab io-tab--active" role="tab" aria-selected="true"  data-tab="io">I/O</button>
+        <button class="io-tab"                role="tab" aria-selected="false" data-tab="vars">Variables</button>
+        <button class="io-tab"                role="tab" aria-selected="false" data-tab="exercises">Ejercicios</button>
+      </div>
+
+      <!-- Tab: I/O -->
+      <div class="io-panel__content" id="tab-io" role="tabpanel">
+        <div class="io-section">
+          <h3 class="io-section__title">Entradas digitales</h3>
+          <div class="io-list" id="list-inputs"></div>
+        </div>
+        <div class="io-section">
+          <h3 class="io-section__title">Salidas digitales</h3>
+          <div class="io-list" id="list-outputs"></div>
+        </div>
+        <div class="io-section">
+          <h3 class="io-section__title">Marcas internas</h3>
+          <div class="io-list" id="list-marks"></div>
+        </div>
+      </div>
+
+      <!-- Tab: Variables -->
+      <div class="io-panel__content io-panel__content--hidden" id="tab-vars" role="tabpanel">
+        <div class="io-section">
+          <h3 class="io-section__title">Nueva variable</h3>
+          <div class="var-form">
+            <input id="var-addr-input" class="var-form__input" type="text"
+              placeholder="Dirección (I0.0, Q0.0…)" spellcheck="false"/>
+            <input id="var-name-input" class="var-form__input" type="text"
+              placeholder="Nombre (Start, Motor…)"/>
+            <button class="var-form__btn" id="btn-add-var">+ Agregar</button>
+          </div>
+        </div>
+        <div class="io-section">
+          <h3 class="io-section__title">Variables definidas</h3>
+          <table class="var-table" aria-label="Tabla de variables">
+            <thead>
+              <tr>
+                <th>Dirección</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="var-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Ejercicios -->
+      <div class="io-panel__content io-panel__content--hidden" id="tab-exercises" role="tabpanel">
+        <div class="io-section">
+          <h3 class="io-section__title">Ejercicios disponibles</h3>
+          <div class="exercise-list" id="exercise-list"></div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- =====================================================
+       STATUS BAR
+  ====================================================== -->
+  <footer class="statusbar" role="contentinfo">
+    <span class="status-item" id="status-mode">EDITOR</span>
+    <span class="status-sep" aria-hidden="true">|</span>
+    <span class="status-item" id="status-selected">Ningún componente seleccionado</span>
+    <span class="status-sep" aria-hidden="true">|</span>
+    <span class="status-item status-item--right" id="status-scan">Scan: — ms</span>
+    <span class="status-item status-item--right mono" id="status-cycle">Ciclo: 0</span>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/simulator.js"></script>
+  <script src="js/canvas.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/validator.js"></script>
+  <script src="js/scene-engine.js"></script>   <!-- ← línea nueva -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>

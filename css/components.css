@@ -1,0 +1,1544 @@
+/* ============================================================
+   LADDER LOGIC TRAINER — Components
+   Estilos de todos los elementos visuales reutilizables:
+   botones de toolbar, elementos Ladder, panel I/O, tablas,
+   ejercicios, tooltips y estados de simulación.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   COMPONENT BUTTONS — Toolbar izquierdo
+---------------------------------------------------------- */
+.component-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--space-2) var(--space-1);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--clr-border-subtle);
+  background: var(--clr-bg-surface);
+  color: var(--contact-no-stroke);
+  cursor: grab;
+  transition: all var(--transition-fast);
+  user-select: none;
+  position: relative;
+}
+
+.component-btn:hover {
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+  background: var(--clr-green-dim);
+  box-shadow: var(--shadow-glow-green);
+  transform: translateY(-1px);
+}
+
+.component-btn:active {
+  cursor: grabbing;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.component-btn.selected,
+.component-btn[aria-pressed="true"] {
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+  background: var(--clr-green-dim);
+  box-shadow: inset 0 0 0 1px var(--clr-green);
+}
+
+.component-btn--block {
+  padding: var(--space-2);
+  gap: 2px;
+}
+
+.component-icon {
+  width: 48px;
+  height: 32px;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.component-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.component-btn:hover .component-label {
+  color: var(--clr-green-bright);
+}
+
+.block-label-top {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.component-btn:hover .block-label-top {
+  color: var(--clr-green-bright);
+}
+
+/* ----------------------------------------------------------
+   LADDER ELEMENTS — Componentes en el canvas
+   Cada elemento vive dentro de .rung__body como .lad-cell
+---------------------------------------------------------- */
+.lad-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: var(--cell-width);
+  height: var(--cell-height);
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  border-radius: var(--radius-sm);
+}
+
+.lad-cell:hover {
+  background: var(--clr-bg-elevated);
+}
+
+.lad-cell.selected,
+.lad-cell--selected {
+  background: var(--clr-green-dim);
+  outline: 1px solid var(--clr-green);
+  outline-offset: -1px;
+}
+
+/* Etiqueta de dirección (encima del símbolo) */
+.lad-cell__address {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--text-secondary);
+  line-height: 1;
+  margin-bottom: 2px;
+  letter-spacing: 0.04em;
+  max-width: calc(var(--cell-width) - 8px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Etiqueta de nombre (debajo del símbolo) */
+.lad-cell__name {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  line-height: 1;
+  margin-top: 3px;
+  max-width: calc(var(--cell-width) - 8px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* SVG del símbolo Ladder */
+.lad-cell__symbol {
+  width: 64px;
+  height: 36px;
+  overflow: visible;
+}
+
+/* Estado activo/energizado de cualquier elemento */
+.lad-cell.energized .lad-cell__address {
+  color: var(--text-accent);
+}
+
+.lad-cell.energized .lad-cell__symbol line,
+.lad-cell.energized .lad-cell__symbol circle,
+.lad-cell.energized .lad-cell__symbol rect {
+  stroke: var(--contact-no-stroke-active);
+  filter: drop-shadow(0 0 3px var(--clr-green));
+}
+
+/* ----------------------------------------------------------
+   CONTACTO NO — Normally Open  ─| |─
+---------------------------------------------------------- */
+.lad-contact-no .lad-cell__symbol line {
+  stroke: var(--contact-no-stroke);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke var(--transition-base);
+}
+
+.lad-contact-no.energized .lad-cell__symbol line {
+  stroke: var(--contact-no-stroke-active);
+}
+
+/* ----------------------------------------------------------
+   CONTACTO NC — Normally Closed  ─|/|─
+---------------------------------------------------------- */
+.lad-contact-nc .lad-cell__symbol line {
+  stroke: var(--contact-nc-stroke);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke var(--transition-base);
+}
+
+.lad-contact-nc.energized .lad-cell__symbol line {
+  stroke: var(--contact-nc-stroke-active);
+}
+
+/* ----------------------------------------------------------
+   BOBINA — Coil  ─( )─
+---------------------------------------------------------- */
+.lad-coil .lad-cell__symbol line,
+.lad-coil .lad-cell__symbol circle {
+  stroke: var(--coil-stroke);
+  stroke-width: 2;
+  transition: stroke var(--transition-base), fill var(--transition-base);
+}
+
+.lad-coil .lad-cell__symbol circle {
+  fill: transparent;
+}
+
+.lad-coil.energized .lad-cell__symbol line,
+.lad-coil.energized .lad-cell__symbol circle {
+  stroke: var(--coil-stroke-active);
+}
+
+.lad-coil.energized .lad-cell__symbol circle {
+  fill: var(--coil-fill-active);
+  filter: drop-shadow(0 0 4px var(--clr-green));
+}
+
+/* ----------------------------------------------------------
+   BLOQUE FUNCIONAL — Timer / Counter
+---------------------------------------------------------- */
+.lad-block {
+  width: calc(var(--cell-width) * 1.5);
+}
+
+.lad-block__box {
+  width: 100%;
+  border: 1px solid var(--block-border);
+  border-radius: var(--radius-sm);
+  background: var(--block-bg);
+  overflow: hidden;
+  transition: border-color var(--transition-base);
+}
+
+.lad-block__header {
+  background: var(--block-header-bg);
+  padding: 3px var(--space-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--block-border);
+}
+
+.lad-block__type {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+}
+
+.lad-block__tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+}
+
+.lad-block__body {
+  padding: var(--space-1) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lad-block__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.lad-block__param {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+}
+
+.lad-block__value {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--text-secondary);
+}
+
+/* Bloque activo/energizado */
+.lad-block.energized .lad-block__box {
+  border-color: var(--block-border-active);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.lad-block.energized .lad-block__type {
+  color: var(--text-accent);
+}
+
+.lad-block.energized .lad-block__value {
+  color: var(--clr-green-bright);
+}
+
+/* ----------------------------------------------------------
+   WIRE — Hilo de conexión
+---------------------------------------------------------- */
+.lad-wire {
+  width: var(--cell-width);
+  height: var(--cell-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.lad-wire__line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: var(--rung-wire-width);
+  background: var(--rung-wire-color);
+  transform: translateY(-50%);
+  transition: background var(--transition-base);
+}
+
+.lad-wire.energized .lad-wire__line {
+  background: var(--rung-wire-active);
+  box-shadow: 0 0 4px var(--clr-green-glow);
+}
+
+/* ----------------------------------------------------------
+   RAMA PARALELA — Estilo clásico
+   La fila --main va alineada con el hilo principal.
+   Las filas --alt cuelgan hacia abajo.
+   Los rails verticales son border-left/right del .lad-branch.
+---------------------------------------------------------- */
+
+.lad-branch {
+  /* Se coloca inline dentro del rung__body */
+  display: inline-flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: relative;
+  /* Rail vertical izquierdo y derecho */
+  border-left:  2px solid var(--rung-wire-color);
+  border-right: 2px solid var(--rung-wire-color);
+  border-radius: 0;
+}
+
+/* Fila principal: alineada con el hilo del rung */
+.lad-branch__row--main {
+  display: flex;
+  align-items: center;
+  min-height: var(--cell-height);
+  position: relative;
+}
+
+/* Hilo horizontal dentro de la fila principal */
+.lad-branch__row--main::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: var(--rung-wire-width);
+  background: var(--rung-wire-color);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Filas alternas: cuelgan debajo de la fila principal */
+.lad-branch__row--alt {
+  display: flex;
+  align-items: center;
+  min-height: var(--cell-height);
+  position: relative;
+  border-top: 2px solid var(--rung-wire-color);
+}
+
+/* Hilo horizontal dentro de cada fila alterna */
+.lad-branch__row--alt::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: var(--rung-wire-width);
+  background: var(--rung-wire-color);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Contenedor de celdas dentro de cada fila */
+.lad-branch__cell-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  padding: 0 var(--space-2);
+}
+
+/* Placeholder cuando la fila está vacía */
+.lad-branch__placeholder {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  padding: var(--space-1) var(--space-3);
+  border: 1px dashed var(--clr-border-mid);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 1;
+  position: relative;
+}
+
+.lad-branch__placeholder:hover {
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+  background: var(--clr-green-dim);
+}
+
+/* Botón agregar fila paralela */
+.lad-branch__add-row {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  padding: 3px var(--space-3);
+  margin: 2px var(--space-1);
+  border: 1px dashed var(--clr-border-subtle);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.lad-branch__add-row:hover {
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+  background: var(--clr-green-dim);
+}
+
+/* Estado energizado */
+.rung--powered .lad-branch {
+  border-left-color:  var(--rung-wire-active);
+  border-right-color: var(--rung-wire-active);
+}
+
+.rung--powered .lad-branch__row--main::before {
+  background: var(--rung-wire-active);
+}
+
+
+/* ── Estados energizados ── */
+.lad-branch.energized .lad-branch__junction-dot {
+  background: var(--clr-green-bright);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.lad-branch.energized .lad-branch__vert-rail {
+  background: var(--rung-wire-active);
+}
+
+.lad-branch__row--alt.energized .lad-branch__row-wire {
+  background: var(--rung-wire-active);
+}
+
+/* ----------------------------------------------------------
+   CELL DROP ZONE — Zona de inserción al arrastrar
+---------------------------------------------------------- */
+.drop-zone {
+  width: 8px;
+  height: var(--cell-height);
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.drop-zone.drop-zone--active {
+  width: var(--cell-width);
+  background: var(--clr-green-dim);
+  border: 1px dashed var(--clr-green);
+  box-shadow: var(--shadow-glow-green);
+}
+
+/* ----------------------------------------------------------
+   I/O ROWS — Panel derecho
+---------------------------------------------------------- */
+.io-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.io-row {
+  display: grid;
+  grid-template-columns: 20px 42px 1fr 24px;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 4px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: var(--clr-bg-surface);
+  transition: all var(--transition-fast);
+}
+
+.io-row:hover {
+  border-color: var(--clr-border-mid);
+  background: var(--clr-bg-elevated);
+}
+
+.io-row--on {
+  border-color: var(--clr-green-dark);
+  background: var(--clr-green-dim);
+}
+
+.io-row--forced {
+  border-color: var(--clr-forced-dim);
+  background: var(--clr-forced-dim);
+}
+
+/* Toggle de forzado */
+.io-toggle {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--clr-border-mid);
+  background: var(--clr-bg-base);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.io-toggle:hover {
+  border-color: var(--clr-green);
+  background: var(--clr-green-dim);
+}
+
+.io-row--on .io-toggle {
+  background: var(--clr-green);
+  border-color: var(--clr-green-bright);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.io-address {
+  font-size: var(--text-xxs);
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+
+.io-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.io-value {
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  text-align: right;
+  letter-spacing: 0.04em;
+}
+
+.io-row--on .io-value {
+  color: var(--text-accent);
+}
+
+/* ----------------------------------------------------------
+   VARIABLE TABLE
+---------------------------------------------------------- */
+.var-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+}
+
+.var-table th {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: left;
+  padding: var(--space-1) var(--space-2);
+  border-bottom: 1px solid var(--clr-border-subtle);
+}
+
+.var-table td {
+  padding: 4px var(--space-2);
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--clr-border-subtle);
+}
+
+.var-table tr:hover td {
+  background: var(--clr-bg-elevated);
+  color: var(--text-primary);
+}
+
+.var-table td:first-child {
+  color: var(--text-accent);
+}
+
+.add-var-btn {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  padding: var(--space-2) var(--space-3);
+  margin-top: var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--clr-border-mid);
+  width: 100%;
+  text-align: center;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.04em;
+}
+
+.add-var-btn:hover {
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+  background: var(--clr-green-dim);
+}
+
+/* ----------------------------------------------------------
+   EXERCISE CARDS
+---------------------------------------------------------- */
+.exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.exercise-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--clr-border-subtle);
+  background: var(--clr-bg-surface);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.exercise-card:hover {
+  border-color: var(--clr-green);
+  background: var(--clr-green-dim);
+}
+
+.exercise-card--locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.exercise-card--active {
+  border-color: var(--clr-green);
+  background: var(--clr-green-dim);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.exercise-card--complete {
+  border-color: var(--clr-info-dim);
+  background: var(--clr-info-dim);
+}
+
+.exercise-level {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-amber);
+  white-space: nowrap;
+}
+
+.exercise-title {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.exercise-status {
+  font-size: var(--text-sm);
+  line-height: 1;
+}
+
+/* ----------------------------------------------------------
+   TOOLTIP
+---------------------------------------------------------- */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--clr-bg-overlay);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  white-space: nowrap;
+  padding: 4px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--clr-border-mid);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  z-index: var(--z-dropdown);
+  box-shadow: var(--shadow-md);
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+}
+
+/* ----------------------------------------------------------
+   TOAST / NOTIFICACIONES
+---------------------------------------------------------- */
+.toast-container {
+  position: fixed;
+  bottom: calc(var(--statusbar-height) + var(--space-3));
+  right: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  z-index: var(--z-toast);
+  pointer-events: none;
+}
+
+.toast {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background: var(--clr-bg-overlay);
+  border: 1px solid var(--clr-border-mid);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  animation: toast-in var(--transition-slow) ease forwards;
+}
+
+.toast--success { border-left: 3px solid var(--clr-green); }
+.toast--warning { border-left: 3px solid var(--clr-amber); }
+.toast--error   { border-left: 3px solid var(--clr-error); }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ----------------------------------------------------------
+   MODAL — Edición de propiedades de componente
+---------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  background: var(--clr-bg-panel);
+  border: 1px solid var(--clr-border-mid);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  min-width: 320px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-4);
+}
+
+.modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.modal__label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.modal__input {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  background: var(--clr-bg-surface);
+  border: 1px solid var(--clr-border-mid);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.btn-primary {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-sm);
+  background: var(--clr-green-dark);
+  border: 1px solid var(--clr-green);
+  color: var(--clr-green-bright);
+  transition: all var(--transition-fast);
+}
+
+.btn-primary:hover {
+  background: var(--clr-green);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.btn-secondary {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.06em;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid var(--clr-border-mid);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  border-color: var(--clr-border-strong);
+  color: var(--text-primary);
+  background: var(--clr-bg-elevated);
+}
+
+/* ----------------------------------------------------------
+   CONTEXT MENU — Click derecho sobre componente
+---------------------------------------------------------- */
+.context-menu {
+  position: fixed;
+  background: var(--clr-bg-overlay);
+  border: 1px solid var(--clr-border-mid);
+  border-radius: var(--radius-md);
+  padding: var(--space-1) 0;
+  min-width: 160px;
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+}
+
+.context-menu__item {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  padding: var(--space-2) var(--space-4);
+  width: 100%;
+  text-align: left;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.02em;
+}
+
+.context-menu__item:hover {
+  background: var(--clr-bg-elevated);
+  color: var(--text-primary);
+}
+
+.context-menu__item--danger:hover {
+  background: var(--clr-error-dim);
+  color: var(--text-error);
+}
+
+.context-menu__sep {
+  height: 1px;
+  background: var(--clr-border-subtle);
+  margin: var(--space-1) 0;
+}
+
+/* ----------------------------------------------------------
+   SCAN ANIMATION — Pulso durante RUN
+---------------------------------------------------------- */
+@keyframes scan-pulse {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.plc-status[data-state="run"] .plc-status__dot {
+  animation: scan-pulse 1.2s ease-in-out infinite;
+}
+
+/* ----------------------------------------------------------
+   ENERGIZED WIRE ANIMATION — Flujo de corriente
+---------------------------------------------------------- */
+@keyframes current-flow {
+  from { background-position: 0 0; }
+  to   { background-position: 20px 0; }
+}
+
+.rung--powered .rung__body::before {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--rung-wire-active) 0px,
+    var(--rung-wire-active) 10px,
+    var(--clr-green-dim) 10px,
+    var(--clr-green-dim) 20px
+  );
+  background-size: 20px 100%;
+  animation: current-flow 0.4s linear infinite;
+}
+
+/* ----------------------------------------------------------
+   EDITOR INLINE — aparece debajo de la celda al hacer click
+---------------------------------------------------------- */
+.inline-editor {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--clr-bg-overlay);
+  border: 1px solid var(--clr-green);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  z-index: var(--z-dropdown);
+  min-width: 160px;
+  box-shadow: var(--shadow-md);
+}
+
+.inline-editor__input {
+  width: 100%;
+  padding: 4px var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: var(--clr-bg-surface);
+  border: 1px solid var(--clr-border-mid);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+}
+
+.inline-editor__input:focus {
+  border-color: var(--clr-green);
+  outline: none;
+}
+
+.inline-editor__btn {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--clr-border-mid);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.inline-editor__btn--ok {
+  background: var(--clr-green-dark);
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+}
+
+.inline-editor__btn--ok:hover {
+  background: var(--clr-green);
+  color: var(--text-inverse);
+}
+
+.inline-editor__btn--del {
+  background: var(--clr-error-dim);
+  border-color: var(--clr-error);
+  color: var(--text-error);
+}
+
+/* ----------------------------------------------------------
+   CELDAS — ajustes de visibilidad
+---------------------------------------------------------- */
+.lad-cell {
+  position: relative;   /* necesario para inline-editor absolute */
+}
+
+.lad-cell__addr,
+.lad-cell__name,
+.cell-addr,
+.cell-name {
+  display: block;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  line-height: 1.2;
+}
+
+.lad-cell__addr,
+.cell-addr {
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.lad-cell--on .cell-addr,
+.lad-cell--on .lad-cell__addr {
+  color: var(--text-accent);
+}
+
+.lad-cell__name,
+.cell-name {
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.cell-svg {
+  display: block;
+  width: 60px;
+  height: 36px;
+  overflow: visible;
+}
+
+/* ----------------------------------------------------------
+   RUNG HINT — pantalla vacía
+---------------------------------------------------------- */
+.rung-hint {
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: 2;
+  border: 1px dashed var(--clr-border-subtle);
+  border-radius: var(--radius-lg);
+  margin: var(--space-6);
+}
+
+.rung-hint strong {
+  color: var(--text-secondary);
+}
+
+/* ----------------------------------------------------------
+   NÚMERO DE RUNG
+---------------------------------------------------------- */
+.rung__num {
+  position: absolute;
+  left: calc(var(--rail-width) + var(--space-1));
+  top: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ----------------------------------------------------------
+   SPACER — espacio entre elementos con botones ↳ y ↱
+---------------------------------------------------------- */
+.rung-spacer {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 20px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  position: relative;
+  z-index: 2;
+}
+
+.rung__body:hover .rung-spacer,
+.lad-branch__row:hover .rung-spacer {
+  opacity: 1;
+}
+
+.spacer-btn {
+  width: 16px;
+  height: 14px;
+  font-size: 10px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  border: 1px solid var(--clr-border-subtle);
+  background: var(--clr-bg-elevated);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.spacer-btn--open:hover {
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+  background: var(--clr-green-dim);
+}
+
+.spacer-btn--close:hover {
+  border-color: var(--clr-amber);
+  color: var(--clr-amber-bright);
+  background: var(--clr-amber-dim);
+}
+
+/* Estado activo: rama abierta esperando cierre */
+.spacer-btn--active {
+  border-color: var(--clr-green) !important;
+  color: var(--clr-green-bright) !important;
+  background: var(--clr-green-dim) !important;
+  opacity: 1 !important;
+  box-shadow: var(--shadow-glow-green);
+}
+
+/* Botones ↱ listos para cerrar */
+.spacer-btn--ready {
+  border-color: var(--clr-amber) !important;
+  color: var(--clr-amber-bright) !important;
+  background: var(--clr-amber-dim) !important;
+  opacity: 1 !important;
+}
+
+/* ----------------------------------------------------------
+   RAMA PARALELA — estilo clásico
+---------------------------------------------------------- */
+.lad-branch {
+  display: inline-flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-left:  2px solid var(--rung-wire-color);
+  border-right: 2px solid var(--rung-wire-color);
+  position: relative;
+}
+
+.lad-branch__row--main {
+  display: flex;
+  align-items: center;
+  min-height: var(--cell-height);
+  position: relative;
+}
+
+.lad-branch__row--main::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 2px;
+  background: var(--rung-wire-color);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lad-branch__row--alt {
+  display: flex;
+  align-items: center;
+  min-height: var(--cell-height);
+  position: relative;
+  border-top: 2px solid var(--rung-wire-color);
+}
+
+.lad-branch__row--alt::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 2px;
+  background: var(--rung-wire-color);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Estado energizado de la rama */
+.rung--powered .lad-branch {
+  border-left-color:  var(--rung-wire-active);
+  border-right-color: var(--rung-wire-active);
+}
+
+.rung--powered .lad-branch__row--main::before {
+  background: var(--rung-wire-active);
+}
+
+/* Placeholder fila vacía */
+.branch-ph {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  padding: var(--space-1) var(--space-3);
+  border: 1px dashed var(--clr-border-mid);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: all var(--transition-fast);
+}
+
+.branch-ph:hover {
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+  background: var(--clr-green-dim);
+}
+
+/* Botón agregar fila */
+.branch-add-row {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  padding: 2px var(--space-2);
+  margin: 2px var(--space-1);
+  border: 1px dashed var(--clr-border-subtle);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all var(--transition-fast);
+}
+
+.branch-add-row:hover {
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+  background: var(--clr-green-dim);
+}
+
+/* ----------------------------------------------------------
+   CELDA — visibilidad y posición
+---------------------------------------------------------- */
+.lad-cell {
+  position: relative;
+  z-index: 1;
+}
+
+.cell-addr {
+  display: block;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.lad-cell--on .cell-addr { color: var(--text-accent); }
+
+.cell-name {
+  display: block;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+.cell-svg {
+  display: block;
+  width: 60px;
+  height: 36px;
+  overflow: visible;
+}
+
+/* Celda seleccionada */
+.lad-cell--selected {
+  background: var(--clr-green-dim);
+  outline: 1px solid var(--clr-green);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ----------------------------------------------------------
+   EDITOR INLINE
+---------------------------------------------------------- */
+.inline-editor {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--clr-bg-overlay);
+  border: 1px solid var(--clr-green);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  z-index: var(--z-dropdown);
+  min-width: 170px;
+  box-shadow: var(--shadow-md);
+}
+
+.inline-editor__input {
+  width: 100%;
+  padding: 4px var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: var(--clr-bg-surface);
+  border: 1px solid var(--clr-border-mid);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+}
+
+.inline-editor__input:focus {
+  border-color: var(--clr-green);
+  outline: none;
+}
+
+.inline-editor__btn {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex: 1;
+}
+
+.inline-editor__btn--ok {
+  background: var(--clr-green-dark);
+  border: 1px solid var(--clr-green);
+  color: var(--clr-green-bright);
+}
+
+.inline-editor__btn--ok:hover {
+  background: var(--clr-green);
+  color: var(--text-inverse);
+}
+
+.inline-editor__btn--del {
+  background: var(--clr-error-dim);
+  border: 1px solid var(--clr-error);
+  color: var(--text-error);
+}
+
+/* ----------------------------------------------------------
+   RUNG hint (canvas vacío)
+---------------------------------------------------------- */
+.rung-hint {
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: 2;
+  border: 1px dashed var(--clr-border-subtle);
+  border-radius: var(--radius-lg);
+  margin: var(--space-6);
+}
+
+.rung-hint strong { color: var(--text-secondary); }
+
+/* Número de rung */
+.rung__num {
+  position: absolute;
+  left: calc(var(--rail-width) + var(--space-1));
+  top: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* SVG e hijos de component-btn no deben capturar clicks */
+.component-btn svg,
+.component-btn span,
+.component-btn .block-label-top,
+.component-btn .component-label {
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------
+   FORMULARIO DE VARIABLES
+---------------------------------------------------------- */
+.var-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) 0;
+}
+
+.var-form__input {
+  width: 100%;
+  padding: 5px var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: var(--clr-bg-surface);
+  border: 1px solid var(--clr-border-mid);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+}
+
+.var-form__input:focus {
+  border-color: var(--clr-green);
+  outline: none;
+}
+
+.var-form__btn {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  padding: 5px var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--clr-green-dark);
+  border: 1px solid var(--clr-green);
+  color: var(--clr-green-bright);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.var-form__btn:hover {
+  background: var(--clr-green);
+  color: var(--text-inverse);
+}
+
+/* ----------------------------------------------------------
+   EXERCISE CARDS — estilos extendidos
+---------------------------------------------------------- */
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  cursor: default;
+}
+
+.exercise-card__header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.exercise-card__level {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-amber);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.exercise-card__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.exercise-card__desc {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.exercise-card__actions {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.exercise-card__result {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--clr-border-subtle);
+  background: var(--clr-bg-base);
+  margin-top: var(--space-1);
+}
+
+.exercise-btn {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  padding: 4px var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.04em;
+  flex: 1;
+  text-align: center;
+}
+
+.exercise-btn--load {
+  background: var(--clr-bg-elevated);
+  border: 1px solid var(--clr-border-mid);
+  color: var(--text-secondary);
+}
+
+.exercise-btn--load:hover {
+  border-color: var(--clr-green);
+  color: var(--clr-green-bright);
+  background: var(--clr-green-dim);
+}
+
+.exercise-btn--verify {
+  background: var(--clr-green-dark);
+  border: 1px solid var(--clr-green);
+  color: var(--clr-green-bright);
+}
+
+.exercise-btn--verify:hover:not(:disabled) {
+  background: var(--clr-green);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.exercise-btn--verify:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

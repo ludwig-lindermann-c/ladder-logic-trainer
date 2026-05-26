@@ -1,0 +1,487 @@
+/* ============================================================
+   LADDER LOGIC TRAINER — Layout
+   Estructura: Titlebar + App Shell (3 columnas) + Statusbar
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   RAÍZ DE LA APP — Full viewport, sin scroll
+---------------------------------------------------------- */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ----------------------------------------------------------
+   TITLEBAR — Barra superior fija
+---------------------------------------------------------- */
+.titlebar {
+  flex-shrink: 0;
+  height: var(--titlebar-height);
+  background: var(--clr-bg-panel);
+  border-bottom: 1px solid var(--clr-border-subtle);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0 var(--space-4);
+  z-index: var(--z-overlay);
+}
+
+.titlebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: calc(var(--toolbar-width) - var(--space-4));
+}
+
+.titlebar__logo {
+  font-size: 18px;
+  line-height: 1;
+  color: var(--clr-green);
+}
+
+.titlebar__name {
+  font-family: var(--font-ui);
+  font-size: var(--text-md);
+  font-weight: var(--weight-light);
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.titlebar__name strong {
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.titlebar__menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 1;
+}
+
+.menu-btn {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.menu-btn:hover {
+  color: var(--text-primary);
+  background: var(--clr-bg-elevated);
+}
+
+.titlebar__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: calc(var(--io-panel-width) - var(--space-4));
+  justify-content: flex-end;
+}
+
+/* Indicador PLC Status */
+.plc-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--clr-bg-surface);
+  border: 1px solid var(--clr-border-mid);
+  margin-right: var(--space-2);
+}
+
+.plc-status__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--clr-border-strong);
+  transition: background var(--transition-base), box-shadow var(--transition-base);
+}
+
+.plc-status__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.plc-status[data-state="run"] .plc-status__dot {
+  background: var(--clr-green-bright);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.plc-status[data-state="run"] .plc-status__label {
+  color: var(--text-accent);
+}
+
+.plc-status[data-state="error"] .plc-status__dot {
+  background: var(--clr-error);
+  box-shadow: var(--shadow-glow-error);
+}
+
+/* Botones de control RUN / STOP / STEP */
+.ctrl-btn {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.1em;
+  padding: 4px var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--clr-border-mid);
+  background: var(--clr-bg-surface);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.ctrl-btn--run:hover  { border-color: var(--clr-green); color: var(--clr-green-bright); background: var(--clr-green-dim); }
+.ctrl-btn--stop:hover { border-color: var(--clr-error); color: var(--clr-error);        background: var(--clr-error-dim); }
+.ctrl-btn--step:hover { border-color: var(--clr-amber); color: var(--clr-amber-bright); background: var(--clr-amber-dim); }
+
+.ctrl-btn--run.active  { border-color: var(--clr-green); color: var(--clr-green-bright); background: var(--clr-green-dim);  box-shadow: var(--shadow-glow-green); }
+.ctrl-btn--stop.active { border-color: var(--clr-error); color: var(--clr-error);        background: var(--clr-error-dim); box-shadow: var(--shadow-glow-error); }
+
+/* ----------------------------------------------------------
+   APP SHELL — Tres columnas
+---------------------------------------------------------- */
+.app-shell {
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--toolbar-width) 1fr var(--io-panel-width);
+  grid-template-rows: 1fr;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ----------------------------------------------------------
+   TOOLBAR — Panel izquierdo de componentes
+---------------------------------------------------------- */
+.toolbar {
+  background: var(--clr-bg-panel);
+  border-right: 1px solid var(--clr-border-subtle);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.toolbar__group {
+  padding: var(--space-3) var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--clr-border-subtle);
+}
+
+.toolbar__group-title {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-2);
+  padding-left: var(--space-1);
+}
+
+.component-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-1);
+}
+
+.component-grid--blocks {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ----------------------------------------------------------
+   CANVAS AREA — Panel central
+---------------------------------------------------------- */
+.canvas-area {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--clr-bg-base);
+  min-width: 0;
+}
+
+.canvas-toolbar {
+  flex-shrink: 0;
+  height: 36px;
+  background: var(--clr-bg-panel);
+  border-bottom: 1px solid var(--clr-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-3);
+  gap: var(--space-4);
+}
+
+.canvas-toolbar__left,
+.canvas-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.canvas-info {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+}
+
+.canvas-info--muted {
+  color: var(--text-muted);
+}
+
+.icon-btn {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.icon-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--clr-border-mid);
+  background: var(--clr-bg-elevated);
+}
+
+/* Viewport scrolleable del canvas */
+.canvas-viewport {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  cursor: default;
+  outline: none;
+}
+
+.canvas-viewport:focus {
+  outline: none;
+}
+
+/* Fondo de puntos estilo HMI/PLC */
+.canvas-content {
+  min-width: 100%;
+  min-height: 100%;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--rung-gap);
+  background-image:
+    radial-gradient(circle, var(--clr-border-subtle) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0;
+}
+
+/* ----------------------------------------------------------
+   RUNGS — Escalones Ladder
+---------------------------------------------------------- */
+.rung {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--rung-height);
+  position: relative;
+}
+
+.rung__rail {
+  flex-shrink: 0;
+  width: var(--rail-width);
+  background: var(--rail-color);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-base);
+}
+
+.rung__rail--powered {
+  background: var(--rail-color-power);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.rung__body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-2);
+  position: relative;
+}
+
+/* Línea horizontal base del rung */
+.rung__body::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: var(--rung-wire-width);
+  background: var(--rung-wire-color);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.rung--placeholder .rung__body::before {
+  display: none;
+}
+
+.rung__hint {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+  padding: var(--space-4);
+  border: 1px dashed var(--clr-border-subtle);
+  border-radius: var(--radius-md);
+  pointer-events: none;
+}
+
+/* Rung seleccionado */
+.rung--selected .rung__rail {
+  background: var(--clr-green-dark);
+}
+
+.rung--selected {
+  outline: 1px solid var(--clr-green-dim);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Número de rung */
+.rung::before {
+  content: attr(data-rung-index);
+  position: absolute;
+  left: calc(var(--rail-width) + var(--space-1));
+  top: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.rung--placeholder::before {
+  display: none;
+}
+
+/* ----------------------------------------------------------
+   I/O PANEL — Panel derecho
+---------------------------------------------------------- */
+.io-panel {
+  background: var(--clr-bg-panel);
+  border-left: 1px solid var(--clr-border-subtle);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.io-panel__tabs {
+  flex-shrink: 0;
+  display: flex;
+  border-bottom: 1px solid var(--clr-border-subtle);
+  background: var(--clr-bg-deep);
+}
+
+.io-tab {
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: var(--space-2) var(--space-1);
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.io-tab:hover {
+  color: var(--text-secondary);
+}
+
+.io-tab--active {
+  color: var(--text-accent);
+  border-bottom-color: var(--clr-green);
+  background: var(--clr-bg-panel);
+}
+
+.io-panel__content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 0;  /* crítico para que flex no desborde */
+}
+
+.io-panel__content--hidden {
+  display: none;
+}
+
+.io-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.io-section__title {
+  font-family: var(--font-ui);
+  font-size: var(--text-xxs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: var(--space-1) var(--space-1) var(--space-1);
+  border-bottom: 1px solid var(--clr-border-subtle);
+  margin-bottom: var(--space-1);
+}
+
+/* ----------------------------------------------------------
+   STATUS BAR — Barra inferior
+---------------------------------------------------------- */
+.statusbar {
+  flex-shrink: 0;
+  height: var(--statusbar-height);
+  background: var(--clr-bg-deep);
+  border-top: 1px solid var(--clr-border-subtle);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  gap: var(--space-3);
+}
+
+.status-item {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.status-item--right {
+  margin-left: auto;
+}
+
+.status-item--right ~ .status-item--right {
+  margin-left: 0;
+}
+
+.status-sep {
+  color: var(--clr-border-mid);
+  font-size: var(--text-xxs);
+}
