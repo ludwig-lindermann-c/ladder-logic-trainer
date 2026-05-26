@@ -1,0 +1,286 @@
+{
+  "program": {
+    "name": "SEMAFORO",
+    "description": "Semáforo secuencial Rojo-Verde-Amarillo con TON",
+    "createdAt": 1700000000000,
+    "modifiedAt": 1700000000000,
+    "rungs": [
+      {
+        "id": "rung_01",
+        "index": 0,
+        "comment": "Inicio ciclo — setea fase ROJO si no hay otra fase activa",
+        "elements": [
+          {
+            "id": "cell_01",
+            "type": "contact-pos",
+            "address": "I0.0",
+            "name": "Btn_Inicio",
+            "energized": false
+          },
+          {
+            "id": "cell_02",
+            "type": "contact-nc",
+            "address": "M0.1",
+            "name": "Fase_Verde",
+            "energized": false
+          },
+          {
+            "id": "cell_03",
+            "type": "contact-nc",
+            "address": "M0.2",
+            "name": "Fase_Amarillo",
+            "energized": false
+          },
+          {
+            "id": "cell_04",
+            "type": "coil-set",
+            "address": "M0.0",
+            "name": "Fase_Rojo",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_02",
+        "index": 1,
+        "comment": "Timer fase ROJO — 4 segundos",
+        "elements": [
+          {
+            "id": "cell_05",
+            "type": "contact-no",
+            "address": "M0.0",
+            "name": "Fase_Rojo",
+            "energized": false
+          },
+          {
+            "id": "cell_06",
+            "type": "timer-on",
+            "address": "T0",
+            "name": "Timer_Rojo",
+            "preset": 4000,
+            "elapsed": 0,
+            "done": false,
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_03",
+        "index": 2,
+        "comment": "Fin ROJO — resetea M0.0 y setea M0.1",
+        "elements": [
+          {
+            "id": "cell_07",
+            "type": "contact-no",
+            "address": "T0",
+            "name": "Timer_Rojo",
+            "energized": false
+          },
+          {
+            "id": "cell_08",
+            "type": "coil-reset",
+            "address": "M0.0",
+            "name": "Fase_Rojo",
+            "energized": false
+          },
+          {
+            "id": "cell_09",
+            "type": "coil-set",
+            "address": "M0.1",
+            "name": "Fase_Verde",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_04",
+        "index": 3,
+        "comment": "Timer fase VERDE — 4 segundos",
+        "elements": [
+          {
+            "id": "cell_10",
+            "type": "contact-no",
+            "address": "M0.1",
+            "name": "Fase_Verde",
+            "energized": false
+          },
+          {
+            "id": "cell_11",
+            "type": "timer-on",
+            "address": "T1",
+            "name": "Timer_Verde",
+            "preset": 4000,
+            "elapsed": 0,
+            "done": false,
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_05",
+        "index": 4,
+        "comment": "Fin VERDE — resetea M0.1 y setea M0.2",
+        "elements": [
+          {
+            "id": "cell_12",
+            "type": "contact-no",
+            "address": "T1",
+            "name": "Timer_Verde",
+            "energized": false
+          },
+          {
+            "id": "cell_13",
+            "type": "coil-reset",
+            "address": "M0.1",
+            "name": "Fase_Verde",
+            "energized": false
+          },
+          {
+            "id": "cell_14",
+            "type": "coil-set",
+            "address": "M0.2",
+            "name": "Fase_Amarillo",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_06",
+        "index": 5,
+        "comment": "Timer fase AMARILLO — 2 segundos",
+        "elements": [
+          {
+            "id": "cell_15",
+            "type": "contact-no",
+            "address": "M0.2",
+            "name": "Fase_Amarillo",
+            "energized": false
+          },
+          {
+            "id": "cell_16",
+            "type": "timer-on",
+            "address": "T2",
+            "name": "Timer_Amarillo",
+            "preset": 2000,
+            "elapsed": 0,
+            "done": false,
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_07",
+        "index": 6,
+        "comment": "Fin AMARILLO — resetea M0.2 y vuelve a ROJO",
+        "elements": [
+          {
+            "id": "cell_17",
+            "type": "contact-no",
+            "address": "T2",
+            "name": "Timer_Amarillo",
+            "energized": false
+          },
+          {
+            "id": "cell_18",
+            "type": "coil-reset",
+            "address": "M0.2",
+            "name": "Fase_Amarillo",
+            "energized": false
+          },
+          {
+            "id": "cell_19",
+            "type": "coil-set",
+            "address": "M0.0",
+            "name": "Fase_Rojo",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_08",
+        "index": 7,
+        "comment": "Salida luz ROJA",
+        "elements": [
+          {
+            "id": "cell_20",
+            "type": "contact-no",
+            "address": "M0.0",
+            "name": "Fase_Rojo",
+            "energized": false
+          },
+          {
+            "id": "cell_21",
+            "type": "coil",
+            "address": "Q0.0",
+            "name": "Luz_Roja",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_09",
+        "index": 8,
+        "comment": "Salida luz VERDE",
+        "elements": [
+          {
+            "id": "cell_22",
+            "type": "contact-no",
+            "address": "M0.1",
+            "name": "Fase_Verde",
+            "energized": false
+          },
+          {
+            "id": "cell_23",
+            "type": "coil",
+            "address": "Q0.1",
+            "name": "Luz_Verde",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_10",
+        "index": 9,
+        "comment": "Salida luz AMARILLA",
+        "elements": [
+          {
+            "id": "cell_24",
+            "type": "contact-no",
+            "address": "M0.2",
+            "name": "Fase_Amarillo",
+            "energized": false
+          },
+          {
+            "id": "cell_25",
+            "type": "coil",
+            "address": "Q0.2",
+            "name": "Luz_Amarilla",
+            "energized": false
+          }
+        ],
+        "energized": false
+      }
+    ]
+  },
+  "signals": {
+    "I0.0":  { "address": "I0.0",  "name": "Btn_Inicio",    "type": "input",  "value": false, "forced": false, "forceVal": false },
+    "M0.0":  { "address": "M0.0",  "name": "Fase_Rojo",     "type": "mark",   "value": false, "forced": false, "forceVal": false },
+    "M0.1":  { "address": "M0.1",  "name": "Fase_Verde",    "type": "mark",   "value": false, "forced": false, "forceVal": false },
+    "M0.2":  { "address": "M0.2",  "name": "Fase_Amarillo", "type": "mark",   "value": false, "forced": false, "forceVal": false },
+    "T0":    { "address": "T0",    "name": "Timer_Rojo",    "type": "timer",  "value": false, "forced": false, "forceVal": false },
+    "T1":    { "address": "T1",    "name": "Timer_Verde",   "type": "timer",  "value": false, "forced": false, "forceVal": false },
+    "T2":    { "address": "T2",    "name": "Timer_Amarillo","type": "timer",  "value": false, "forced": false, "forceVal": false },
+    "Q0.0":  { "address": "Q0.0",  "name": "Luz_Roja",     "type": "output", "value": false, "forced": false, "forceVal": false },
+    "Q0.1":  { "address": "Q0.1",  "name": "Luz_Verde",    "type": "output", "value": false, "forced": false, "forceVal": false },
+    "Q0.2":  { "address": "Q0.2",  "name": "Luz_Amarilla", "type": "output", "value": false, "forced": false, "forceVal": false }
+  }
+}

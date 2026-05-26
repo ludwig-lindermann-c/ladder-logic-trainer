@@ -137,10 +137,23 @@
 
     _totalH = y;
 
-    // Ajustar altura del canvas si los rungs crecen
+    // Ajustar altura del canvas si los rungs crecen — sin llamar a render()
     const minH = _totalH + 40;
     if (_canvas.height / _dpr < minH) {
-      resize(W, minH);
+      const W2 = _canvas.width / _dpr;
+      _canvas.style.width  = W2 + 'px';
+      _canvas.style.height = minH + 'px';
+      _canvas.width        = W2 * _dpr;
+      _canvas.height       = minH * _dpr;
+      _ctx.scale(_dpr, _dpr);
+      // Re-dibujar sin recursión
+      _ctx.clearRect(0, 0, W2, minH);
+      let y2 = C.RUNG_GAP;
+      state.getRungs().forEach(rung => {
+        const rh = _rungHeight(rung);
+        _drawRung(rung, y2, W2, rh);
+        y2 += rh + C.RUNG_GAP;
+      });
     }
   }
 

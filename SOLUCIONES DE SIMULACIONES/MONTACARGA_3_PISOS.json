@@ -1,0 +1,620 @@
+{
+  "program": {
+    "name": "MONTACARGA_3_PISOS",
+    "description": "",
+    "createdAt": 1779760674160,
+    "modifiedAt": 1779762447976,
+    "rungs": [
+      {
+        "id": "rung_7mxkxu",
+        "index": 0,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_cvtvvq",
+            "type": "contact-nc",
+            "address": "I0.4",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "branch_usngg0",
+            "rows": [
+              [
+                {
+                  "id": "cell_0sps29",
+                  "type": "contact-no",
+                  "address": "I0.3",
+                  "name": "",
+                  "energized": false
+                },
+                {
+                  "id": "cell_t3ejdx",
+                  "type": "contact-no",
+                  "address": "I0.1",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_sdm096",
+                  "type": "contact-no",
+                  "address": "M0.0",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_vzmqwd",
+            "type": "coil",
+            "address": "M0.0",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_5uvbv8",
+        "index": 1,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_nnvsa0",
+            "type": "contact-nc",
+            "address": "I0.5",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "branch_uxi1g2",
+            "rows": [
+              [
+                {
+                  "id": "cell_1e9xyh",
+                  "type": "contact-no",
+                  "address": "I0.3",
+                  "name": "",
+                  "energized": false
+                },
+                {
+                  "id": "cell_9haoji",
+                  "type": "contact-no",
+                  "address": "I0.2",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_gclhai",
+                  "type": "contact-no",
+                  "address": "M0.1",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_eba9w8",
+            "type": "coil",
+            "address": "M0.1",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_8jcps4",
+        "index": 2,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_0pnhua",
+            "type": "contact-nc",
+            "address": "I0.5",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "branch_0kfr1n",
+            "rows": [
+              [
+                {
+                  "id": "cell_4479k4",
+                  "type": "contact-no",
+                  "address": "I0.4",
+                  "name": "",
+                  "energized": false
+                },
+                {
+                  "id": "cell_akryw5",
+                  "type": "contact-no",
+                  "address": "I0.2",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_x8yayc",
+                  "type": "contact-no",
+                  "address": "M0.2",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_jl6ssu",
+            "type": "coil",
+            "address": "M0.2",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_w4h7sp",
+        "index": 3,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_1pixzv",
+            "type": "contact-nc",
+            "address": "I0.4",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "branch_usfn1t",
+            "rows": [
+              [
+                {
+                  "id": "cell_n79p1k",
+                  "type": "contact-no",
+                  "address": "I0.5",
+                  "name": "",
+                  "energized": false
+                },
+                {
+                  "id": "cell_mjc0m0",
+                  "type": "contact-no",
+                  "address": "I0.1",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_7f6d7e",
+                  "type": "contact-no",
+                  "address": "M0.3",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_nd59ts",
+            "type": "coil",
+            "address": "M0.3",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_6zqs6h",
+        "index": 4,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_cmsuk6",
+            "type": "contact-nc",
+            "address": "I0.3",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "branch_ao0bwq",
+            "rows": [
+              [
+                {
+                  "id": "cell_p4ksei",
+                  "type": "contact-no",
+                  "address": "I0.5",
+                  "name": "",
+                  "energized": false
+                },
+                {
+                  "id": "cell_18nmoi",
+                  "type": "contact-no",
+                  "address": "I0.0",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_mv5wqr",
+                  "type": "contact-no",
+                  "address": "M0.4",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_i0ok9f",
+            "type": "coil",
+            "address": "M0.4",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_4qjs4j",
+        "index": 5,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_57gx76",
+            "type": "contact-nc",
+            "address": "I0.3",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "branch_fsjxje",
+            "rows": [
+              [
+                {
+                  "id": "cell_08fptm",
+                  "type": "contact-no",
+                  "address": "I0.4",
+                  "name": "",
+                  "energized": false
+                },
+                {
+                  "id": "cell_diom4p",
+                  "type": "contact-no",
+                  "address": "I0.0",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_1izjr4",
+                  "type": "contact-no",
+                  "address": "M0.5",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_g83io7",
+            "type": "coil",
+            "address": "M0.5",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_xhk4sf",
+        "index": 6,
+        "comment": "",
+        "elements": [
+          {
+            "id": "branch_q0adha",
+            "rows": [
+              [
+                {
+                  "id": "cell_c1qdav",
+                  "type": "contact-no",
+                  "address": "M0.0",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_lk97iq",
+                  "type": "contact-no",
+                  "address": "M0.1",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_gau9xp",
+                  "type": "contact-no",
+                  "address": "M0.2",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_4jn1qd",
+            "type": "coil",
+            "address": "Q0.0",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_2phrx7",
+        "index": 7,
+        "comment": "",
+        "elements": [
+          {
+            "id": "branch_og2qrn",
+            "rows": [
+              [
+                {
+                  "id": "cell_xqxphf",
+                  "type": "contact-no",
+                  "address": "M0.3",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_gwkbos",
+                  "type": "contact-no",
+                  "address": "M0.4",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_1rfzuk",
+                  "type": "contact-no",
+                  "address": "M0.5",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_hve4su",
+            "type": "coil",
+            "address": "Q0.1",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_nk50p0",
+        "index": 8,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_6bj7wl",
+            "type": "contact-no",
+            "address": "I0.3",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "cell_663r76",
+            "type": "coil",
+            "address": "Q0.2",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_zylgy3",
+        "index": 9,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_hqxann",
+            "type": "contact-no",
+            "address": "I0.4",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "cell_daot2n",
+            "type": "coil",
+            "address": "Q0.3",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_vsktuo",
+        "index": 10,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_khtzbe",
+            "type": "contact-no",
+            "address": "I0.5",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "cell_a3za58",
+            "type": "coil",
+            "address": "Q0.4",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      }
+    ]
+  },
+  "signals": {
+    "I0.0": {
+      "address": "I0.0",
+      "name": "S1_Piso1",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.1": {
+      "address": "I0.1",
+      "name": "S2_Piso2",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.2": {
+      "address": "I0.2",
+      "name": "S3_Piso3",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.3": {
+      "address": "I0.3",
+      "name": "S4_Sensor1",
+      "type": "input",
+      "value": true,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.4": {
+      "address": "I0.4",
+      "name": "S5_Sensor2",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.5": {
+      "address": "I0.5",
+      "name": "S6_Sensor3",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.0": {
+      "address": "Q0.0",
+      "name": "KM1_Sube",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.1": {
+      "address": "Q0.1",
+      "name": "KM2_Baja",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.2": {
+      "address": "Q0.2",
+      "name": "Luz_Piso1",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.3": {
+      "address": "Q0.3",
+      "name": "Luz_Piso2",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.4": {
+      "address": "Q0.4",
+      "name": "Luz_Piso3",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "M0.0": {
+      "address": "M0.0",
+      "name": "P1_P2",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "M0.1": {
+      "address": "M0.1",
+      "name": "P1_P3",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "M0.2": {
+      "address": "M0.2",
+      "name": "P2_P3",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "M0.3": {
+      "address": "M0.3",
+      "name": "P3_P2",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "M0.4": {
+      "address": "M0.4",
+      "name": "P3_P1",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "M0.5": {
+      "address": "M0.5",
+      "name": "P2_P1",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    }
+  }
+}

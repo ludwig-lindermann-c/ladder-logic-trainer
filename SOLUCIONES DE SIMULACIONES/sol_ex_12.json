@@ -1,0 +1,186 @@
+{
+  "program": {
+    "name": "TANQUE_AUTO",
+    "description": "Llenado automático de tanque con antirebote y alarma de tiempo",
+    "createdAt": 1700000000000,
+    "modifiedAt": 1700000000000,
+    "rungs": [
+      {
+        "id": "rung_01",
+        "index": 0,
+        "comment": "Antirebote — TON 500ms antes de arrancar bomba",
+        "elements": [
+          {
+            "id": "cell_01",
+            "type": "contact-no",
+            "address": "I0.0",
+            "name": "Sensor_Nivel_Bajo",
+            "energized": false
+          },
+          {
+            "id": "cell_02",
+            "type": "contact-nc",
+            "address": "Q0.1",
+            "name": "Alarma_Tiempo",
+            "energized": false
+          },
+          {
+            "id": "cell_03",
+            "type": "timer-on",
+            "address": "T0",
+            "name": "Timer_Antirebote",
+            "preset": 500,
+            "elapsed": 0,
+            "done": false,
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_02",
+        "index": 1,
+        "comment": "Arranque bomba con enclavamiento",
+        "elements": [
+          {
+            "id": "cell_04",
+            "type": "contact-no",
+            "address": "T0",
+            "name": "Timer_Antirebote",
+            "energized": false
+          },
+          {
+            "id": "cell_05",
+            "type": "coil-set",
+            "address": "Q0.0",
+            "name": "Bomba",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_03",
+        "index": 2,
+        "comment": "Paro bomba por nivel alto",
+        "elements": [
+          {
+            "id": "cell_06",
+            "type": "contact-no",
+            "address": "I0.1",
+            "name": "Sensor_Nivel_Alto",
+            "energized": false
+          },
+          {
+            "id": "cell_07",
+            "type": "coil-reset",
+            "address": "Q0.0",
+            "name": "Bomba",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_04",
+        "index": 3,
+        "comment": "Timer tiempo máximo de bombeo — 10 segundos",
+        "elements": [
+          {
+            "id": "cell_08",
+            "type": "contact-no",
+            "address": "Q0.0",
+            "name": "Bomba",
+            "energized": false
+          },
+          {
+            "id": "cell_09",
+            "type": "timer-on",
+            "address": "T1",
+            "name": "Timer_Max_Bombeo",
+            "preset": 10000,
+            "elapsed": 0,
+            "done": false,
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_05",
+        "index": 4,
+        "comment": "Activar alarma si supera tiempo máximo",
+        "elements": [
+          {
+            "id": "cell_10",
+            "type": "contact-no",
+            "address": "T1",
+            "name": "Timer_Max_Bombeo",
+            "energized": false
+          },
+          {
+            "id": "cell_11",
+            "type": "coil-set",
+            "address": "Q0.1",
+            "name": "Alarma_Tiempo",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_06",
+        "index": 5,
+        "comment": "Detener bomba por tiempo máximo superado",
+        "elements": [
+          {
+            "id": "cell_12",
+            "type": "contact-no",
+            "address": "T1",
+            "name": "Timer_Max_Bombeo",
+            "energized": false
+          },
+          {
+            "id": "cell_13",
+            "type": "coil-reset",
+            "address": "Q0.0",
+            "name": "Bomba",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_07",
+        "index": 6,
+        "comment": "Reset alarma manual",
+        "elements": [
+          {
+            "id": "cell_14",
+            "type": "contact-no",
+            "address": "I0.2",
+            "name": "Btn_Reset_Alarma",
+            "energized": false
+          },
+          {
+            "id": "cell_15",
+            "type": "coil-reset",
+            "address": "Q0.1",
+            "name": "Alarma_Tiempo",
+            "energized": false
+          }
+        ],
+        "energized": false
+      }
+    ]
+  },
+  "signals": {
+    "I0.0": { "address": "I0.0", "name": "Sensor_Nivel_Bajo", "type": "input",  "value": false, "forced": false, "forceVal": false },
+    "I0.1": { "address": "I0.1", "name": "Sensor_Nivel_Alto", "type": "input",  "value": false, "forced": false, "forceVal": false },
+    "I0.2": { "address": "I0.2", "name": "Btn_Reset_Alarma",  "type": "input",  "value": false, "forced": false, "forceVal": false },
+    "Q0.0": { "address": "Q0.0", "name": "Bomba",             "type": "output", "value": false, "forced": false, "forceVal": false },
+    "Q0.1": { "address": "Q0.1", "name": "Alarma_Tiempo",     "type": "output", "value": false, "forced": false, "forceVal": false },
+    "T0":   { "address": "T0",   "name": "Timer_Antirebote",  "type": "timer",  "value": false, "forced": false, "forceVal": false },
+    "T1":   { "address": "T1",   "name": "Timer_Max_Bombeo",  "type": "timer",  "value": false, "forced": false, "forceVal": false }
+  }
+}

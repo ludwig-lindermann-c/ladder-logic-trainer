@@ -1,0 +1,300 @@
+{
+  "program": {
+    "name": "SIN_NOMBRE",
+    "description": "",
+    "createdAt": 1779736259396,
+    "modifiedAt": 1779737298983,
+    "rungs": [
+      {
+        "id": "rung_npuoca",
+        "index": 0,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_rsdgyy",
+            "type": "contact-nc",
+            "address": "I0.1",
+            "name": "",
+            "energized": true
+          },
+          {
+            "id": "branch_y1yy8i",
+            "rows": [
+              [
+                {
+                  "id": "cell_b1snu0",
+                  "type": "contact-no",
+                  "address": "I0.3",
+                  "name": "",
+                  "energized": false
+                },
+                {
+                  "id": "cell_pci7zt",
+                  "type": "contact-nc",
+                  "address": "I0.0",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_6d9yyv",
+                  "type": "contact-no",
+                  "address": "Q0.0",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_nfh1a0",
+            "type": "coil",
+            "address": "Q0.0",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_dhp4cs",
+        "index": 1,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_rltyuj",
+            "type": "contact-nc",
+            "address": "I0.2",
+            "name": "",
+            "energized": true
+          },
+          {
+            "id": "cell_vfk7j4",
+            "type": "contact-no",
+            "address": "M0.0",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "branch_cyzav3",
+            "rows": [
+              [
+                {
+                  "id": "cell_mridsn",
+                  "type": "contact-no",
+                  "address": "I0.1",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_flwqdu",
+                  "type": "contact-no",
+                  "address": "Q0.1",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_toj1a9",
+            "type": "coil",
+            "address": "Q0.1",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_r54ysu",
+        "index": 2,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_eii0n6",
+            "type": "contact-nc",
+            "address": "I0.2",
+            "name": "",
+            "energized": true
+          },
+          {
+            "id": "branch_04hs17",
+            "rows": [
+              [
+                {
+                  "id": "cell_n13t46",
+                  "type": "contact-no",
+                  "address": "I0.3",
+                  "name": "",
+                  "energized": false
+                },
+                {
+                  "id": "cell_j54skv",
+                  "type": "contact-nc",
+                  "address": "I0.0",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_ir9k4n",
+                  "type": "contact-no",
+                  "address": "M0.0",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_3wfxms",
+            "type": "coil",
+            "address": "M0.0",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_gk147j",
+        "index": 3,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_5ogcu1",
+            "type": "contact-nc",
+            "address": "I0.5",
+            "name": "",
+            "energized": true
+          },
+          {
+            "id": "cell_uw3h9h",
+            "type": "contact-no",
+            "address": "I0.0",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "branch_xgn7hr",
+            "rows": [
+              [
+                {
+                  "id": "cell_pptd4a",
+                  "type": "contact-no",
+                  "address": "I0.4",
+                  "name": "",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_k2nh5l",
+                  "type": "contact-no",
+                  "address": "Q0.2",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_1jkevv",
+            "type": "coil",
+            "address": "Q0.2",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      }
+    ]
+  },
+  "signals": {
+    "I0.0": {
+      "address": "I0.0",
+      "name": "Sensor_Bajo",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.1": {
+      "address": "I0.1",
+      "name": "Sensor_Medio",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.2": {
+      "address": "I0.2",
+      "name": "Sensor_Alto",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.3": {
+      "address": "I0.3",
+      "name": "Btn_Iniciar",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.4": {
+      "address": "I0.4",
+      "name": "Btn_Abrir_EVA3",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.5": {
+      "address": "I0.5",
+      "name": "Sensor_Alto",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.0": {
+      "address": "Q0.0",
+      "name": "EVA1",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.1": {
+      "address": "Q0.1",
+      "name": "EVA2",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.2": {
+      "address": "Q0.2",
+      "name": "EVA3",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "M0.0": {
+      "address": "M0.0",
+      "name": "M0.0",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    }
+  }
+}

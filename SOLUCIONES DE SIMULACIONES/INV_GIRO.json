@@ -1,0 +1,156 @@
+{
+  "program": {
+    "name": "INV_GIRO",
+    "description": "",
+    "createdAt": 1779668826575,
+    "modifiedAt": 1779669084615,
+    "rungs": [
+      {
+        "id": "rung_u6gozv",
+        "index": 0,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_upz07m",
+            "type": "contact-nc",
+            "address": "I0.0",
+            "name": "STOP",
+            "energized": true
+          },
+          {
+            "id": "branch_yt8tb7",
+            "rows": [
+              [
+                {
+                  "id": "cell_i6fip9",
+                  "type": "contact-no",
+                  "address": "I0.1",
+                  "name": "START_R",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_o9mtsh",
+                  "type": "contact-no",
+                  "address": "Q0.0",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_b1cpov",
+            "type": "contact-nc",
+            "address": "Q0.1",
+            "name": "MOTOR_L",
+            "energized": false
+          },
+          {
+            "id": "cell_evpl6o",
+            "type": "coil",
+            "address": "Q0.0",
+            "name": "MOTOR_R",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_tjll7w",
+        "index": 1,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_vmkptm",
+            "type": "contact-nc",
+            "address": "I0.0",
+            "name": "",
+            "energized": true
+          },
+          {
+            "id": "branch_brz36e",
+            "rows": [
+              [
+                {
+                  "id": "cell_wgp5ju",
+                  "type": "contact-no",
+                  "address": "I0.2",
+                  "name": "START_L",
+                  "energized": false
+                }
+              ],
+              [
+                {
+                  "id": "cell_ekmr51",
+                  "type": "contact-no",
+                  "address": "Q0.1",
+                  "name": "",
+                  "energized": false
+                }
+              ]
+            ]
+          },
+          {
+            "id": "cell_0ksosu",
+            "type": "contact-nc",
+            "address": "Q0.0",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "cell_id3h9z",
+            "type": "coil",
+            "address": "Q0.1",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      }
+    ]
+  },
+  "signals": {
+    "I0.0": {
+      "address": "I0.0",
+      "name": "STOP",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": true
+    },
+    "I0.1": {
+      "address": "I0.1",
+      "name": "START_R",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": true
+    },
+    "Q0.1": {
+      "address": "Q0.1",
+      "name": "MOTOR_L",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.0": {
+      "address": "Q0.0",
+      "name": "MOTOR_R",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.2": {
+      "address": "I0.2",
+      "name": "START_L",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": true
+    }
+  }
+}

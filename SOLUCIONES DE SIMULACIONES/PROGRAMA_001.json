@@ -1,0 +1,152 @@
+{
+  "program": {
+    "name": "PROGRAMA_001",
+    "description": "",
+    "createdAt": 1779594568369,
+    "modifiedAt": 1779594834614,
+    "rungs": [
+      {
+        "id": "rung_lxs2bn",
+        "index": 0,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_phbtsj",
+            "type": "contact-no",
+            "address": "I0.0",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "cell_qwdmbz",
+            "type": "coil-set",
+            "address": "Q0.0",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_xipk0d",
+        "index": 1,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_jtagk3",
+            "type": "contact-no",
+            "address": "I0.1",
+            "name": "",
+            "energized": false
+          },
+          {
+            "id": "cell_vxr2rz",
+            "type": "coil-reset",
+            "address": "Q0.0",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      }
+    ]
+  },
+  "signals": {
+    "I0.0": {
+      "address": "I0.0",
+      "name": "Start",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.1": {
+      "address": "I0.1",
+      "name": "Stop",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.2": {
+      "address": "I0.2",
+      "name": "Sensor_1",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "I0.3": {
+      "address": "I0.3",
+      "name": "Sensor_2",
+      "type": "input",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.0": {
+      "address": "Q0.0",
+      "name": "Motor_1",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.1": {
+      "address": "Q0.1",
+      "name": "Alarma",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.2": {
+      "address": "Q0.2",
+      "name": "Piloto",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "M0.0": {
+      "address": "M0.0",
+      "name": "Aux_1",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "M0.1": {
+      "address": "M0.1",
+      "name": "Aux_2",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "T0": {
+      "address": "T0",
+      "name": "Timer_1",
+      "type": "timer",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "T1": {
+      "address": "T1",
+      "name": "Timer_2",
+      "type": "timer",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "C0": {
+      "address": "C0",
+      "name": "Cont_1",
+      "type": "counter",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    }
+  }
+}
