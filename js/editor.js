@@ -297,6 +297,9 @@
     title.textContent   = def.label;
     div.appendChild(title);
 
+    // Definir analogDef aquí para usarlo en todo el editor
+    const analogDef = components.getDef(cell.type);
+
     const addrIn = document.createElement('input');
     addrIn.type        = 'text';
     addrIn.className   = 'inline-editor__input';
@@ -309,6 +312,7 @@
     nameIn.className   = 'inline-editor__input';
     nameIn.placeholder = 'Nombre (Start, Motor…)';
     nameIn.value       = sig ? sig.name : (cell.name || '');
+    if (analogDef && analogDef.isAnalog) nameIn.style.display = 'none';
     div.appendChild(nameIn);
 
     // Campos extra para timers y contadores
@@ -324,7 +328,6 @@
     }
 
     // Campos extra para bloques analógicos
-    const analogDef = components.getDef(cell.type);
     if (analogDef && analogDef.isAnalog) {
 
       // NORM: rawMin, rawMax, addrOut (MD)
@@ -365,23 +368,39 @@
         div.appendChild(engMaxIn);
       }
 
-      // CMP: setpoint o address2
+      // CMP: address2 o setpoint
       if (cell.type.startsWith('cmp-')) {
+        const addr2In = document.createElement('input');
+        addr2In.type          = 'text';
+        addr2In.className     = 'inline-editor__input';
+        addr2In.placeholder   = 'IN2 — dirección (AIW12, MD100…) o dejar vacío';
+        addr2In.value         = cell.address2 || '';
+        addr2In.dataset.field = 'address2';
+        div.appendChild(addr2In);
+
         const spIn = document.createElement('input');
         spIn.type          = 'number';
         spIn.className     = 'inline-editor__input';
-        spIn.placeholder   = 'Setpoint (IN2)';
+        spIn.placeholder   = 'IN2 — constante (si no hay dirección arriba)';
         spIn.value         = cell.setpoint ?? 0;
         spIn.dataset.field = 'setpoint';
         div.appendChild(spIn);
       }
 
-      // MATH: operand2, addrOut
+      // MATH: address2 o operand2
       if (cell.type.startsWith('math-')) {
+        const addr2In = document.createElement('input');
+        addr2In.type          = 'text';
+        addr2In.className     = 'inline-editor__input';
+        addr2In.placeholder   = 'IN2 — dirección (AIW12, MD100…) o dejar vacío';
+        addr2In.value         = cell.address2 || '';
+        addr2In.dataset.field = 'address2';
+        div.appendChild(addr2In);
+
         const op2In = document.createElement('input');
         op2In.type          = 'number';
         op2In.className     = 'inline-editor__input';
-        op2In.placeholder   = 'Operando 2 (IN2)';
+        op2In.placeholder   = 'IN2 — constante (si no hay dirección arriba)';
         op2In.value         = cell.operand2 ?? 0;
         op2In.dataset.field = 'operand2';
         div.appendChild(op2In);
@@ -432,9 +451,10 @@
       const rawMaxEl  = div.querySelector('[data-field="rawMax"]');
       const engMinEl  = div.querySelector('[data-field="engMin"]');
       const engMaxEl  = div.querySelector('[data-field="engMax"]');
-      const setpointEl= div.querySelector('[data-field="setpoint"]');
-      const operand2El= div.querySelector('[data-field="operand2"]');
-      const addrOutEl = div.querySelector('[data-field="addrOut"]');
+      const address2El = div.querySelector('[data-field="address2"]');
+      const setpointEl = div.querySelector('[data-field="setpoint"]');
+      const operand2El = div.querySelector('[data-field="operand2"]');
+      const addrOutEl  = div.querySelector('[data-field="addrOut"]');
 
       // Validar dirección principal
       const isAnalog = state.isAnalogAddress(addr);
@@ -460,8 +480,9 @@
       if (rawMaxEl)  updates.rawMax   = Number(rawMaxEl.value);
       if (engMinEl)  updates.engMin   = Number(engMinEl.value);
       if (engMaxEl)  updates.engMax   = Number(engMaxEl.value);
-      if (setpointEl) updates.setpoint = Number(setpointEl.value);
-      if (operand2El) updates.operand2 = Number(operand2El.value);
+      if (address2El) updates.address2 = address2El.value.trim().toUpperCase();
+      if (setpointEl) updates.setpoint  = Number(setpointEl.value);
+      if (operand2El) updates.operand2  = Number(operand2El.value);
       if (addrOut !== undefined) updates.addrOut = addrOut;
 
       state.updateCell(rungId, cellId, updates);

@@ -149,15 +149,8 @@
         slider.max   = max;
         slider.step  = 1;
         slider.value = val;
-
-        const sliderVal = utils.createElement('span', {
-          cls:  'io-analog-slider__value mono',
-          text: _fmtAnalogVal(val),
-        });
-
         slider.addEventListener('input', () => {
           const newVal = parseFloat(slider.value);
-          sliderVal.textContent = _fmtAnalogVal(newVal);
           // Forzar la señal con el valor del slider
           state.forceAnalogSignal(sig.address, newVal);
           // Actualizar visualmente la fila
@@ -165,7 +158,6 @@
         });
 
         sliderWrap.appendChild(slider);
-        sliderWrap.appendChild(sliderVal);
         row.appendChild(sliderWrap);
       }
 
