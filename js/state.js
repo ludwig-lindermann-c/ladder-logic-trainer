@@ -90,13 +90,19 @@
 
     // ── Bloque de escalado lineal: convierte rango PLC → rango físico ──
     // Fórmula: OUT = (IN - rawMin) / (rawMax - rawMin) * (engMax - engMin) + engMin
-    if (type === 'scale') {
+    if (type === 'norm') {
       base.rawMin    = 0;
       base.rawMax    = 27648;
+      base.addrOut   = '';     // debe ser MD
+      base.result    = 0;
+      base.currentVal = 0;
+    }
+    if (type === 'scale') {
       base.engMin    = 0;
       base.engMax    = 100;
-      base.addrOut   = '';     // señal de salida analógica
+      base.addrOut   = '';     // debe ser MD
       base.result    = 0;
+      base.currentVal = 0;
     }
 
     // ── Bloque MOVE analógico: copia valor de una señal a otra ──
@@ -449,19 +455,43 @@
     const normalized = utils.normalizeAddress(address);
     if (_state.signals[normalized]) return false;
 
-    // Validar direcciones analógicas: deben ser pares y >= 10
+    // Validar rangos según tipo de dirección
     if (type === 'analog') {
       const num = parseInt(normalized.replace(/^[A-Z]+/, ''));
-      if (isNaN(num) || num % 2 !== 0 || num < 10) return false;
+      const isMD = normalized.startsWith('MD');
+      const isAIW = normalized.startsWith('AIW');
+      const isAQW = normalized.startsWith('AQW');
+      const isMW  = normalized.startsWith('MW');
+
+      if (isMD) {
+        // MD: desde 100, múltiplos de 4
+        if (num < 100 || num % 4 !== 0) return false;
+      } else if (isAIW || isAQW || isMW) {
+        // AIW/AQW/MW: desde 10, pares
+        if (num < 10 || num % 2 !== 0) return false;
+      } else {
+        return false;
+      }
     }
 
     const sig = createSignal(normalized, name, type);
-    // Propiedades opcionales para analógicas (min, max, unit)
+
+    // Propiedades opcionales para analógicas
     if (extra && type === 'analog') {
-      if (extra.min  !== undefined) sig.min  = extra.min;
-      if (extra.max  !== undefined) sig.max  = extra.max;
-      if (extra.unit !== undefined) sig.unit = extra.unit;
+      if (extra.min     !== undefined) sig.min     = extra.min;
+      if (extra.max     !== undefined) sig.max     = extra.max;
+      if (extra.unit    !== undefined) sig.unit    = extra.unit;
+      if (extra.subtype !== undefined) sig.subtype = extra.subtype;
     }
+
+    // MD siempre es real (float)
+    if (normalized.startsWith('MD')) {
+      sig.subtype = 'real';
+      sig.value   = 0.0;
+      sig.min     = extra?.min ?? -3.4e38;
+      sig.max     = extra?.max ??  3.4e38;
+    }
+
     _state.signals[normalized] = sig;
     emit('signals:changed', _state.signals);
     return true;
@@ -631,7 +661,13 @@
   state.isAnalogAddress = function (address) {
     if (!address) return false;
     const a = address.trim().toUpperCase();
-    return /^AIW\d+$/.test(a) || /^AQW\d+$/.test(a) || /^MW\d+$/.test(a);
+    return /^AIW\d+$/.test(a) || /^AQW\d+$/.test(a) ||
+           /^MW\d+$/.test(a)  || /^MD\d+$/.test(a);
+  };
+
+  state.isRealAddress = function (address) {
+    if (!address) return false;
+    return address.trim().toUpperCase().startsWith('MD');
   };
 
   /**
@@ -641,9 +677,10 @@
   state.getSignalTypeForAddress = function (address) {
     if (!address) return null;
     const a = address.trim().toUpperCase();
-    if (/^AIW\d+$/.test(a)) return 'analog'; // entrada analógica
-    if (/^AQW\d+$/.test(a)) return 'analog'; // salida analógica
-    if (/^MW\d+$/.test(a))  return 'analog'; // marca de palabra (analógica)
+    if (/^AIW\d+$/.test(a)) return 'analog';
+    if (/^AQW\d+$/.test(a)) return 'analog';
+    if (/^MW\d+$/.test(a))  return 'analog';
+    if (/^MD\d+$/.test(a))  return 'analog';
     return utils.getAddressType(address);
   };
 

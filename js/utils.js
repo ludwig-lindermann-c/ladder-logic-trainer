@@ -33,15 +33,15 @@
   ---------------------------------------------------------- */
 
   const ADDRESS_PATTERNS = {
-    input:   /^I\d+\.[0-7]$/,
-    output:  /^Q\d+\.[0-7]$/,
-    mark:    /^M\d+\.[0-7]$/,
-    timer:   /^T\d+$/,
-    counter: /^C\d+$/,
-    db:      /^DB\d+\.DB[XWDB]\d+(\.\d+)?$/,
-    aiw:     /^AIW\d+$/,
-    aqw:     /^AQW\d+$/,
-    mw:      /^MW\d+$/,
+    input:   /^I([0-9])\.[0-7]$/,
+    output:  /^Q([0-9])\.[0-7]$/,
+    mark:    /^M([0-9])\.[0-7]$/,
+    timer:   /^T([0-9]|[1-9][0-9])$/,
+    counter: /^C([0-9]|[1-9][0-9])$/,
+    aiw:     /^AIW([1-9][0-9]|[1-9]\d*)$/,
+    aqw:     /^AQW([1-9][0-9]|[1-9]\d*)$/,
+    mw:      /^MW([1-9][0-9]|[1-9]\d*)$/,
+    md:      /^MD([1-9][0-9]{2,}|[1-9]\d*)$/,
   };
 
   /**
@@ -67,6 +67,13 @@
       if (re.test(normalized)) return type;
     }
     return null;
+  };
+
+  utils.isAnalogAddress = function (addr) {
+    if (!addr) return false;
+    const a = addr.trim().toUpperCase();
+    return /^AIW\d+$/.test(a) || /^AQW\d+$/.test(a) ||
+           /^MW\d+$/.test(a)  || /^MD\d+$/.test(a);
   };
 
   /**

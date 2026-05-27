@@ -638,11 +638,19 @@
         { lbl: 'OUT', val: cell.addrOut || '???' },
         { lbl: 'RES', val: _fmtAnalog(cell.result), isResult: true },
       ];
+    } else if (cell.type === 'norm') {
+      rows = [
+        { lbl: 'IN',  val: cell.address || '???' },
+        { lbl: 'MIN', val: _fmtAnalog(cell.rawMin ?? 0) },
+        { lbl: 'MAX', val: _fmtAnalog(cell.rawMax ?? 27648) },
+        { lbl: 'OUT', val: cell.addrOut || '???' },
+        { lbl: 'VAL', val: _fmtAnalog(cell.result), isResult: true },
+      ];
     } else if (cell.type === 'scale') {
       rows = [
         { lbl: 'IN',  val: cell.address || '???' },
-        { lbl: 'RAW', val: `${cell.rawMin ?? 0}…${cell.rawMax ?? 27648}` },
-        { lbl: 'ENG', val: `${cell.engMin ?? 0}…${cell.engMax ?? 100}` },
+        { lbl: 'MIN', val: _fmtAnalog(cell.engMin ?? 0) },
+        { lbl: 'MAX', val: _fmtAnalog(cell.engMax ?? 100) },
         { lbl: 'OUT', val: cell.addrOut || '???' },
         { lbl: 'VAL', val: _fmtAnalog(cell.result), isResult: true },
       ];
@@ -718,9 +726,12 @@
 
     // Barra de progreso
     let ratio = 0;
-    if (cell.type === 'scale') {
+    if (cell.type === 'norm') {
+      // NORM siempre produce 0.0–1.0, la barra es directa
+      ratio = cell.result ?? 0;
+    } else if (cell.type === 'scale') {
       const range = (cell.engMax ?? 100) - (cell.engMin ?? 0);
-      ratio = range !== 0 ? (cell.result - (cell.engMin ?? 0)) / range : 0;
+      ratio = range !== 0 ? ((cell.result ?? 0) - (cell.engMin ?? 0)) / range : 0;
     } else if (cell.type.startsWith('cmp-')) {
       const sig = cell.address ? state.getSignal(cell.address) : null;
       if (sig && sig.type === 'analog') {

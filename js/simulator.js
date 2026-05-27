@@ -393,24 +393,47 @@
       // ── Escalado lineal ────────────────────────────────────
       // Convierte el valor crudo de cell.address (rawMin..rawMax)
       // al rango de ingeniería (engMin..engMax) y lo escribe en cell.addrOut
-      case 'scale': {
+      // ── NORM: normaliza valor crudo → 0.0 a 1.0 ───────────────
+      // IN (AIW/MW) con rango rawMin–rawMax → OUT (MD, float)
+      case 'norm': {
         if (!powerIn) { passes = false; break; }
 
         const raw    = _readNum(cell.address);
         const rawMin = cell.rawMin !== undefined ? cell.rawMin : 0;
         const rawMax = cell.rawMax !== undefined ? cell.rawMax : 27648;
-        const engMin = cell.engMin !== undefined ? cell.engMin : 0;
-        const engMax = cell.engMax !== undefined ? cell.engMax : 100;
 
-        let scaled = 0;
+        let normalized = 0;
         const rawRange = rawMax - rawMin;
         if (rawRange !== 0) {
-          scaled = ((raw - rawMin) / rawRange) * (engMax - engMin) + engMin;
+          normalized = (raw - rawMin) / rawRange;
         }
-        scaled = Math.round(scaled * 100) / 100;   // 2 decimales
+        // Clampear entre 0.0 y 1.0
+        normalized = Math.max(0, Math.min(1, normalized));
+        normalized = Math.round(normalized * 100000) / 100000; // 5 decimales
 
-        cell.result    = scaled;
+        cell.result     = normalized;
         cell.currentVal = raw;
+
+        if (cell.addrOut) state.setAnalogValue(cell.addrOut, normalized);
+
+        passes = true;
+        break;
+      }
+
+      // ── SCALE: escala valor normalizado → rango de ingeniería ──
+      // IN (MD, 0.0–1.0) con rango engMin–engMax → OUT (MD, float)
+      case 'scale': {
+        if (!powerIn) { passes = false; break; }
+
+        const normVal = _readNum(cell.address);
+        const engMin  = cell.engMin !== undefined ? cell.engMin : 0;
+        const engMax  = cell.engMax !== undefined ? cell.engMax : 100;
+
+        let scaled = normVal * (engMax - engMin) + engMin;
+        scaled = Math.round(scaled * 100) / 100; // 2 decimales
+
+        cell.result     = scaled;
+        cell.currentVal = normVal;
 
         if (cell.addrOut) state.setAnalogValue(cell.addrOut, scaled);
 

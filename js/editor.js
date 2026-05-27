@@ -206,8 +206,14 @@
       }
       if (isAnalog) {
         const num = parseInt(addr.replace(/^[A-Z]+/, ''));
-        if (num % 2 !== 0) { utils.toast('Dirección inválida — debe ser par: 10, 12…', 'error', 4000); addrEl.focus(); return; }
-        if (num < 10) { utils.toast('Dirección inválida — las analógicas parten desde 10', 'error', 4000); addrEl.focus(); return; }
+        const isMD = addr.startsWith('MD');
+        if (isMD) {
+          if (num < 100) { utils.toast('MD inválido — parte desde MD100', 'error', 4000); addrEl.focus(); return; }
+          if (num % 4 !== 0) { utils.toast('MD inválido — debe ser múltiplo de 4: MD100, MD104…', 'error', 4000); addrEl.focus(); return; }
+        } else {
+          if (num < 10) { utils.toast('Dirección inválida — las analógicas parten desde 10: AIW10, MW10…', 'error', 4000); addrEl.focus(); return; }
+          if (num % 2 !== 0) { utils.toast('Dirección inválida — debe ser par: AIW10, AIW12…', 'error', 4000); addrEl.focus(); return; }
+        }
       }
       const sigType = state.getSignalTypeForAddress(addr);
       const ok = state.addSignal(addr, name || addr, sigType);
@@ -305,15 +311,92 @@
     nameIn.value       = sig ? sig.name : (cell.name || '');
     div.appendChild(nameIn);
 
+    // Campos extra para timers y contadores
     if ((cell.type.startsWith('timer') || cell.type.startsWith('counter')) && cell.type !== 'counter-rst') {
       const presetIn = document.createElement('input');
-      presetIn.type        = 'number';
-      presetIn.className   = 'inline-editor__input';
-      presetIn.placeholder = cell.type.startsWith('timer') ? 'Preset (ms)' : 'Preset';
-      presetIn.value       = cell.preset || (cell.type.startsWith('timer') ? 1000 : 10);
-      presetIn.min         = '0';
+      presetIn.type          = 'number';
+      presetIn.className     = 'inline-editor__input';
+      presetIn.placeholder   = cell.type.startsWith('timer') ? 'Preset (ms)' : 'Preset';
+      presetIn.value         = cell.preset || (cell.type.startsWith('timer') ? 1000 : 10);
+      presetIn.min           = '0';
       presetIn.dataset.field = 'preset';
       div.appendChild(presetIn);
+    }
+
+    // Campos extra para bloques analógicos
+    const analogDef = components.getDef(cell.type);
+    if (analogDef && analogDef.isAnalog) {
+
+      // NORM: rawMin, rawMax, addrOut (MD)
+      if (cell.type === 'norm') {
+        const minIn = document.createElement('input');
+        minIn.type          = 'number';
+        minIn.className     = 'inline-editor__input';
+        minIn.placeholder   = 'Mín raw (def: 0)';
+        minIn.value         = cell.rawMin ?? 0;
+        minIn.dataset.field = 'rawMin';
+        div.appendChild(minIn);
+
+        const maxIn = document.createElement('input');
+        maxIn.type          = 'number';
+        maxIn.className     = 'inline-editor__input';
+        maxIn.placeholder   = 'Máx raw (def: 27648)';
+        maxIn.value         = cell.rawMax ?? 27648;
+        maxIn.dataset.field = 'rawMax';
+        div.appendChild(maxIn);
+      }
+
+      // SCALE: engMin, engMax, addrOut (MD)
+      if (cell.type === 'scale') {
+        const engMinIn = document.createElement('input');
+        engMinIn.type          = 'number';
+        engMinIn.className     = 'inline-editor__input';
+        engMinIn.placeholder   = 'Mín ingeniería (def: 0)';
+        engMinIn.value         = cell.engMin ?? 0;
+        engMinIn.dataset.field = 'engMin';
+        div.appendChild(engMinIn);
+
+        const engMaxIn = document.createElement('input');
+        engMaxIn.type          = 'number';
+        engMaxIn.className     = 'inline-editor__input';
+        engMaxIn.placeholder   = 'Máx ingeniería (def: 100)';
+        engMaxIn.value         = cell.engMax ?? 100;
+        engMaxIn.dataset.field = 'engMax';
+        div.appendChild(engMaxIn);
+      }
+
+      // CMP: setpoint o address2
+      if (cell.type.startsWith('cmp-')) {
+        const spIn = document.createElement('input');
+        spIn.type          = 'number';
+        spIn.className     = 'inline-editor__input';
+        spIn.placeholder   = 'Setpoint (IN2)';
+        spIn.value         = cell.setpoint ?? 0;
+        spIn.dataset.field = 'setpoint';
+        div.appendChild(spIn);
+      }
+
+      // MATH: operand2, addrOut
+      if (cell.type.startsWith('math-')) {
+        const op2In = document.createElement('input');
+        op2In.type          = 'number';
+        op2In.className     = 'inline-editor__input';
+        op2In.placeholder   = 'Operando 2 (IN2)';
+        op2In.value         = cell.operand2 ?? 0;
+        op2In.dataset.field = 'operand2';
+        div.appendChild(op2In);
+      }
+
+      // addrOut — para NORM, SCALE, MATH, MOVE-A
+      if (['norm','scale','math-add','math-sub','math-mul','math-div','math-mod','move-a'].includes(cell.type)) {
+        const outIn = document.createElement('input');
+        outIn.type          = 'text';
+        outIn.className     = 'inline-editor__input';
+        outIn.placeholder   = cell.type === 'norm' ? 'Salida MD (ej: MD100)' : 'Salida MD/MW (ej: MD104)';
+        outIn.value         = cell.addrOut || '';
+        outIn.dataset.field = 'addrOut';
+        div.appendChild(outIn);
+      }
     }
 
     const row = document.createElement('div');
@@ -339,23 +422,63 @@
     function apply() {
       const addr   = addrIn.value.trim().toUpperCase();
       const name   = nameIn.value.trim();
+
+      // Campos digitales
       const presetEl = div.querySelector('[data-field="preset"]');
       const preset   = presetEl ? Number(presetEl.value) : undefined;
 
-      if (addr && !utils.isValidAddress(addr)) {
+      // Campos analógicos
+      const rawMinEl  = div.querySelector('[data-field="rawMin"]');
+      const rawMaxEl  = div.querySelector('[data-field="rawMax"]');
+      const engMinEl  = div.querySelector('[data-field="engMin"]');
+      const engMaxEl  = div.querySelector('[data-field="engMax"]');
+      const setpointEl= div.querySelector('[data-field="setpoint"]');
+      const operand2El= div.querySelector('[data-field="operand2"]');
+      const addrOutEl = div.querySelector('[data-field="addrOut"]');
+
+      // Validar dirección principal
+      const isAnalog = state.isAnalogAddress(addr);
+      if (addr && !isAnalog && !utils.isValidAddress(addr)) {
         addrIn.style.borderColor = 'var(--clr-error)';
         utils.toast(`Dirección inválida: ${addr}`, 'error', 2500);
         addrIn.focus();
         return;
       }
 
+      // Validar addrOut si existe
+      const addrOut = addrOutEl ? addrOutEl.value.trim().toUpperCase() : undefined;
+      if (addrOut && !state.isAnalogAddress(addrOut)) {
+        utils.toast(`Dirección de salida inválida: ${addrOut}`, 'error', 2500);
+        addrOutEl.focus();
+        return;
+      }
+
+      // Construir updates
       const updates = { address: addr, name };
-      if (preset !== undefined) updates.preset = preset;
+      if (preset    !== undefined) updates.preset   = preset;
+      if (rawMinEl)  updates.rawMin   = Number(rawMinEl.value);
+      if (rawMaxEl)  updates.rawMax   = Number(rawMaxEl.value);
+      if (engMinEl)  updates.engMin   = Number(engMinEl.value);
+      if (engMaxEl)  updates.engMax   = Number(engMaxEl.value);
+      if (setpointEl) updates.setpoint = Number(setpointEl.value);
+      if (operand2El) updates.operand2 = Number(operand2El.value);
+      if (addrOut !== undefined) updates.addrOut = addrOut;
+
       state.updateCell(rungId, cellId, updates);
 
+      // Registrar señal principal si no existe
       if (addr) {
+        const sigType = state.getSignalTypeForAddress(addr) || utils.getAddressType(addr);
         if (state.getSignal(addr)) { if (name) state.updateSignalName(addr, name); }
-        else state.addSignal(addr, name || addr, utils.getAddressType(addr));
+        else state.addSignal(addr, name || addr, sigType);
+      }
+
+      // Registrar señal de salida si no existe
+      if (addrOut) {
+        const outType = state.getSignalTypeForAddress(addrOut);
+        if (!state.getSignal(addrOut)) {
+          state.addSignal(addrOut, addrOut, outType);
+        }
       }
 
       _closeInlineEditor();
@@ -476,8 +599,19 @@
     const row = document.querySelector(`.io-row[data-signal="${address}"]`);
     if (!row) return;
     const sig = state.getSignal(address);
+    if (!sig) return;
+
+    // Señales analógicas — delegar al parche si está disponible
+    if (sig.type === 'analog') {
+      if (global.LLT.editor._updateAnalogRow) {
+        global.LLT.editor._updateAnalogRow(address);
+      }
+      return;
+    }
+
+    // Digital — comportamiento original
     const val = state.getSignalValue(address);
-    row.className = `io-row io-row--${val ? 'on' : 'off'}${sig?.forced ? ' io-row--forced' : ''}`;
+    row.className = `io-row io-row--${val ? 'on' : 'off'}${sig.forced ? ' io-row--forced' : ''}`;
     const v = row.querySelector(`[data-value="${address}"]`);
     if (v) v.textContent = val ? '1' : '0';
   }
@@ -577,8 +711,14 @@
       if (!isAnalog && !utils.isValidAddress(addr)) { utils.toast('Dirección inválida', 'error', 2500); return; }
       if (isAnalog) {
         const num = parseInt(addr.replace(/^[A-Z]+/, ''));
-        if (num % 2 !== 0) { utils.toast(`Dirección inválida — debe ser par: AIW10, AIW12…`, 'error', 4000); return; }
-        if (num < 10) { utils.toast(`Dirección inválida — las analógicas parten desde AIW10`, 'error', 4000); return; }
+        const isMD = addr.startsWith('MD');
+        if (isMD) {
+          if (num < 100) { utils.toast('MD inválido — parte desde MD100', 'error', 4000); return; }
+          if (num % 4 !== 0) { utils.toast('MD inválido — debe ser múltiplo de 4: MD100, MD104…', 'error', 4000); return; }
+        } else {
+          if (num < 10) { utils.toast('Dirección inválida — las analógicas parten desde 10: AIW10, MW10…', 'error', 4000); return; }
+          if (num % 2 !== 0) { utils.toast('Dirección inválida — debe ser par: AIW10, AIW12…', 'error', 4000); return; }
+        }
       }
       const sigType = state.getSignalTypeForAddress(addr);
       state.addSignal(addr, name || addr, sigType)

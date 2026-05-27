@@ -427,13 +427,27 @@
       const sig = state.getSignal(address);
       if (sig && sig.type === 'analog') {
         _updateSignalRow(address);
-        // Actualizar también la celda de valor en la tabla de variables
         const tdVal = document.querySelector(`#var-table-body td[data-value="${address}"]`);
         if (tdVal) {
           const v = state.getAnalogValue(address);
           tdVal.textContent = _fmtAnalogVal(v) + (sig.unit ? ` ${sig.unit}` : '');
         }
       }
+    });
+
+    // Interceptar scan-update para actualizar todas las analógicas en RUN
+    document.addEventListener('llt:scan-update', () => {
+      if (state.getMode() !== 'RUN') return;
+      Object.values(state.getSignals())
+        .filter(s => s.type === 'analog')
+        .forEach(sig => {
+          _updateSignalRow(sig.address);
+          const tdVal = document.querySelector(`#var-table-body td[data-value="${sig.address}"]`);
+          if (tdVal) {
+            const v = state.getAnalogValue(sig.address);
+            tdVal.textContent = _fmtAnalogVal(v) + (sig.unit ? ` ${sig.unit}` : '');
+          }
+        });
     });
 
     state.on('signals:changed', () => {
@@ -450,6 +464,7 @@
       global.LLT.editor._updateSignalRow = _updateSignalRow;
       global.LLT.editor._rebuildIOPanel  = _rebuildIOPanel;
       global.LLT.editor.showAddVarModal  = _showAddVarModal;
+      global.LLT.editor._updateAnalogRow = _updateSignalRow;
     }
 
     // Inyectar panel analógico

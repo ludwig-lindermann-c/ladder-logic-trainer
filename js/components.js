@@ -55,7 +55,8 @@
     'math-div':    { label: 'MATH ÷',          category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
     'math-mod':    { label: 'MATH %',          category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
 
-    // ── Escalado lineal ──
+    // ── Normalización y escalado (estilo TIA Portal) ──
+    'norm':        { label: 'NORM',            category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
     'scale':       { label: 'SCALE',           category: 'analog',   hasAddress: true,  isBlock: true, isAnalog: true },
 
     // ── MOVE analógico ──
@@ -83,6 +84,7 @@
     'math-mul':   'MUL',
     'math-div':   'DIV',
     'math-mod':   'MOD',
+    'norm':       'NORM',
     'scale':      'SCALE',
     'move-a':     'MOVE',
   };
@@ -288,6 +290,36 @@
           ${nm ? `<span class="cell-name">${nm}</span>` : ''}`;
 
       // ── Escalado ──
+      } else if (cell.type === 'norm') {
+        div.innerHTML = `
+          <span class="cell-addr">${cell.address || '???'}</span>
+          <div class="cell-block cell-block--analog">
+            <div class="cell-block__hdr cell-block__hdr--analog">
+              <b>NORM</b>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">IN</span>
+              <span class="cell-block__val mono">${cell.address || '???'}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">MIN</span>
+              <span class="cell-block__val mono">${cell.rawMin ?? 0}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">MAX</span>
+              <span class="cell-block__val mono">${cell.rawMax ?? 27648}</span>
+            </div>
+            <div class="cell-block__row">
+              <span class="cell-block__lbl">OUT</span>
+              <span class="cell-block__val mono">${cell.addrOut || '???'}</span>
+            </div>
+            <div class="cell-block__row cell-block__row--result">
+              <span class="cell-block__lbl">VAL</span>
+              <span class="cell-block__val mono" data-field="result">${_fmtNum(cell.result)}</span>
+            </div>
+          </div>
+          ${nm ? `<span class="cell-name">${nm}</span>` : ''}`;
+
       } else if (cell.type === 'scale') {
         div.innerHTML = `
           <span class="cell-addr">${cell.address || '???'}</span>
@@ -300,12 +332,12 @@
               <span class="cell-block__val mono">${cell.address || '???'}</span>
             </div>
             <div class="cell-block__row">
-              <span class="cell-block__lbl">RAW</span>
-              <span class="cell-block__val mono">${cell.rawMin ?? 0}…${cell.rawMax ?? 27648}</span>
+              <span class="cell-block__lbl">MIN</span>
+              <span class="cell-block__val mono">${cell.engMin ?? 0}</span>
             </div>
             <div class="cell-block__row">
-              <span class="cell-block__lbl">ENG</span>
-              <span class="cell-block__val mono">${cell.engMin ?? 0}…${cell.engMax ?? 100}</span>
+              <span class="cell-block__lbl">MAX</span>
+              <span class="cell-block__val mono">${cell.engMax ?? 100}</span>
             </div>
             <div class="cell-block__row">
               <span class="cell-block__lbl">OUT</span>
