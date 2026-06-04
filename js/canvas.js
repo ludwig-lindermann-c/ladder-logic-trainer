@@ -48,6 +48,12 @@
     COL_BTN_CLOSE:'#c97d1a',
     COL_DOT:      '#39c960',
     COL_HINT:     '#3a4a38',
+    COL_BLOCK_BG:  '#1a1f1a',
+    COL_BLOCK_HDR: '#1e2820',
+    COL_GREEN_DIM: '#1a3320',
+    COL_AMBER_DIM: '#2e2010',
+
+    // Analógico
 
     // Analógico
     COL_ANALOG:     '#1a9eb5',   // azul-cian industrial
@@ -98,6 +104,55 @@
     render();
   }
 
+  function _syncThemeColors() {
+    const isLight = document.documentElement.dataset.theme === 'light';
+    if (isLight) {
+      C.COL_RAIL     = '#1a7a36';
+      C.COL_WIRE     = '#7a8878';
+      C.COL_WIRE_ON  = '#1a7a36';
+      C.COL_CONTACT  = '#3a4238';
+      C.COL_ON       = '#1a7a36';
+      C.COL_ADDR     = '#566054';
+      C.COL_ADDR_ON  = '#1a7a36';
+      C.COL_NAME     = '#6a7268';
+      C.COL_BG       = '#d4d9d2';
+      C.COL_RUNG_BG  = '#e2e6e0';
+      C.COL_SEL      = 'rgba(26,122,54,0.12)';
+      C.COL_SEL_BORD = '#1a7a36';
+      C.COL_SPACER   = '#a8b0a6';
+      C.COL_SPACER_H = '#1a7a36';
+      C.COL_BTN_OPEN = '#1a7a36';
+      C.COL_BTN_CLOSE= '#a05c00';
+      C.COL_HINT      = '#8a9a88';
+      C.COL_BLOCK_BG  = '#e8ebe6';
+      C.COL_BLOCK_HDR = '#d4d9d2';
+      C.COL_GREEN_DIM = '#c8e6d0';
+      C.COL_AMBER_DIM = '#f5e6c8';
+    } else {
+      C.COL_RAIL     = '#2d9e4f';
+      C.COL_WIRE     = '#3a4a38';
+      C.COL_WIRE_ON  = '#39c960';
+      C.COL_CONTACT  = '#6a7a68';
+      C.COL_ON       = '#39c960';
+      C.COL_ADDR     = '#8a9488';
+      C.COL_ADDR_ON  = '#39c960';
+      C.COL_NAME     = '#566054';
+      C.COL_BG       = '#222724';
+      C.COL_RUNG_BG  = '#2a2f2c';
+      C.COL_SEL      = 'rgba(45,158,79,0.15)';
+      C.COL_SEL_BORD = '#2d9e4f';
+      C.COL_SPACER   = '#2a3a28';
+      C.COL_SPACER_H = '#39c960';
+      C.COL_BTN_OPEN = '#2d9e4f';
+      C.COL_BTN_CLOSE= '#c97d1a';
+      C.COL_HINT      = '#3a4a38';
+      C.COL_BLOCK_BG  = '#1a1f1a';
+      C.COL_BLOCK_HDR = '#1e2820';
+      C.COL_GREEN_DIM = '#1a3320';
+      C.COL_AMBER_DIM = '#2e2010';
+    }
+  }
+
   /* ----------------------------------------------------------
      RESIZE
   ---------------------------------------------------------- */
@@ -113,10 +168,13 @@
   /* ----------------------------------------------------------
      RENDER PRINCIPAL
   ---------------------------------------------------------- */
-  function render() {
+function render() {
     if (!_ctx) return;
     const W = _canvas.width  / _dpr;
     const H = _canvas.height / _dpr;
+
+    // Actualizar colores según tema activo
+    _syncThemeColors();
 
     _hitMap = [];
     _ctx.clearRect(0, 0, W, H);
@@ -290,12 +348,12 @@
 
     // ── Botón ↳ SIEMPRE arriba del hilo ──
     const openY = wireY - bh - 3;
-    _ctx.fillStyle   = isOpenActive ? '#1a3320' : '#1e2420';
-    _ctx.strokeStyle = isOpenActive ? C.COL_BTN_OPEN : '#2a3a28';
+    _ctx.fillStyle   = isOpenActive ? C.COL_GREEN_DIM : C.COL_BLOCK_HDR;
+    _ctx.strokeStyle = isOpenActive ? C.COL_BTN_OPEN : C.COL_SPACER;
     _ctx.lineWidth   = 1;
     _roundRect(btnX, openY, bw, bh, 3);
     _ctx.fill(); _ctx.stroke();
-    _ctx.fillStyle = isOpenActive ? '#39c960' : '#4a6048';
+    _ctx.fillStyle = isOpenActive ? C.COL_ON : C.COL_NAME;
     _ctx.font      = 'bold 11px monospace';
     _ctx.textAlign = 'center';
     _ctx.fillText('↳', btnX + bw / 2, openY + bh - 2);
@@ -303,12 +361,12 @@
 
     // ── Botón ↱ SIEMPRE abajo del hilo ──
     const closeY = wireY + 3;
-    _ctx.fillStyle   = isCloseReady ? '#2e2010' : '#1e2420';
-    _ctx.strokeStyle = isCloseReady ? C.COL_BTN_CLOSE : '#2a3020';
+    _ctx.fillStyle   = isCloseReady ? C.COL_AMBER_DIM : C.COL_BLOCK_HDR;
+    _ctx.strokeStyle = isCloseReady ? C.COL_BTN_CLOSE : C.COL_SPACER;
     _ctx.lineWidth   = 1;
     _roundRect(btnX, closeY, bw, bh, 3);
     _ctx.fill(); _ctx.stroke();
-    _ctx.fillStyle = isCloseReady ? C.COL_BTN_CLOSE : '#4a4030';
+    _ctx.fillStyle = isCloseReady ? C.COL_BTN_CLOSE : C.COL_NAME;
     _ctx.font      = 'bold 11px monospace';
     _ctx.textAlign = 'center';
     _ctx.fillText('↱', btnX + bw / 2, closeY + bh - 2);
@@ -527,7 +585,7 @@
       _wire(cx + bw/2, cy, cx + bw/2 + 10, cy);
       _ctx.strokeStyle = on ? C.COL_ON : '#3a4a38';
       _ctx.lineWidth   = 1.5;
-      _ctx.fillStyle   = '#1a1f1a';
+      _ctx.fillStyle   = C.COL_BLOCK_BG;
       _roundRect(cx - bw/2, cy - 18, bw, 36, 3);
       _ctx.fill(); _ctx.stroke();
       // Detectar si el contador asociado es CTD para mostrar L, sino R
@@ -566,12 +624,12 @@
     // Caja
     _ctx.strokeStyle = on ? C.COL_ON : '#3a4a38';
     _ctx.lineWidth   = 1.5;
-    _ctx.fillStyle   = '#1a1f1a';
+    _ctx.fillStyle   = C.COL_BLOCK_BG;
     _roundRect(cx - bw / 2, cy - bh / 2, bw, bh, 3);
     _ctx.fill(); _ctx.stroke();
 
     // Header
-    _ctx.fillStyle = '#1e2820';
+    _ctx.fillStyle = C.COL_BLOCK_HDR;
     _roundRect(cx - bw / 2, cy - bh / 2, bw, 14, 3);
     _ctx.fill();
     _ctx.fillStyle = on ? C.COL_ON : '#8a9488';
@@ -820,8 +878,8 @@
 
       // Placeholder si fila vacía
       if (row.length === 0) {
-        _ctx.fillStyle  = '#2a3a28';
-        _ctx.strokeStyle= '#3a5a38';
+        _ctx.fillStyle  = C.COL_BLOCK_HDR;
+        _ctx.strokeStyle= C.COL_SPACER;
         _ctx.lineWidth  = 1;
         _ctx.setLineDash([4, 3]);
         _roundRect(forkX + 20, rowY - 14, branchW - 40, 28, 4);
@@ -875,14 +933,14 @@
       return endX;
     }
     const addY = lastY + C.BRANCH_H * 0.5 - 9;
-    _ctx.fillStyle  = '#1e2820';
-    _ctx.strokeStyle= '#2a3a28';
+    _ctx.fillStyle  = C.COL_BLOCK_HDR;
+    _ctx.strokeStyle= C.COL_SPACER;
     _ctx.lineWidth  = 1;
     _ctx.setLineDash([3, 3]);
     _roundRect(forkX + 4, addY, branchW - 8, 18, 3);
     _ctx.fill(); _ctx.stroke();
     _ctx.setLineDash([]);
-    _ctx.fillStyle  = '#4a6048';
+    _ctx.fillStyle  = C.COL_NAME;
     _ctx.font       = C.FONT_UI;
     _ctx.textAlign  = 'center';
     _ctx.fillText('↳ agregar fila paralela', forkX + branchW / 2, addY + 12);

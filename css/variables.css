@@ -12,16 +12,16 @@
      PALETA BASE — Escala de grises industriales
      Inspirada en paneles HMI Siemens / Allen-Bradley
   ---------------------------------------------------------- */
-  --clr-bg-deep:       #0d0f0e;   /* fondo más oscuro — detrás del canvas */
-  --clr-bg-base:       #131614;   /* fondo del canvas editor */
-  --clr-bg-panel:      #1a1d1b;   /* paneles laterales / toolbar */
-  --clr-bg-surface:    #222622;   /* tarjetas, celdas, inputs */
-  --clr-bg-elevated:   #2b302a;   /* hover states, dropdowns */
-  --clr-bg-overlay:    #343a33;   /* tooltips, modales */
+  --clr-bg-deep:       #1a1e1c;   /* fondo más oscuro — detrás del canvas */
+  --clr-bg-base:       #222724;   /* fondo del canvas editor */
+  --clr-bg-panel:      #2a2f2c;   /* paneles laterales / toolbar */
+  --clr-bg-surface:    #323830;   /* tarjetas, celdas, inputs */
+  --clr-bg-elevated:   #3a4038;   /* hover states, dropdowns */
+  --clr-bg-overlay:    #444a42;   /* tooltips, modales */
 
-  --clr-border-subtle: #2a2e29;   /* separadores muy suaves */
-  --clr-border-mid:    #3a3f38;   /* bordes de componentes */
-  --clr-border-strong: #505650;   /* bordes activos / seleccionados */
+  --clr-border-subtle: #353b33;   /* separadores muy suaves */
+  --clr-border-mid:    #464d44;   /* bordes de componentes */
+  --clr-border-strong: #606860;   /* bordes activos / seleccionados */
 
   /* ----------------------------------------------------------
      ACENTO PRIMARIO — Verde PLC (señal energizada)
@@ -77,9 +77,9 @@
   /* ----------------------------------------------------------
      TEXTO
   ---------------------------------------------------------- */
-  --text-primary:      #c8d0c6;   /* texto principal */
-  --text-secondary:    #8a9488;   /* etiquetas secundarias */
-  --text-muted:        #566054;   /* texto deshabilitado */
+  --text-primary:      #dde5db;   /* texto principal */
+  --text-secondary:    #a0aa9e;   /* etiquetas secundarias */
+  --text-muted:        #6a7268;   /* texto deshabilitado */
   --text-inverse:      #0d0f0e;   /* texto sobre fondos claros */
   --text-accent:       #39c960;   /* texto de acento / valores activos */
   --text-amber:        #f0a030;
@@ -179,4 +179,56 @@
   --z-dropdown:  20;
   --z-modal:     30;
   --z-toast:     40;
+}
+
+/* ----------------------------------------------------------
+   TEMA CLARO — HMI Industrial
+---------------------------------------------------------- */
+[data-theme="light"] {
+  --clr-bg-deep:       #c8cec6;
+  --clr-bg-base:       #d4d9d2;
+  --clr-bg-panel:      #bfc5bd;
+  --clr-bg-surface:    #e2e6e0;
+  --clr-bg-elevated:   #eaede8;
+  --clr-bg-overlay:    #f0f2ef;
+
+  --clr-border-subtle: #a8b0a6;
+  --clr-border-mid:    #8a9488;
+  --clr-border-strong: #566054;
+
+  --clr-green-dim:     #c8e6d0;
+  --clr-green-dark:    #a8d4b4;
+  --clr-green:         #1a7a36;
+  --clr-green-bright:  #0f5e28;
+  --clr-green-glow:    rgba(15, 94, 40, 0.15);
+
+  --clr-amber-dim:     #f5e6c8;
+  --clr-amber:         #a05c00;
+  --clr-amber-bright:  #c07000;
+
+  --clr-error:         #b02020;
+  --clr-error-dim:     #f5d0d0;
+
+  --text-primary:      #1a1e1c;
+  --text-secondary:    #3a4238;
+  --text-muted:        #6a7268;
+  --text-accent:       #1a7a36;
+  --text-amber:        #a05c00;
+  --text-error:        #b02020;
+
+  --rail-color:        #566054;
+  --rail-color-power:  #1a7a36;
+  --rung-wire-color:   #7a8878;
+  --rung-wire-active:  #1a7a36;
+
+  --contact-no-stroke:        #3a4238;
+  --contact-no-stroke-active: #1a7a36;
+  --coil-stroke:        #3a4238;
+  --coil-stroke-active: #1a7a36;
+  --coil-fill-active:   rgba(26, 122, 54, 0.12);
+
+  --block-bg:           #dde2db;
+  --block-border:       #8a9a88;
+  --block-border-active:#1a7a36;
+  --block-header-bg:    #c8d4c6;
 }

@@ -22,7 +22,7 @@
     _viewport = utils.byId('canvas-viewport');
     _canvasEl = document.createElement('canvas');
     _canvasEl.id = 'llt-canvas';
-    _canvasEl.style.cssText = 'display:block;background:#131614;';
+    _canvasEl.style.cssText = 'display:block;background:var(--clr-bg-base);';
 
     // Reemplazar el contenido del viewport por el canvas
     const content = utils.byId('canvas-content');
@@ -166,6 +166,21 @@
     utils.byId('btn-run')?.addEventListener('click',  () => global.LLT.simulator.start());
     utils.byId('btn-stop')?.addEventListener('click', () => global.LLT.simulator.stop());
 
+    // Toggle de tema claro/oscuro
+    const btnTheme = utils.byId('btn-theme');
+    if (btnTheme) {
+      // Restaurar tema guardado
+      const savedTheme = localStorage.getItem('llt-theme') || 'dark';
+      _applyTheme(savedTheme);
+
+      btnTheme.addEventListener('click', () => {
+        const current = document.documentElement.dataset.theme || 'dark';
+        const next    = current === 'dark' ? 'light' : 'dark';
+        _applyTheme(next);
+        localStorage.setItem('llt-theme', next);
+      });
+    }
+
 
     utils.delegate(document, 'click', '.menu-btn', (e, btn) => {
       const a = btn.dataset.action;
@@ -233,6 +248,17 @@
         if (e.key === 'Enter') utils.byId('btn-add-var')?.click();
       });
     });
+
+    function _applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    const btn = utils.byId('btn-theme');
+    if (btn) {
+      btn.textContent = theme === 'dark' ? '☀' : '🌙';
+      btn.title       = theme === 'dark' ? 'Modo diurno' : 'Modo nocturno';
+    }
+    // Actualizar colores del canvas según el tema
+    global.LLT.canvas.render();
+  }
   }
 
   /* ----------------------------------------------------------

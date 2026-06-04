@@ -11,7 +11,7 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:20px;background:#0d110e;user-select:none;
+        gap:20px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <div style="display:flex;align-items:flex-start;gap:40px">
@@ -21,44 +21,44 @@
 
             <!-- Viga superior con riel -->
             <div style="position:relative;width:320px;height:20px">
-              <div style="position:absolute;inset:0;background:#1a2a1a;border:2px solid #2a3a2a;border-radius:3px"></div>
+              <div style="position:absolute;inset:0;background:var(--clr-bg-panel);border:2px solid var(--clr-border-mid);border-radius:3px"></div>
               <div style="position:absolute;left:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:2px">
-                <div id="sc-s3" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <div style="font-size:7px;font-family:monospace;color:#2a4a2a">S3</div>
+                <div id="sc-s3" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <div style="font-size:7px;font-family:monospace;color:var(--text-muted)">S3</div>
               </div>
               <div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:2px">
-                <div id="sc-s4" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <div style="font-size:7px;font-family:monospace;color:#2a4a2a">S4</div>
+                <div id="sc-s4" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <div style="font-size:7px;font-family:monospace;color:var(--text-muted)">S4</div>
               </div>
               <div id="sc-trolley" style="
                 position:absolute;top:-4px;left:20px;
                 width:30px;height:28px;
-                background:#1e2e1e;border:2px solid #2a4a2a;
+                background:var(--clr-bg-surface);border:2px solid var(--clr-border-mid);
                 border-radius:3px;transition:background .2s,border-color .2s;
               "></div>
             </div>
 
             <!-- Área de trabajo -->
             <div style="position:relative;width:320px;height:200px">
-              <div style="position:absolute;left:0;top:0;bottom:0;width:12px;background:#1a2a1a;border:1px solid #2a3a2a;border-radius:2px"></div>
-              <div style="position:absolute;right:0;top:0;bottom:0;width:12px;background:#1a2a1a;border:1px solid #2a3a2a;border-radius:2px"></div>
-              <div id="sc-cable" style="position:absolute;left:29px;top:0;width:2px;height:160px;background:#2a3a2a;transition:height .05s linear;"></div>
+              <div style="position:absolute;left:0;top:0;bottom:0;width:12px;background:var(--clr-bg-panel);border:1px solid var(--clr-border-mid);border-radius:2px"></div>
+              <div style="position:absolute;right:0;top:0;bottom:0;width:12px;background:var(--clr-bg-panel);border:1px solid var(--clr-border-mid);border-radius:2px"></div>
+              <div id="sc-cable" style="position:absolute;left:29px;top:0;width:2px;height:160px;background:var(--clr-border-mid);transition:height .05s linear;"></div>
               <div id="sc-hook" style="position:absolute;left:20px;top:158px;width:20px;height:20px;transition:top .05s linear,left .05s linear;">
-                <div style="width:20px;height:14px;background:#1e2e1e;border:2px solid #2a4a2a;border-radius:3px;position:relative;">
-                  <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:6px;height:6px;border:2px solid #2a4a2a;border-radius:50% 50% 50% 0;border-top:none;"></div>
+                <div style="width:20px;height:14px;background:var(--clr-bg-surface);border:2px solid var(--clr-border-mid);border-radius:3px;position:relative;">
+                  <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:6px;height:6px;border:2px solid var(--clr-border-mid);border-radius:50% 50% 50% 0;border-top:none;"></div>
                 </div>
               </div>
               <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px">
-                <div id="sc-s1" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <div style="font-size:7px;font-family:monospace;color:#2a4a2a">S1</div>
+                <div id="sc-s1" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <div style="font-size:7px;font-family:monospace;color:var(--text-muted)">S1</div>
               </div>
               <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px">
-                <div id="sc-s2" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <div style="font-size:7px;font-family:monospace;color:#2a4a2a">S2</div>
+                <div id="sc-s2" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <div style="font-size:7px;font-family:monospace;color:var(--text-muted)">S2</div>
               </div>
-              <div style="position:absolute;left:26px;top:20px;width:2px;height:160px;border-left:1px dashed #1a2a1a"></div>
-              <div style="position:absolute;left:26px;top:20px;height:2px;width:268px;border-top:1px dashed #1a2a1a"></div>
-              <div style="position:absolute;right:26px;top:20px;width:2px;height:160px;border-left:1px dashed #1a2a1a"></div>
+              <div style="position:absolute;left:26px;top:20px;width:2px;height:160px;border-left:1px dashed var(--clr-border-subtle)"></div>
+              <div style="position:absolute;left:26px;top:20px;height:2px;width:268px;border-top:1px dashed var(--clr-border-subtle)"></div>
+              <div style="position:absolute;right:26px;top:20px;width:2px;height:160px;border-left:1px dashed var(--clr-border-subtle)"></div>
             </div>
 
           </div>
@@ -70,7 +70,7 @@
             <div style="display:flex;align-items:center;gap:10px">
               <div id="sc-btn-start" style="
                 width:54px;height:54px;border-radius:50%;
-                background:#1a2a1a;border:3px solid #2a3a2a;
+                background:var(--clr-bg-panel);border:3px solid var(--clr-border-mid);
                 display:flex;align-items:center;justify-content:center;
                 cursor:pointer;box-sizing:border-box;transition:transform .08s;
               ">
@@ -81,60 +81,60 @@
                 "></div>
               </div>
               <div>
-                <div style="font-size:10px;font-family:monospace;color:#4a6a4a">START</div>
+                <div style="font-size:10px;font-family:monospace;color:var(--text-secondary)">START</div>
                 <div style="font-size:9px;font-family:monospace;padding:1px 5px;border-radius:3px;background:#0C447C;color:#85B7EB;border:1px solid #185FA5;display:inline-block;margin-top:2px">I0.0 · momentáneo</div>
               </div>
             </div>
 
             <!-- Contactores -->
-            <div style="display:flex;flex-direction:column;gap:4px;padding:8px;border:1px solid #1e2a1f;border-radius:6px">
-              <div style="font-size:9px;font-family:monospace;color:#2a4a2a;letter-spacing:.08em;margin-bottom:2px">CONTACTORES</div>
+            <div style="display:flex;flex-direction:column;gap:4px;padding:8px;border:1px solid var(--clr-border-subtle);border-radius:6px">
+              <div style="font-size:9px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em;margin-bottom:2px">CONTACTORES</div>
               <div style="display:flex;align-items:center;gap:6px">
-                <div id="sc-led-km1" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <span style="font-size:9px;font-family:monospace;color:#3a4a3a">Q0.0 · KM1 Sube</span>
+                <div id="sc-led-km1" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <span style="font-size:9px;font-family:monospace;color:var(--text-secondary)">Q0.0 · KM1 Sube</span>
               </div>
               <div style="display:flex;align-items:center;gap:6px">
-                <div id="sc-led-km2" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <span style="font-size:9px;font-family:monospace;color:#3a4a3a">Q0.1 · KM2 Baja</span>
+                <div id="sc-led-km2" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <span style="font-size:9px;font-family:monospace;color:var(--text-secondary)">Q0.1 · KM2 Baja</span>
               </div>
               <div style="display:flex;align-items:center;gap:6px">
-                <div id="sc-led-km3" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <span style="font-size:9px;font-family:monospace;color:#3a4a3a">Q0.2 · KM3 Izquierda</span>
+                <div id="sc-led-km3" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <span style="font-size:9px;font-family:monospace;color:var(--text-secondary)">Q0.2 · KM3 Izquierda</span>
               </div>
               <div style="display:flex;align-items:center;gap:6px">
-                <div id="sc-led-km4" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <span style="font-size:9px;font-family:monospace;color:#3a4a3a">Q0.3 · KM4 Derecha</span>
+                <div id="sc-led-km4" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <span style="font-size:9px;font-family:monospace;color:var(--text-secondary)">Q0.3 · KM4 Derecha</span>
               </div>
             </div>
 
             <!-- Visor contador ciclos -->
-            <div style="display:flex;flex-direction:column;gap:4px;padding:8px;border:1px solid #1e2a1f;border-radius:6px">
-              <div style="font-size:9px;font-family:monospace;color:#2a4a2a;letter-spacing:.08em;margin-bottom:2px">CONTADOR CICLOS — C0</div>
+            <div style="display:flex;flex-direction:column;gap:4px;padding:8px;border:1px solid var(--clr-border-subtle);border-radius:6px">
+              <div style="font-size:9px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em;margin-bottom:2px">CONTADOR CICLOS — C0</div>
               <div style="display:flex;gap:16px;align-items:baseline">
                 <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-                  <div style="font-size:8px;font-family:monospace;color:#3a4a3a">CV</div>
+                  <div style="font-size:8px;font-family:monospace;color:var(--text-secondary)">CV</div>
                   <div id="sc-cv" style="font-size:22px;font-family:monospace;color:#639922;min-width:36px;text-align:center">0</div>
                 </div>
-                <div style="font-size:14px;font-family:monospace;color:#2a4a2a">/</div>
+                <div style="font-size:14px;font-family:monospace;color:var(--text-muted)">/</div>
                 <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-                  <div style="font-size:8px;font-family:monospace;color:#3a4a3a">PV</div>
-                  <div id="sc-pv" style="font-size:22px;font-family:monospace;color:#3a5a3a;min-width:36px;text-align:center">—</div>
+                  <div style="font-size:8px;font-family:monospace;color:var(--text-secondary)">PV</div>
+                  <div id="sc-pv" style="font-size:22px;font-family:monospace;color:var(--text-muted);min-width:36px;text-align:center">—</div>
                 </div>
               </div>
               <!-- Luz límite de uso -->
               <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
                 <div id="sc-luz-limite" style="
                   width:16px;height:16px;border-radius:50%;
-                  background:#1a0d0d;border:2px solid #2a1a1a;
+                  background:var(--clr-error-dim);border:2px solid var(--clr-border-subtle);
                   transition:background .15s,border-color .15s;
                 "></div>
-                <span style="font-size:9px;font-family:monospace;color:#3a4a3a">Q0.4 · Límite de uso</span>
+                <span style="font-size:9px;font-family:monospace;color:var(--text-secondary)">Q0.4 · Límite de uso</span>
               </div>
             </div>
 
             <!-- Fase y estado -->
-            <div style="display:flex;flex-direction:column;gap:3px;padding:8px;border:1px solid #1e2a1f;border-radius:6px">
-              <div id="sc-fase" style="font-size:10px;font-family:monospace;color:#3a4a3a;letter-spacing:.06em">EN ESPERA</div>
+            <div style="display:flex;flex-direction:column;gap:3px;padding:8px;border:1px solid var(--clr-border-subtle);border-radius:6px">
+              <div id="sc-fase" style="font-size:10px;font-family:monospace;color:var(--text-secondary);letter-spacing:.06em">EN ESPERA</div>
               <div id="sc-status" style="font-size:10px;font-family:monospace;color:#378ADD;letter-spacing:.06em">ABAJO / IZQ</div>
             </div>
 
@@ -146,15 +146,15 @@
         <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:9px;color:#4a5a6a;font-family:monospace">S1-S4 · Sensores automáticos</span>
+            <span style="font-size:9px;color:var(--text-muted);font-family:monospace">S1-S4 · Sensores automáticos</span>
           </div>
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:9px;color:#4a5a4a;font-family:monospace">KM1↑ KM2↓ KM3← KM4→</span>
+            <span style="font-size:9px;color:var(--text-muted);font-family:monospace">KM1↑ KM2↓ KM3← KM4→</span>
           </div>
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#cc3333"></div>
-            <span style="font-size:9px;color:#5a4a4a;font-family:monospace">Q0.4 · Límite de uso</span>
+            <span style="font-size:9px;color:var(--text-muted);font-family:monospace">Q0.4 · Límite de uso</span>
           </div>
         </div>
 
@@ -276,19 +276,19 @@
     const s3On    = !!signals['I0.3']?.value;
     const s4On    = !!signals['I0.4']?.value;
 
-    _el.s1.style.background = s1On ? '#378ADD' : '#1e2a1f';
-    _el.s2.style.background = s2On ? '#378ADD' : '#1e2a1f';
-    _el.s3.style.background = s3On ? '#378ADD' : '#1e2a1f';
-    _el.s4.style.background = s4On ? '#378ADD' : '#1e2a1f';
+    _el.s1.style.background = s1On ? '#378ADD' : 'var(--clr-bg-elevated)';
+    _el.s2.style.background = s2On ? '#378ADD' : 'var(--clr-bg-elevated)';
+    _el.s3.style.background = s3On ? '#378ADD' : 'var(--clr-bg-elevated)';
+    _el.s4.style.background = s4On ? '#378ADD' : 'var(--clr-bg-elevated)';
 
-    _el.ledKm1.style.background = km1On ? '#639922' : '#1e2a1f';
-    _el.ledKm2.style.background = km2On ? '#ba9500' : '#1e2a1f';
-    _el.ledKm3.style.background = km3On ? '#378ADD' : '#1e2a1f';
-    _el.ledKm4.style.background = km4On ? '#378ADD' : '#1e2a1f';
+    _el.ledKm1.style.background = km1On ? '#639922' : 'var(--clr-bg-elevated)';
+    _el.ledKm2.style.background = km2On ? '#ba9500' : 'var(--clr-bg-elevated)';
+    _el.ledKm3.style.background = km3On ? '#378ADD' : 'var(--clr-bg-elevated)';
+    _el.ledKm4.style.background = km4On ? '#378ADD' : 'var(--clr-bg-elevated)';
 
     const moving = km1On || km2On || km3On || km4On;
-    _el.trolley.style.background  = moving ? '#0d2a0d' : '#1e2e1e';
-    _el.trolley.style.borderColor = moving ? '#3B6D11' : '#2a4a2a';
+    _el.trolley.style.background  = moving ? '#0d2a0d' : 'var(--clr-bg-surface)';
+    _el.trolley.style.borderColor = moving ? '#3B6D11' : 'var(--clr-border-mid)';
 
     // Contador C0
     const ctr = _findCounterCell('C0');
@@ -299,8 +299,8 @@
     }
 
     // Luz límite
-    _el.luzLimite.style.background  = limiteOn ? '#cc3333' : '#1a0d0d';
-    _el.luzLimite.style.borderColor = limiteOn ? '#ff6666' : '#2a1a1a';
+    _el.luzLimite.style.background  = limiteOn ? '#cc3333' : 'var(--clr-error-dim)';
+    _el.luzLimite.style.borderColor = limiteOn ? '#ff6666' : 'var(--clr-border-subtle)';
 
     // Fase
     const m = signals;
@@ -317,7 +317,7 @@
                          : km2On ? '#ba9500'
                          : km3On || km4On ? '#378ADD'
                          : limiteOn ? '#cc3333'
-                         : '#3a4a3a';
+                         : 'var(--text-secondary)';
 
     const posV = s2On ? 'ARRIBA' : s1On ? 'ABAJO' : '···';
     const posH = s3On ? 'IZQ'    : s4On ? 'DER'   : '···';
