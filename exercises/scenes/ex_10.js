@@ -11,31 +11,31 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:28px;background:#0d110e;user-select:none;
+        gap:28px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <!-- Banda con sensor -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Línea de producción</div>
+          <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Línea de producción</div>
 
           <div style="position:relative;width:420px;height:90px">
 
             <div style="
               position:absolute;bottom:0;left:20px;right:20px;
-              height:18px;background:#1a2a1a;border-radius:2px;
-              border:1px solid #2a3a2a;
+              height:18px;background:var(--clr-bg-panel);border-radius:2px;
+              border:1px solid var(--clr-border-mid);
             "></div>
 
             <div style="
               position:absolute;bottom:0;left:8px;
               width:22px;height:22px;border-radius:50%;
-              background:#1e2a1f;border:2px solid #2a3a2a;
+              background:var(--clr-bg-elevated);border:2px solid var(--clr-border-mid);
             "></div>
 
             <div style="
               position:absolute;bottom:0;right:8px;
               width:22px;height:22px;border-radius:50%;
-              background:#1e2a1f;border:2px solid #2a3a2a;
+              background:var(--clr-bg-elevated);border:2px solid var(--clr-border-mid);
             "></div>
 
             <div style="
@@ -51,7 +51,7 @@
             <div id="sc-box" style="
               position:absolute;bottom:20px;left:20px;
               width:52px;height:46px;
-              background:#2a2a1a;border:2px solid #3a3a2a;
+              background:var(--clr-bg-surface);border:2px solid #3a3a2a;
               border-radius:3px;
             ">
               <div style="
@@ -67,7 +67,7 @@
 
           <!-- Display contador -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-            <div style="font-size:9px;font-family:monospace;color:#3a4a3a;letter-spacing:.08em">CONTADOR</div>
+            <div style="font-size:9px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em">CONTADOR</div>
             <div style="
               padding:10px 20px;
               background:#0d1f0d;border:2px solid #1a3a1a;
@@ -75,16 +75,16 @@
             ">
               <div style="display:flex;align-items:baseline;gap:6px">
                 <div id="sc-cv" style="font-size:32px;font-family:monospace;color:#639922;min-width:40px;text-align:right">0</div>
-                <div style="font-size:14px;font-family:monospace;color:#3a5a3a">/</div>
-                <div id="sc-pv" style="font-size:32px;font-family:monospace;color:#3a5a3a;min-width:40px">10</div>
+                <div style="font-size:14px;font-family:monospace;color:var(--text-muted)">/</div>
+                <div id="sc-pv" style="font-size:32px;font-family:monospace;color:var(--text-muted);min-width:40px">10</div>
               </div>
-              <div style="font-size:9px;font-family:monospace;color:#2a4a2a;text-align:center;margin-top:2px">CV / PV</div>
+              <div style="font-size:9px;font-family:monospace;color:var(--text-muted);text-align:center;margin-top:2px">CV / PV</div>
             </div>
           </div>
 
           <!-- Luz lote completo -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Lote completo</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Lote completo</div>
             <div id="sc-luz-lote" style="
               width:64px;height:64px;border-radius:50%;
               background:#1a1a12;border:3px solid #2a2a1a;
@@ -120,16 +120,16 @@
         </div>
 
         <!-- Indicador sensor -->
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid #1e2a1f;border-radius:6px">
-          <div id="sc-sensor-led" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .1s"></div>
-          <span style="font-size:10px;font-family:monospace;color:#3a4a3a">Sensor I0.0 — activo mientras la caja está frente al sensor</span>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--clr-border-subtle);border-radius:6px">
+          <div id="sc-sensor-led" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .1s"></div>
+          <span style="font-size:10px;font-family:monospace;color:var(--text-secondary)">Sensor I0.0 — activo mientras la caja está frente al sensor</span>
         </div>
 
         <!-- Leyenda -->
         <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:10px;color:#4a5a6a;font-family:monospace">I0.0 · Sensor_Pieza — automático</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">I0.0 · Sensor_Pieza — automático</span>
           </div>
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#8b4a00"></div>
@@ -137,7 +137,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Q0.0 · Luz_Lote_Completo</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Q0.0 · Luz_Lote_Completo</span>
           </div>
         </div>
 

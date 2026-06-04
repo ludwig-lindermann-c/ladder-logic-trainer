@@ -11,17 +11,17 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:40px;background:#0d110e;user-select:none;
+        gap:40px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <div style="display:flex;align-items:center;gap:80px;position:relative">
 
           <!-- Pulsador marcha -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Marcha</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Marcha</div>
             <div id="sc-btn-marcha" style="
               width:60px;height:60px;border-radius:50%;
-              background:#1a2a1a;border:4px solid #2a3a2a;
+              background:var(--clr-bg-panel);border:4px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:transform .08s;
             ">
@@ -36,17 +36,17 @@
 
           <!-- Motor -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Motor</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Motor</div>
             <div id="sc-motor" style="
               width:80px;height:80px;border-radius:12px;
-              background:#1a1a1a;border:3px solid #2a2a2a;
+              background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               transition:background .15s,border-color .15s;
               position:relative;overflow:hidden;
             ">
               <div id="sc-motor-ring" style="
                 width:52px;height:52px;border-radius:50%;
-                border:4px solid #2a2a2a;
+                border:4px solid var(--clr-border-mid);
                 display:flex;align-items:center;justify-content:center;
                 transition:border-color .15s;
               ">
@@ -64,7 +64,7 @@
             <div style="font-size:10px;color:#6a2a2a;font-family:monospace;letter-spacing:.08em">EMERGENCIA</div>
             <div id="sc-btn-emg" style="
               width:60px;height:60px;border-radius:50%;
-              background:#2a1a1a;border:4px solid #4a2a2a;
+              background:var(--clr-bg-surface);border:4px solid #4a2a2a;
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:transform .08s;
             ">
@@ -82,14 +82,14 @@
         <!-- Estado motor -->
         <div id="sc-motor-status" style="
           font-size:11px;font-family:monospace;letter-spacing:.1em;
-          color:#3a4a3a;transition:color .15s;
+          color:var(--text-secondary);transition:color .15s;
         ">MOTOR DETENIDO</div>
 
         <!-- Leyenda -->
         <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:10px;color:#4a5a6a;font-family:monospace">I0.0 · Btn_Marcha — toggle</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">I0.0 · Btn_Marcha — toggle</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#cc3333"></div>
@@ -97,7 +97,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Q0.0 · Motor</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Q0.0 · Motor</span>
           </div>
         </div>
 

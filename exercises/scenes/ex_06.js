@@ -12,17 +12,17 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:32px;background:#0d110e;user-select:none;
+        gap:32px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <!-- Botones -->
         <div style="display:flex;align-items:center;gap:40px">
 
           <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace">Adelante</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace">Adelante</div>
             <div id="sc-btn-fwd" style="
               width:58px;height:58px;border-radius:50%;
-              background:#1a2a1a;border:3px solid #2a3a2a;
+              background:var(--clr-bg-panel);border:3px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:transform .08s;
             ">
@@ -39,7 +39,7 @@
             <div style="font-size:10px;color:#6a2a2a;font-family:monospace">Paro</div>
             <div id="sc-btn-stop" style="
               width:58px;height:58px;border-radius:50%;
-              background:#2a1a1a;border:3px solid #3a2a2a;
+              background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:transform .08s;
             ">
@@ -56,7 +56,7 @@
             <div style="font-size:10px;color:#4a4a6a;font-family:monospace">Atrás</div>
             <div id="sc-btn-rev" style="
               width:58px;height:58px;border-radius:50%;
-              background:#1a1a2a;border:3px solid #2a2a3a;
+              background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:transform .08s;
             ">
@@ -73,7 +73,7 @@
 
         <!-- Motor -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
-          <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Motor</div>
+          <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Motor</div>
           <div style="display:flex;align-items:center;gap:16px">
 
             <!-- Flecha dirección -->
@@ -85,14 +85,14 @@
             <!-- Cuerpo motor -->
             <div id="sc-motor" style="
               width:100px;height:100px;border-radius:12px;
-              background:#1a1a1a;border:3px solid #2a2a2a;
+              background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               transition:background .2s,border-color .2s;
               position:relative;overflow:hidden;
             ">
               <div id="sc-motor-ring" style="
                 width:66px;height:66px;border-radius:50%;
-                border:4px solid #2a2a2a;
+                border:4px solid var(--clr-border-mid);
                 display:flex;align-items:center;justify-content:center;
                 transition:border-color .2s;
               ">
@@ -120,18 +120,18 @@
           <!-- Estado -->
           <div id="sc-motor-status" style="
             font-size:11px;font-family:monospace;
-            color:#3a4a3a;letter-spacing:.1em;transition:color .2s;
+            color:var(--text-secondary);letter-spacing:.1em;transition:color .2s;
           ">DETENIDO</div>
 
           <!-- Indicador contactores -->
           <div style="display:flex;gap:16px;margin-top:4px">
             <div style="display:flex;align-items:center;gap:5px">
-              <div id="sc-led-fwd" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-              <span style="font-size:9px;font-family:monospace;color:#3a4a3a">Q0.0 Adelante</span>
+              <div id="sc-led-fwd" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+              <span style="font-size:9px;font-family:monospace;color:var(--text-secondary)">Q0.0 Adelante</span>
             </div>
             <div style="display:flex;align-items:center;gap:5px">
-              <div id="sc-led-rev" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-              <span style="font-size:9px;font-family:monospace;color:#3a4a3a">Q0.1 Atrás</span>
+              <div id="sc-led-rev" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+              <span style="font-size:9px;font-family:monospace;color:var(--text-secondary)">Q0.1 Atrás</span>
             </div>
           </div>
 
@@ -159,7 +159,7 @@
         <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#1a6a1a"></div>
-            <span style="font-size:9px;color:#4a5a4a;font-family:monospace">I0.0 Btn_Adelante</span>
+            <span style="font-size:9px;color:var(--text-muted);font-family:monospace">I0.0 Btn_Adelante</span>
           </div>
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#1a1a8b"></div>

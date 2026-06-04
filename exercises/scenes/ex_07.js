@@ -11,41 +11,41 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:32px;background:#0d110e;user-select:none;
+        gap:32px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <!-- Banda transportadora -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
-          <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Banda transportadora</div>
+          <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Banda transportadora</div>
 
           <div style="position:relative;width:420px;height:90px">
 
             <!-- Estructura banda -->
             <div style="
               position:absolute;bottom:0;left:20px;right:20px;
-              height:18px;background:#1a2a1a;border-radius:2px;
-              border:1px solid #2a3a2a;
+              height:18px;background:var(--clr-bg-panel);border-radius:2px;
+              border:1px solid var(--clr-border-mid);
             "></div>
 
             <!-- Rodillo izquierdo -->
             <div style="
               position:absolute;bottom:0;left:8px;
               width:20px;height:20px;border-radius:50%;
-              background:#1e2a1f;border:2px solid #2a3a2a;
+              background:var(--clr-bg-elevated);border:2px solid var(--clr-border-mid);
             "></div>
 
             <!-- Rodillo derecho -->
             <div style="
               position:absolute;bottom:0;right:8px;
               width:20px;height:20px;border-radius:50%;
-              background:#1e2a1f;border:2px solid #2a3a2a;
+              background:var(--clr-bg-elevated);border:2px solid var(--clr-border-mid);
             "></div>
 
             <!-- Caja -->
             <div id="sc-box" style="
               position:absolute;bottom:20px;left:20px;
               width:56px;height:48px;
-              background:#2a2a1a;border:2px solid #3a3a2a;
+              background:var(--clr-bg-surface);border:2px solid #3a3a2a;
               border-radius:3px;
               transition:left .05s linear;
             ">
@@ -58,28 +58,28 @@
           </div>
 
           <div style="font-size:9px;font-family:monospace;padding:2px 6px;border-radius:3px;background:#27500A;color:#97C459;border:1px solid #3B6D11">Q0.0 · Motor_Banda</div>
-          <div id="sc-banda-status" style="font-size:10px;font-family:monospace;color:#3a4a3a;transition:color .15s">DETENIDA</div>
+          <div id="sc-banda-status" style="font-size:10px;font-family:monospace;color:var(--text-secondary);transition:color .15s">DETENIDA</div>
         </div>
 
         <!-- Indicador retardo -->
-        <div style="display:flex;align-items:center;gap:20px;padding:8px 20px;border:1px solid #1e2a1f;border-radius:6px">
+        <div style="display:flex;align-items:center;gap:20px;padding:8px 20px;border:1px solid var(--clr-border-subtle);border-radius:6px">
           <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-            <div style="font-size:9px;font-family:monospace;color:#3a4a3a;letter-spacing:.08em">PT</div>
-            <div id="sc-ton-pt" style="font-size:16px;font-family:monospace;color:#3a5a3a;letter-spacing:.06em;min-width:80px;text-align:center">0 ms</div>
+            <div style="font-size:9px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em">PT</div>
+            <div id="sc-ton-pt" style="font-size:16px;font-family:monospace;color:var(--text-muted);letter-spacing:.06em;min-width:80px;text-align:center">0 ms</div>
           </div>
-          <div style="width:1px;height:30px;background:#1e2a1f"></div>
+          <div style="width:1px;height:30px;background:var(--clr-bg-elevated)"></div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-            <div style="font-size:9px;font-family:monospace;color:#3a4a3a;letter-spacing:.08em">ET</div>
-            <div id="sc-ton-et" style="font-size:16px;font-family:monospace;color:#3a5a3a;letter-spacing:.06em;transition:color .15s;min-width:80px;text-align:center">0 ms</div>
+            <div style="font-size:9px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em">ET</div>
+            <div id="sc-ton-et" style="font-size:16px;font-family:monospace;color:var(--text-muted);letter-spacing:.06em;transition:color .15s;min-width:80px;text-align:center">0 ms</div>
           </div>
         </div>
 
         <!-- Botón marcha -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-          <div style="font-size:10px;color:#4a6a4a;font-family:monospace">Marcha</div>
+          <div style="font-size:10px;color:var(--text-secondary);font-family:monospace">Marcha</div>
           <div id="sc-btn-marcha" style="
             width:64px;height:64px;border-radius:50%;
-            background:#1a2a1a;border:4px solid #2a3a2a;
+            background:var(--clr-bg-panel);border:4px solid var(--clr-border-mid);
             display:flex;align-items:center;justify-content:center;
             cursor:pointer;box-sizing:border-box;transition:transform .08s;
           ">
@@ -96,11 +96,11 @@
         <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#1a6a1a"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">I0.0 · Btn_Marcha — toggle</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">I0.0 · Btn_Marcha — toggle</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Q0.0 · Motor_Banda</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Q0.0 · Motor_Banda</span>
           </div>
         </div>
 

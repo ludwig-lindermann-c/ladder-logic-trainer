@@ -256,8 +256,13 @@
       btn.textContent = theme === 'dark' ? '☀' : '🌙';
       btn.title       = theme === 'dark' ? 'Modo diurno' : 'Modo nocturno';
     }
-    // Actualizar colores del canvas según el tema
+    // Actualizar colores del canvas
     global.LLT.canvas.render();
+    // Recargar la escena activa para aplicar el nuevo tema
+    const ex = global.LLT.state.getActiveExercise();
+    if (ex && global.LLT.sceneEngine) {
+      global.LLT.sceneEngine.loadScene(ex.id);
+    }
   }
   }
 

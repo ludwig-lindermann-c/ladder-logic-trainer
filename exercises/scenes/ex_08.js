@@ -11,17 +11,17 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:32px;background:#0d110e;user-select:none;
+        gap:32px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <div style="display:flex;align-items:center;gap:80px">
 
           <!-- Interruptor máquina -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a7a;font-family:monospace;letter-spacing:.08em">Máquina</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Máquina</div>
             <div id="sc-sw" style="
               width:64px;height:32px;border-radius:16px;
-              background:#1a1a1a;border:2px solid #2a2a2a;
+              background:var(--clr-bg-surface);border:2px solid var(--clr-border-mid);
               display:flex;align-items:center;padding:4px;
               cursor:pointer;box-sizing:border-box;
               transition:background .15s,border-color .15s;
@@ -34,15 +34,15 @@
               "></div>
             </div>
             <div style="font-size:9px;font-family:monospace;padding:2px 6px;border-radius:3px;background:#0C447C;color:#85B7EB;border:1px solid #185FA5">I0.0 · toggle</div>
-            <div id="sc-maquina-status" style="font-size:10px;font-family:monospace;color:#3a4a3a">APAGADA</div>
+            <div id="sc-maquina-status" style="font-size:10px;font-family:monospace;color:var(--text-secondary)">APAGADA</div>
           </div>
 
           <!-- Ventilador -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Ventilador</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Ventilador</div>
             <div style="
               width:100px;height:100px;border-radius:50%;
-              background:#111811;border:3px solid #1e2a1f;
+              background:var(--clr-bg-deep);border:3px solid var(--clr-border-subtle);
               display:flex;align-items:center;justify-content:center;
               position:relative;
             ">
@@ -52,35 +52,35 @@
                 display:flex;align-items:center;justify-content:center;
               ">
                 <div style="position:absolute;width:100%;height:100%;display:flex;align-items:center;justify-content:center">
-                  <div id="sc-blade1" style="position:absolute;width:28px;height:10px;background:#1e2a1f;border-radius:5px;left:4px;transform-origin:right center;transition:background .2s"></div>
-                  <div id="sc-blade2" style="position:absolute;width:28px;height:10px;background:#1e2a1f;border-radius:5px;right:4px;transform-origin:left center;transition:background .2s"></div>
-                  <div id="sc-blade3" style="position:absolute;width:10px;height:28px;background:#1e2a1f;border-radius:5px;top:4px;transform-origin:center bottom;transition:background .2s"></div>
-                  <div id="sc-blade4" style="position:absolute;width:10px;height:28px;background:#1e2a1f;border-radius:5px;bottom:4px;transform-origin:center top;transition:background .2s"></div>
+                  <div id="sc-blade1" style="position:absolute;width:28px;height:10px;background:var(--clr-bg-elevated);border-radius:5px;left:4px;transform-origin:right center;transition:background .2s"></div>
+                  <div id="sc-blade2" style="position:absolute;width:28px;height:10px;background:var(--clr-bg-elevated);border-radius:5px;right:4px;transform-origin:left center;transition:background .2s"></div>
+                  <div id="sc-blade3" style="position:absolute;width:10px;height:28px;background:var(--clr-bg-elevated);border-radius:5px;top:4px;transform-origin:center bottom;transition:background .2s"></div>
+                  <div id="sc-blade4" style="position:absolute;width:10px;height:28px;background:var(--clr-bg-elevated);border-radius:5px;bottom:4px;transform-origin:center top;transition:background .2s"></div>
                 </div>
                 <!-- Centro -->
                 <div style="
                   width:16px;height:16px;border-radius:50%;
-                  background:#1e2a1f;border:2px solid #2a3a2a;
+                  background:var(--clr-bg-elevated);border:2px solid var(--clr-border-mid);
                   position:relative;z-index:1;
                 "></div>
               </div>
             </div>
             <div style="font-size:9px;font-family:monospace;padding:2px 6px;border-radius:3px;background:#27500A;color:#97C459;border:1px solid #3B6D11">Q0.0 · Ventilador</div>
-            <div id="sc-fan-status" style="font-size:10px;font-family:monospace;color:#3a4a3a;transition:color .15s">DETENIDO</div>
+            <div id="sc-fan-status" style="font-size:10px;font-family:monospace;color:var(--text-secondary);transition:color .15s">DETENIDO</div>
           </div>
 
         </div>
 
         <!-- PT y ET del TOF -->
-        <div style="display:flex;align-items:center;gap:20px;padding:8px 20px;border:1px solid #1e2a1f;border-radius:6px">
+        <div style="display:flex;align-items:center;gap:20px;padding:8px 20px;border:1px solid var(--clr-border-subtle);border-radius:6px">
           <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-            <div style="font-size:9px;font-family:monospace;color:#3a4a3a;letter-spacing:.08em">PT</div>
-            <div id="sc-tof-pt" style="font-size:16px;font-family:monospace;color:#3a5a3a;min-width:80px;text-align:center">0 ms</div>
+            <div style="font-size:9px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em">PT</div>
+            <div id="sc-tof-pt" style="font-size:16px;font-family:monospace;color:var(--text-muted);min-width:80px;text-align:center">0 ms</div>
           </div>
-          <div style="width:1px;height:30px;background:#1e2a1f"></div>
+          <div style="width:1px;height:30px;background:var(--clr-bg-elevated)"></div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-            <div style="font-size:9px;font-family:monospace;color:#3a4a3a;letter-spacing:.08em">ET</div>
-            <div id="sc-tof-et" style="font-size:16px;font-family:monospace;color:#3a5a3a;min-width:80px;text-align:center;transition:color .15s">0 ms</div>
+            <div style="font-size:9px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em">ET</div>
+            <div id="sc-tof-et" style="font-size:16px;font-family:monospace;color:var(--text-muted);min-width:80px;text-align:center;transition:color .15s">0 ms</div>
           </div>
         </div>
 
@@ -88,11 +88,11 @@
         <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:10px;color:#4a5a6a;font-family:monospace">I0.0 · Maquina_ON — toggle</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">I0.0 · Maquina_ON — toggle</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Q0.0 · Ventilador</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Q0.0 · Ventilador</span>
           </div>
         </div>
 

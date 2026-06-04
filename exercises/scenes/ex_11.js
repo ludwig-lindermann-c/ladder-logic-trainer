@@ -11,17 +11,17 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:32px;background:#0d110e;user-select:none;
+        gap:32px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <div style="display:flex;align-items:center;gap:80px">
 
           <!-- Botón inicio -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Inicio ciclo</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Inicio ciclo</div>
             <div id="sc-btn-inicio" style="
               width:64px;height:64px;border-radius:50%;
-              background:#1a2a1a;border:4px solid #2a3a2a;
+              background:var(--clr-bg-panel);border:4px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:transform .08s;
             ">
@@ -36,10 +36,10 @@
 
           <!-- Semáforo -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Semáforo</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Semáforo</div>
             <div style="
               width:80px;
-              background:#111;border:3px solid #222;
+              background:var(--clr-bg-deep);border:3px solid #222;
               border-radius:12px;padding:10px 0;
               display:flex;flex-direction:column;
               align-items:center;gap:10px;
@@ -48,7 +48,7 @@
               <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
                 <div id="sc-luz-roja" style="
                   width:44px;height:44px;border-radius:50%;
-                  background:#1a0d0d;border:2px solid #2a1a1a;
+                  background:#1a0d0d;border:2px solid var(--clr-border-mid);
                   transition:background .15s,border-color .15s;
                 "></div>
                 <div style="font-size:8px;font-family:monospace;color:#3a2a2a">Q0.0</div>
@@ -92,7 +92,7 @@
             </div>
 
             <div style="display:flex;flex-direction:column;gap:4px">
-              <div style="font-size:9px;font-family:monospace;color:#3a5a3a;letter-spacing:.06em">T1 · Verde</div>
+              <div style="font-size:9px;font-family:monospace;color:var(--text-muted);letter-spacing:.06em">T1 · Verde</div>
               <div style="display:flex;gap:12px">
                 <div style="display:flex;flex-direction:column;align-items:center;gap:1px">
                   <div style="font-size:8px;font-family:monospace;color:#3a3a3a">PT</div>
@@ -126,7 +126,7 @@
         <!-- Estado -->
         <div id="sc-semaforo-status" style="
           font-size:11px;font-family:monospace;
-          color:#3a4a3a;letter-spacing:.1em;
+          color:var(--text-secondary);letter-spacing:.1em;
         ">DETENIDO — presiona Inicio para arrancar</div>
 
         <!-- Leyenda -->
@@ -137,7 +137,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Q0.1 · Luz_Verde</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Q0.1 · Luz_Verde</span>
           </div>
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#ba9500"></div>

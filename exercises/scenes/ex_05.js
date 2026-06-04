@@ -11,16 +11,16 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:40px;background:#0d110e;user-select:none;
+        gap:40px;background:var(--clr-bg-deep);user-select:none;
       ">
         <div style="display:flex;align-items:center;gap:70px">
 
           <!-- Botón abrir -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Abrir</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Abrir</div>
             <div id="sc-btn-abrir" style="
               width:64px;height:64px;border-radius:50%;
-              background:#1a2a1a;border:4px solid #2a3a2a;
+              background:var(--clr-bg-panel);border:4px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:transform .08s;
             ">
@@ -35,12 +35,12 @@
 
           <!-- Válvula mariposa -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Válvula mariposa</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Válvula mariposa</div>
             <div style="position:relative;width:160px;height:80px;display:flex;align-items:center;justify-content:center">
-              <div style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:36px;height:18px;background:#1e2a1f;border-radius:2px;"></div>
+              <div style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:36px;height:18px;background:var(--clr-bg-elevated);border-radius:2px;"></div>
               <div id="sc-valve-body" style="
                 width:64px;height:64px;border-radius:50%;
-                background:#1a2a1a;border:3px solid #2a3a2a;
+                background:var(--clr-bg-panel);border:3px solid var(--clr-border-mid);
                 display:flex;align-items:center;justify-content:center;
                 transition:background .2s,border-color .2s;position:relative;z-index:1;
               ">
@@ -55,7 +55,7 @@
                   transition:transform .4s ease,background .2s;
                 "></div>
               </div>
-              <div style="position:absolute;right:0;top:50%;transform:translateY(-50%);width:36px;height:18px;background:#1e2a1f;border-radius:2px;"></div>
+              <div style="position:absolute;right:0;top:50%;transform:translateY(-50%);width:36px;height:18px;background:var(--clr-bg-elevated);border-radius:2px;"></div>
               <div id="sc-flow" style="
                 position:absolute;left:36px;top:50%;transform:translateY(-50%);
                 width:88px;height:10px;background:transparent;border-radius:2px;
@@ -63,7 +63,7 @@
               "></div>
             </div>
             <div style="font-size:9px;font-family:monospace;padding:2px 6px;border-radius:3px;background:#27500A;color:#97C459;border:1px solid #3B6D11">Q0.0 · Valvula</div>
-            <div id="sc-valve-status" style="font-size:11px;font-family:monospace;color:#3a4a3a;letter-spacing:.1em;transition:color .2s">CERRADA</div>
+            <div id="sc-valve-status" style="font-size:11px;font-family:monospace;color:var(--text-secondary);letter-spacing:.1em;transition:color .2s">CERRADA</div>
           </div>
 
           <!-- Botón cerrar -->
@@ -71,7 +71,7 @@
             <div style="font-size:10px;color:#6a2a2a;font-family:monospace;letter-spacing:.08em">Cerrar</div>
             <div id="sc-btn-cerrar" style="
               width:64px;height:64px;border-radius:50%;
-              background:#2a1a1a;border:4px solid #3a2a2a;
+              background:var(--clr-bg-surface);border:4px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:transform .08s;
             ">
@@ -90,7 +90,7 @@
         <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#1a6a1a"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">I0.0 · Btn_Abrir — momentáneo</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">I0.0 · Btn_Abrir — momentáneo</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#cc0000"></div>
@@ -98,7 +98,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Q0.0 · Valvula</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Q0.0 · Valvula</span>
           </div>
         </div>
 

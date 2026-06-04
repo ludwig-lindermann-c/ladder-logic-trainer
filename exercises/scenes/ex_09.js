@@ -11,7 +11,7 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:32px;background:#0d110e;user-select:none;
+        gap:32px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <div style="display:flex;align-items:center;gap:80px">
@@ -21,26 +21,26 @@
             <div style="font-size:10px;color:#6a4a2a;font-family:monospace;letter-spacing:.08em">Sensor falla</div>
             <div id="sc-btn-falla" style="
               width:64px;height:64px;border-radius:8px;
-              background:#1a1a1a;border:3px solid #2a2a2a;
+              background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:all .08s;
             ">
               <div id="sc-btn-falla-led" style="
                 width:28px;height:28px;border-radius:4px;
-                background:#1a1a1a;border:2px solid #2a2a2a;
+                background:var(--clr-bg-surface);border:2px solid var(--clr-border-mid);
                 transition:all .08s;pointer-events:none;
               "></div>
             </div>
             <div style="font-size:9px;font-family:monospace;padding:2px 6px;border-radius:3px;background:#0C447C;color:#85B7EB;border:1px solid #185FA5">I0.0 · momentáneo</div>
-            <div id="sc-falla-status" style="font-size:10px;font-family:monospace;color:#3a4a3a">SIN FALLA</div>
+            <div id="sc-falla-status" style="font-size:10px;font-family:monospace;color:var(--text-secondary)">SIN FALLA</div>
           </div>
 
           <!-- Luz de aviso -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Luz de aviso</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Luz de aviso</div>
             <div id="sc-luz" style="
               width:80px;height:80px;border-radius:50%;
-              background:#1a1a12;border:4px solid #2a2a1a;
+              background:#1a1a12;border:4px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               transition:background .1s,border-color .1s;
             ">
@@ -50,21 +50,21 @@
               "></div>
             </div>
             <div style="font-size:9px;font-family:monospace;padding:2px 6px;border-radius:3px;background:#27500A;color:#97C459;border:1px solid #3B6D11">Q0.0 · Luz_Aviso</div>
-            <div id="sc-luz-status" style="font-size:10px;font-family:monospace;color:#3a4a3a;transition:color .1s">APAGADA</div>
+            <div id="sc-luz-status" style="font-size:10px;font-family:monospace;color:var(--text-secondary);transition:color .1s">APAGADA</div>
           </div>
 
         </div>
 
         <!-- PT y ET del TP -->
-        <div style="display:flex;align-items:center;gap:20px;padding:8px 20px;border:1px solid #1e2a1f;border-radius:6px">
+        <div style="display:flex;align-items:center;gap:20px;padding:8px 20px;border:1px solid var(--clr-border-subtle);border-radius:6px">
           <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-            <div style="font-size:9px;font-family:monospace;color:#3a4a3a;letter-spacing:.08em">PT</div>
-            <div id="sc-tp-pt" style="font-size:16px;font-family:monospace;color:#3a5a3a;min-width:80px;text-align:center">0 ms</div>
+            <div style="font-size:9px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em">PT</div>
+            <div id="sc-tp-pt" style="font-size:16px;font-family:monospace;color:var(--text-muted);min-width:80px;text-align:center">0 ms</div>
           </div>
-          <div style="width:1px;height:30px;background:#1e2a1f"></div>
+          <div style="width:1px;height:30px;background:var(--clr-bg-elevated)"></div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-            <div style="font-size:9px;font-family:monospace;color:#3a4a3a;letter-spacing:.08em">ET</div>
-            <div id="sc-tp-et" style="font-size:16px;font-family:monospace;color:#3a5a3a;min-width:80px;text-align:center;transition:color .15s">0 ms</div>
+            <div style="font-size:9px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em">ET</div>
+            <div id="sc-tp-et" style="font-size:16px;font-family:monospace;color:var(--text-muted);min-width:80px;text-align:center;transition:color .15s">0 ms</div>
           </div>
         </div>
 
@@ -76,7 +76,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Q0.0 · Luz_Aviso</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Q0.0 · Luz_Aviso</span>
           </div>
         </div>
 

@@ -11,7 +11,7 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:20px;background:#0d110e;user-select:none;
+        gap:20px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <div style="display:flex;align-items:stretch;gap:48px">
@@ -26,21 +26,21 @@
 
                 <!-- Piso 3 -->
                 <div style="height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
-                  <div style="font-size:9px;font-family:monospace;color:#3a5a3a">PISO 3</div>
+                  <div style="font-size:9px;font-family:monospace;color:var(--text-muted)">PISO 3</div>
                   <div id="sc-luz3" style="width:14px;height:14px;border-radius:50%;background:#1a1a12;border:2px solid #2a2a1a;transition:background .15s,border-color .15s"></div>
                   <div style="font-size:8px;font-family:monospace;color:#27500A">Q0.4</div>
                 </div>
 
                 <!-- Piso 2 -->
                 <div style="height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
-                  <div style="font-size:9px;font-family:monospace;color:#3a5a3a">PISO 2</div>
+                  <div style="font-size:9px;font-family:monospace;color:var(--text-muted)">PISO 2</div>
                   <div id="sc-luz2" style="width:14px;height:14px;border-radius:50%;background:#1a1a12;border:2px solid #2a2a1a;transition:background .15s,border-color .15s"></div>
                   <div style="font-size:8px;font-family:monospace;color:#27500A">Q0.3</div>
                 </div>
 
                 <!-- Piso 1 -->
                 <div style="height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
-                  <div style="font-size:9px;font-family:monospace;color:#3a5a3a">PISO 1</div>
+                  <div style="font-size:9px;font-family:monospace;color:var(--text-muted)">PISO 1</div>
                   <div id="sc-luz1" style="width:14px;height:14px;border-radius:50%;background:#1a1a12;border:2px solid #2a2a1a;transition:background .15s,border-color .15s"></div>
                   <div style="font-size:8px;font-family:monospace;color:#27500A">Q0.2</div>
                 </div>
@@ -48,24 +48,24 @@
               </div>
 
               <!-- Shaft del ascensor -->
-              <div style="position:relative;width:80px;height:270px;border:2px solid #2a3a2a;background:#0a0f0a;overflow:hidden">
+              <div style="position:relative;width:80px;height:270px;border:2px solid var(--clr-border-mid);background:var(--clr-bg-deep);overflow:hidden">
 
                 <!-- Líneas de piso -->
-                <div style="position:absolute;top:0;left:0;right:0;height:1px;background:#1a2a1a"></div>
-                <div style="position:absolute;top:90px;left:0;right:0;height:1px;background:#1a2a1a"></div>
-                <div style="position:absolute;top:180px;left:0;right:0;height:1px;background:#1a2a1a"></div>
-                <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:#1a2a1a"></div>
+                <div style="position:absolute;top:0;left:0;right:0;height:1px;background:var(--clr-bg-panel)"></div>
+                <div style="position:absolute;top:90px;left:0;right:0;height:1px;background:var(--clr-bg-panel)"></div>
+                <div style="position:absolute;top:180px;left:0;right:0;height:1px;background:var(--clr-bg-panel)"></div>
+                <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--clr-bg-panel)"></div>
 
                 <!-- Sensores -->
-                <div id="sc-sensor3" style="position:absolute;right:4px;top:40px;width:6px;height:6px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <div style="position:absolute;right:12px;top:38px;font-size:7px;font-family:monospace;color:#2a4a2a">S6</div>
-                <div id="sc-sensor2" style="position:absolute;right:4px;top:130px;width:6px;height:6px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <div style="position:absolute;right:12px;top:128px;font-size:7px;font-family:monospace;color:#2a4a2a">S5</div>
-                <div id="sc-sensor1" style="position:absolute;right:4px;top:220px;width:6px;height:6px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <div style="position:absolute;right:12px;top:218px;font-size:7px;font-family:monospace;color:#2a4a2a">S4</div>
+                <div id="sc-sensor3" style="position:absolute;right:4px;top:40px;width:6px;height:6px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <div style="position:absolute;right:12px;top:38px;font-size:7px;font-family:monospace;color:var(--text-muted)">S6</div>
+                <div id="sc-sensor2" style="position:absolute;right:4px;top:130px;width:6px;height:6px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <div style="position:absolute;right:12px;top:128px;font-size:7px;font-family:monospace;color:var(--text-muted)">S5</div>
+                <div id="sc-sensor1" style="position:absolute;right:4px;top:220px;width:6px;height:6px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <div style="position:absolute;right:12px;top:218px;font-size:7px;font-family:monospace;color:var(--text-muted)">S4</div>
 
                 <!-- Cable -->
-                <div style="position:absolute;left:50%;width:2px;top:0;bottom:0;background:#1a2a1a;transform:translateX(-50%)"></div>
+                <div style="position:absolute;left:50%;width:2px;top:0;bottom:0;background:var(--clr-bg-panel);transform:translateX(-50%)"></div>
 
                 <!-- Cabina — se mueve con translateY -->
                 <!-- top=0 es piso 3, top=180 es piso 1 -->
@@ -74,7 +74,7 @@
                   left:8px;right:8px;
                   top:190px;
                   height:70px;
-                  background:#1a2a1a;
+                  background:var(--clr-bg-panel);
                   border:2px solid #2a4a2a;
                   border-radius:3px;
                   transition:background .2s,border-color .2s;
@@ -85,7 +85,7 @@
                   <div id="sc-cabin-arrow" style="
                     position:absolute;top:50%;left:50%;
                     transform:translate(-50%,-50%);
-                    font-size:16px;color:#2a4a2a;
+                    font-size:16px;color:var(--text-muted);
                     transition:color .2s;
                   ">●</div>
                 </div>
@@ -97,12 +97,12 @@
             <!-- Indicadores KM -->
             <div style="display:flex;gap:16px;margin-top:10px">
               <div style="display:flex;align-items:center;gap:4px">
-                <div id="sc-led-km1" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <span style="font-size:9px;font-family:monospace;color:#3a4a3a">Q0.0 KM1 ↑</span>
+                <div id="sc-led-km1" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <span style="font-size:9px;font-family:monospace;color:var(--text-secondary)">Q0.0 KM1 ↑</span>
               </div>
               <div style="display:flex;align-items:center;gap:4px">
-                <div id="sc-led-km2" style="width:8px;height:8px;border-radius:50%;background:#1e2a1f;transition:background .15s"></div>
-                <span style="font-size:9px;font-family:monospace;color:#3a4a3a">Q0.1 KM2 ↓</span>
+                <div id="sc-led-km2" style="width:8px;height:8px;border-radius:50%;background:var(--clr-bg-elevated);transition:background .15s"></div>
+                <span style="font-size:9px;font-family:monospace;color:var(--text-secondary)">Q0.1 KM2 ↓</span>
               </div>
             </div>
 
@@ -111,10 +111,10 @@
           <!-- BOTONERA -->
           <div style="display:flex;flex-direction:column;gap:16px;padding-top:20px">
 
-            <div style="font-size:10px;font-family:monospace;color:#4a6a4a;letter-spacing:.08em;margin-bottom:4px">BOTONERA</div>
+            <div style="font-size:10px;font-family:monospace;color:var(--text-secondary);letter-spacing:.08em;margin-bottom:4px">BOTONERA</div>
 
             <div style="display:flex;align-items:center;gap:10px">
-              <div id="sc-btn-p3" style="width:48px;height:48px;border-radius:50%;background:#1a1a2a;border:3px solid #2a2a3a;display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;transition:transform .08s">
+              <div id="sc-btn-p3" style="width:48px;height:48px;border-radius:50%;background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;transition:transform .08s">
                 <div id="sc-btn-p3-cap" style="width:30px;height:30px;border-radius:50%;background:#1a1a6a;border:2px solid #2a2acc;transition:background .08s;pointer-events:none"></div>
               </div>
               <div>
@@ -124,7 +124,7 @@
             </div>
 
             <div style="display:flex;align-items:center;gap:10px">
-              <div id="sc-btn-p2" style="width:48px;height:48px;border-radius:50%;background:#1a1a2a;border:3px solid #2a2a3a;display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;transition:transform .08s">
+              <div id="sc-btn-p2" style="width:48px;height:48px;border-radius:50%;background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;transition:transform .08s">
                 <div id="sc-btn-p2-cap" style="width:30px;height:30px;border-radius:50%;background:#1a1a6a;border:2px solid #2a2acc;transition:background .08s;pointer-events:none"></div>
               </div>
               <div>
@@ -134,7 +134,7 @@
             </div>
 
             <div style="display:flex;align-items:center;gap:10px">
-              <div id="sc-btn-p1" style="width:48px;height:48px;border-radius:50%;background:#1a1a2a;border:3px solid #2a2a3a;display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;transition:transform .08s">
+              <div id="sc-btn-p1" style="width:48px;height:48px;border-radius:50%;background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;transition:transform .08s">
                 <div id="sc-btn-p1-cap" style="width:30px;height:30px;border-radius:50%;background:#1a1a6a;border:2px solid #2a2acc;transition:background .08s;pointer-events:none"></div>
               </div>
               <div>
@@ -143,7 +143,7 @@
               </div>
             </div>
 
-            <div id="sc-status" style="font-size:10px;font-family:monospace;color:#378ADD;letter-spacing:.06em;padding:6px 10px;border:1px solid #1e2a1f;border-radius:4px;max-width:160px;line-height:1.4;margin-top:8px">EN PISO 1</div>
+            <div id="sc-status" style="font-size:10px;font-family:monospace;color:#378ADD;letter-spacing:.06em;padding:6px 10px;border:1px solid var(--clr-border-subtle);border-radius:4px;max-width:160px;line-height:1.4;margin-top:8px">EN PISO 1</div>
 
           </div>
 
@@ -153,7 +153,7 @@
         <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:9px;color:#4a5a6a;font-family:monospace">S4-S6 · Sensores posición automáticos</span>
+            <span style="font-size:9px;color:var(--text-muted);font-family:monospace">S4-S6 · Sensores posición automáticos</span>
           </div>
           <div style="display:flex;align-items:center;gap:5px">
             <div style="width:8px;height:8px;border-radius:50%;background:#ffe066"></div>

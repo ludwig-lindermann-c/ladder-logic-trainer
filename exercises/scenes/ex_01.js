@@ -11,15 +11,15 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:48px;background:#0d110e;user-select:none;
+        gap:48px;background:var(--clr-bg-deep);user-select:none;
       ">
         <div style="display:flex;align-items:center;gap:100px;position:relative">
 
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a7a;font-family:monospace;letter-spacing:.08em">Pulsador marcha</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Pulsador marcha</div>
             <div id="sc-btn" style="
               width:70px;height:70px;border-radius:50%;
-              background:#1a2a1a;border:4px solid #2a3a2a;
+              background:var(--clr-bg-panel);border:4px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               cursor:pointer;box-sizing:border-box;transition:transform .08s;
             ">
@@ -35,14 +35,14 @@
           <div id="sc-wire" style="
             position:absolute;top:35px;left:74px;
             width:calc(100% - 148px);height:2px;
-            background:#1e2a1f;transition:background .12s;
+            background:var(--clr-bg-elevated);transition:background .12s;
           "></div>
 
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Lámpara piloto</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Lámpara piloto</div>
             <div id="sc-lamp" style="
               width:70px;height:70px;border-radius:50%;
-              background:#1a1a12;border:4px solid #2a2a1a;
+              background:#1a1a12;border:4px solid var(--clr-border-mid);
               display:flex;align-items:center;justify-content:center;
               transition:background .12s,border-color .12s;
             ">
@@ -59,11 +59,11 @@
         <div style="display:flex;gap:28px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:10px;color:#4a5a6a;font-family:monospace">Entrada · I0.0 · Pulsador_Marcha — mantener presionado</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Entrada · I0.0 · Pulsador_Marcha — mantener presionado</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Salida · Q0.0 · Lampara</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Salida · Q0.0 · Lampara</span>
           </div>
         </div>
       </div>

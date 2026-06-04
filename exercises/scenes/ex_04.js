@@ -11,7 +11,7 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:40px;background:#0d110e;user-select:none;
+        gap:40px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <div style="display:flex;align-items:center;gap:60px">
@@ -20,16 +20,16 @@
           <div style="display:flex;flex-direction:column;gap:24px">
 
             <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-              <div style="font-size:10px;color:#4a6a7a;font-family:monospace;letter-spacing:.08em">Detector humo 1</div>
+              <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Detector humo 1</div>
               <div id="sc-det1" style="
                 width:56px;height:56px;border-radius:50%;
-                background:#1a1a1a;border:3px solid #2a2a2a;
+                background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);
                 display:flex;align-items:center;justify-content:center;
                 cursor:pointer;box-sizing:border-box;transition:all .12s;
               ">
                 <div id="sc-det1-led" style="
                   width:22px;height:22px;border-radius:50%;
-                  background:#1a1a1a;border:2px solid #2a2a2a;
+                  background:var(--clr-bg-surface);border:2px solid var(--clr-border-mid);
                   transition:all .12s;pointer-events:none;
                 "></div>
               </div>
@@ -37,16 +37,16 @@
             </div>
 
             <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-              <div style="font-size:10px;color:#4a6a7a;font-family:monospace;letter-spacing:.08em">Detector humo 2</div>
+              <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Detector humo 2</div>
               <div id="sc-det2" style="
                 width:56px;height:56px;border-radius:50%;
-                background:#1a1a1a;border:3px solid #2a2a2a;
+                background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);
                 display:flex;align-items:center;justify-content:center;
                 cursor:pointer;box-sizing:border-box;transition:all .12s;
               ">
                 <div id="sc-det2-led" style="
                   width:22px;height:22px;border-radius:50%;
-                  background:#1a1a1a;border:2px solid #2a2a2a;
+                  background:var(--clr-bg-surface);border:2px solid var(--clr-border-mid);
                   transition:all .12s;pointer-events:none;
                 "></div>
               </div>
@@ -57,7 +57,7 @@
 
           <!-- Sirena -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Sirena</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Sirena</div>
             <div id="sc-sirena" style="
               width:100px;height:100px;
               background:#1a1a12;border:3px solid #2a2a1a;
@@ -81,13 +81,13 @@
                 ">
                   <div id="sc-sirena-core" style="
                     width:16px;height:16px;border-radius:50%;
-                    background:#2a2a1a;transition:background .12s;
+                    background:var(--clr-bg-surface);transition:background .12s;
                   "></div>
                 </div>
               </div>
             </div>
             <div style="font-size:9px;font-family:monospace;padding:2px 6px;border-radius:3px;background:#27500A;color:#97C459;border:1px solid #3B6D11">Q0.0 · Sirena</div>
-            <div id="sc-sirena-status" style="font-size:10px;font-family:monospace;color:#3a4a3a;transition:color .15s">SILENCIO</div>
+            <div id="sc-sirena-status" style="font-size:10px;font-family:monospace;color:var(--text-secondary);transition:color .15s">SILENCIO</div>
           </div>
 
         </div>
@@ -96,15 +96,15 @@
         <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:10px;color:#4a5a6a;font-family:monospace">I0.0 · Detector_1 — toggle</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">I0.0 · Detector_1 — toggle</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:10px;color:#4a5a6a;font-family:monospace">I0.1 · Detector_2 — toggle</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">I0.1 · Detector_2 — toggle</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Q0.0 · Sirena</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Q0.0 · Sirena</span>
           </div>
         </div>
 

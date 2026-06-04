@@ -11,7 +11,7 @@
         width:100%;height:100%;
         display:flex;flex-direction:column;
         align-items:center;justify-content:center;
-        gap:40px;background:#0d110e;user-select:none;
+        gap:40px;background:var(--clr-bg-deep);user-select:none;
       ">
 
         <div style="display:flex;align-items:center;gap:60px">
@@ -20,16 +20,16 @@
           <div style="display:flex;flex-direction:column;gap:24px">
 
             <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-              <div style="font-size:10px;color:#4a6a7a;font-family:monospace;letter-spacing:.08em">Sensor posición</div>
+              <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Sensor posición</div>
               <div id="sc-sens-pos" style="
                 width:56px;height:56px;border-radius:8px;
-                background:#1a1a2a;border:3px solid #2a2a3a;
+                background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);
                 display:flex;align-items:center;justify-content:center;
                 cursor:pointer;box-sizing:border-box;transition:all .12s;
               ">
                 <div id="sc-sens-pos-led" style="
                   width:20px;height:20px;border-radius:50%;
-                  background:#1a1a2a;border:2px solid #2a2a3a;
+                  background:var(--clr-bg-surface);border:2px solid var(--clr-border-mid);
                   transition:all .12s;pointer-events:none;
                 "></div>
               </div>
@@ -37,16 +37,16 @@
             </div>
 
             <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
-              <div style="font-size:10px;color:#4a6a7a;font-family:monospace;letter-spacing:.08em">Sensor seguridad</div>
+              <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Sensor seguridad</div>
               <div id="sc-sens-seg" style="
                 width:56px;height:56px;border-radius:8px;
-                background:#1a1a2a;border:3px solid #2a2a3a;
+                background:var(--clr-bg-surface);border:3px solid var(--clr-border-mid);
                 display:flex;align-items:center;justify-content:center;
                 cursor:pointer;box-sizing:border-box;transition:all .12s;
               ">
                 <div id="sc-sens-seg-led" style="
                   width:20px;height:20px;border-radius:50%;
-                  background:#1a1a2a;border:2px solid #2a2a3a;
+                  background:var(--clr-bg-surface);border:2px solid var(--clr-border-mid);
                   transition:all .12s;pointer-events:none;
                 "></div>
               </div>
@@ -57,10 +57,10 @@
 
           <!-- Puerta -->
           <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-            <div style="font-size:10px;color:#4a6a4a;font-family:monospace;letter-spacing:.08em">Válvula / Puerta</div>
+            <div style="font-size:10px;color:var(--text-secondary);font-family:monospace;letter-spacing:.08em">Válvula / Puerta</div>
             <div style="
               width:120px;height:120px;
-              background:#111811;border:2px solid #1e2a1f;
+              background:var(--clr-bg-deep);border:2px solid var(--clr-border-subtle);
               border-radius:8px;position:relative;
               overflow:hidden;display:flex;
               align-items:center;justify-content:center;
@@ -68,15 +68,15 @@
               <!-- Marco puerta -->
               <div style="
                 width:70px;height:90px;
-                border:3px solid #2a3a2a;
+                border:3px solid var(--clr-border-mid);
                 border-radius:4px;position:relative;
-                background:#0d110e;
+                background:var(--clr-bg-deep);
               ">
                 <!-- Hoja puerta izquierda -->
                 <div id="sc-door-left" style="
                   position:absolute;left:0;top:0;
                   width:50%;height:100%;
-                  background:#1e2e1e;border-right:1px solid #2a3a2a;
+                  background:var(--clr-bg-elevated);border-right:1px solid #2a3a2a;
                   transform-origin:left center;
                   transition:transform .4s ease;
                 "></div>
@@ -84,14 +84,14 @@
                 <div id="sc-door-right" style="
                   position:absolute;right:0;top:0;
                   width:50%;height:100%;
-                  background:#1e2e1e;border-left:1px solid #2a3a2a;
+                  background:var(--clr-bg-elevated);border-left:1px solid #2a3a2a;
                   transform-origin:right center;
                   transition:transform .4s ease;
                 "></div>
               </div>
             </div>
             <div style="font-size:9px;font-family:monospace;padding:2px 6px;border-radius:3px;background:#27500A;color:#97C459;border:1px solid #3B6D11">Q0.0 · Valvula_Puerta</div>
-            <div id="sc-door-status" style="font-size:10px;font-family:monospace;color:#3a4a3a;transition:color .15s">CERRADA</div>
+            <div id="sc-door-status" style="font-size:10px;font-family:monospace;color:var(--text-secondary);transition:color .15s">CERRADA</div>
           </div>
 
         </div>
@@ -100,15 +100,15 @@
         <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:10px;color:#4a5a6a;font-family:monospace">I0.0 · Sensor_Posicion — toggle</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">I0.0 · Sensor_Posicion — toggle</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#378ADD"></div>
-            <span style="font-size:10px;color:#4a5a6a;font-family:monospace">I0.1 · Sensor_Seguridad — toggle</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">I0.1 · Sensor_Seguridad — toggle</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <div style="width:8px;height:8px;border-radius:50%;background:#639922"></div>
-            <span style="font-size:10px;color:#4a5a4a;font-family:monospace">Q0.0 · Valvula_Puerta</span>
+            <span style="font-size:10px;color:var(--text-muted);font-family:monospace">Q0.0 · Valvula_Puerta</span>
           </div>
         </div>
 

@@ -11,7 +11,7 @@
       <div style="
         width:100%; height:100%;
         display:grid; grid-template-columns:1fr 1px 1fr;
-        background:#0d110e; box-sizing:border-box;
+        background:var(--clr-bg-deep); box-sizing:border-box;
       ">
 
         <!-- PANEL IZQUIERDO — Entradas -->
@@ -24,13 +24,13 @@
 
           <!-- Pulsadores -->
           <div style="display:flex;flex-direction:column;gap:6px;width:100%;max-width:220px">
-            <div style="font-size:9px;color:#3a5a6a;font-family:monospace;letter-spacing:.08em;margin-bottom:2px">PULSADORES — momentáneos</div>
+            <div style="font-size:9px;color:var(--text-muted);font-family:monospace;letter-spacing:.08em;margin-bottom:2px">PULSADORES — momentáneos</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
               ${[0,1,2,3].map(i => `
                 <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
                   <div id="sc-pbtn-${i}" data-addr="I0.${i}" style="
                     width:54px;height:54px;border-radius:50%;
-                    background:#1a2a1a;border:3px solid #2a3a2a;
+                    background:var(--clr-bg-panel);border:3px solid var(--clr-border-mid);
                     display:flex;align-items:center;justify-content:center;
                     cursor:pointer;box-sizing:border-box;transition:transform .08s;
                   ">
@@ -41,7 +41,7 @@
                     "></div>
                   </div>
                   <div style="font-size:9px;font-family:monospace;padding:1px 5px;border-radius:3px;background:#0C447C;color:#85B7EB;border:1px solid #185FA5">I0.${i}</div>
-                  <div style="font-size:9px;color:#3a5a6a;font-family:monospace">P${i+1}</div>
+                  <div style="font-size:9px;color:var(--text-muted);font-family:monospace">P${i+1}</div>
                 </div>
               `).join('')}
             </div>
@@ -49,13 +49,13 @@
 
           <!-- Interruptores -->
           <div style="display:flex;flex-direction:column;gap:6px;width:100%;max-width:220px">
-            <div style="font-size:9px;color:#3a5a6a;font-family:monospace;letter-spacing:.08em;margin-bottom:2px">INTERRUPTORES — toggle</div>
+            <div style="font-size:9px;color:var(--text-muted);font-family:monospace;letter-spacing:.08em;margin-bottom:2px">INTERRUPTORES — toggle</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
               ${[4,5,6,7].map(i => `
                 <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
                   <div id="sc-sw-${i}" data-addr="I0.${i}" style="
                     width:54px;height:28px;border-radius:14px;
-                    background:#1a1a1a;border:2px solid #2a2a2a;
+                    background:var(--clr-bg-surface);border:2px solid var(--clr-border-mid);
                     display:flex;align-items:center;padding:3px;
                     cursor:pointer;box-sizing:border-box;transition:background .15s,border-color .15s;
                     position:relative;
@@ -68,7 +68,7 @@
                     "></div>
                   </div>
                   <div style="font-size:9px;font-family:monospace;padding:1px 5px;border-radius:3px;background:#0C447C;color:#85B7EB;border:1px solid #185FA5">I0.${i}</div>
-                  <div style="font-size:9px;color:#3a5a6a;font-family:monospace">S${i-3}</div>
+                  <div style="font-size:9px;color:var(--text-muted);font-family:monospace">S${i-3}</div>
                 </div>
               `).join('')}
             </div>
@@ -76,7 +76,7 @@
         </div>
 
         <!-- DIVISOR -->
-        <div style="background:#1e2a1f"></div>
+        <div style="background:var(--clr-bg-elevated)"></div>
 
         <!-- PANEL DERECHO — Salidas -->
         <div style="
@@ -101,7 +101,7 @@
                   "></div>
                 </div>
                 <div style="font-size:9px;font-family:monospace;padding:1px 5px;border-radius:3px;background:#27500A;color:#97C459;border:1px solid #3B6D11">Q0.${i}</div>
-                <div style="font-size:9px;color:#3a5a6a;font-family:monospace">L${i+1}</div>
+                <div style="font-size:9px;color:var(--text-muted);font-family:monospace">L${i+1}</div>
               </div>
             `).join('')}
           </div>
