@@ -127,7 +127,13 @@
       C.COL_BLOCK_BG  = '#e8ebe6';
       C.COL_BLOCK_HDR = '#d4d9d2';
       C.COL_GREEN_DIM = '#c8e6d0';
-      C.COL_AMBER_DIM = '#f5e6c8';
+      C.COL_AMBER_DIM  = '#f5e6c8';
+      C.COL_ANALOG_BG  = '#d8eef2';
+      C.COL_ANALOG_HDR = '#bde0e8';
+      C.COL_ANALOG     = '#0e7a92';
+      C.COL_ANALOG_ON  = '#0a5f72';
+      C.COL_ANALOG_BAR = '#a8d4dc';
+      C.COL_ANALOG_FILL= '#0e7a92';
     } else {
       C.COL_RAIL     = '#2d9e4f';
       C.COL_WIRE     = '#3a4a38';
@@ -149,7 +155,13 @@
       C.COL_BLOCK_BG  = '#1a1f1a';
       C.COL_BLOCK_HDR = '#1e2820';
       C.COL_GREEN_DIM = '#1a3320';
-      C.COL_AMBER_DIM = '#2e2010';
+      C.COL_AMBER_DIM  = '#2e2010';
+      C.COL_ANALOG_BG  = '#0d1e24';
+      C.COL_ANALOG_HDR = '#0f2a32';
+      C.COL_ANALOG     = '#1a9eb5';
+      C.COL_ANALOG_ON  = '#22d3ee';
+      C.COL_ANALOG_BAR = '#0e3040';
+      C.COL_ANALOG_FILL= '#1a9eb5';
     }
   }
 
