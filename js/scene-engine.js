@@ -169,13 +169,24 @@
      SCAN TICK — actualizar escena en cada ciclo
   ---------------------------------------------------------- */
   function _onScanTick() {
-    if (!_currentScene) return;
-    const panel = utils.byId('scene-panel');
-    if (!panel || panel.style.display === 'none') return;
-    try {
-      _currentScene.update(state.getSignals(), state.getMode());
-    } catch (err) {
-      console.error('[SceneEngine] Error en update:', err);
+    // Actualizar escena normal
+    if (_currentScene) {
+      const panel = utils.byId('scene-panel');
+      if (panel && panel.style.display !== 'none') {
+        try {
+          _currentScene.update(state.getSignals(), state.getMode());
+        } catch (err) {
+          console.error('[SceneEngine] Error en update:', err);
+        }
+      }
+    }
+    // Actualizar escena split
+    if (_splitScene && _splitContainer) {
+      try {
+        _splitScene.update(state.getSignals(), state.getMode());
+      } catch (err) {
+        console.error('[SceneEngine] Error en split update:', err);
+      }
     }
   }
 
@@ -195,9 +206,47 @@
   /* ----------------------------------------------------------
      API PÚBLICA
   ---------------------------------------------------------- */
+  /* ----------------------------------------------------------
+     CARGAR ESCENA EN CONTENEDOR EXTERNO (split view)
+  ---------------------------------------------------------- */
+  let _splitContainer   = null;
+  let _splitScene       = null;
+
+  function loadSceneInto(exerciseId, container) {
+    // Destruir escena split anterior
+    if (_splitScene?.destroy) {
+      try { _splitScene.destroy(); } catch (e) {}
+    }
+    _splitScene     = null;
+    _splitContainer = container;
+    if (container) container.innerHTML = '';
+
+    const sceneDef = global.LLT.scenes?.[exerciseId];
+    if (!sceneDef) {
+      console.warn(`[SceneEngine] No se encontró escena para ${exerciseId}`);
+      return;
+    }
+
+    _splitScene = sceneDef;
+    _splitScene.build(container, state.getSignals());
+  }
+
+  function destroySplit() {
+    if (_splitScene?.destroy) {
+      try { _splitScene.destroy(); } catch (e) {}
+    }
+    _splitScene     = null;
+    _splitContainer = null;
+  }
+
+  /* ----------------------------------------------------------
+     API PÚBLICA
+  ---------------------------------------------------------- */
   global.LLT.sceneEngine = {
     init,
     loadScene,
+    loadSceneInto,
+    destroySplit,
     showScene,
     hideScene,
   };

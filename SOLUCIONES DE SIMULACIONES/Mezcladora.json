@@ -15,7 +15,7 @@
             "type": "contact-nc",
             "address": "I0.1",
             "name": "",
-            "energized": true
+            "energized": false
           },
           {
             "id": "branch_y1yy8i",
@@ -67,7 +67,7 @@
             "type": "contact-nc",
             "address": "I0.2",
             "name": "",
-            "energized": true
+            "energized": false
           },
           {
             "id": "cell_vfk7j4",
@@ -119,7 +119,7 @@
             "type": "contact-nc",
             "address": "I0.2",
             "name": "",
-            "energized": true
+            "energized": false
           },
           {
             "id": "branch_04hs17",
@@ -171,7 +171,7 @@
             "type": "contact-nc",
             "address": "I0.5",
             "name": "",
-            "energized": true
+            "energized": false
           },
           {
             "id": "cell_uw3h9h",
@@ -220,7 +220,7 @@
       "address": "I0.0",
       "name": "Sensor_Bajo",
       "type": "input",
-      "value": false,
+      "value": true,
       "forced": false,
       "forceVal": false
     },
@@ -258,7 +258,7 @@
     },
     "I0.5": {
       "address": "I0.5",
-      "name": "Sensor_Alto",
+      "name": "Btn_Cerrar_EVA3",
       "type": "input",
       "value": false,
       "forced": false,
@@ -290,7 +290,7 @@
     },
     "M0.0": {
       "address": "M0.0",
-      "name": "M0.0",
+      "name": "Bloqueo_Vaciado",
       "type": "mark",
       "value": false,
       "forced": false,

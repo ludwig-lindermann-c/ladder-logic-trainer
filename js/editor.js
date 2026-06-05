@@ -14,6 +14,7 @@
   let _viewport   = null;
   let _activeModal= null;
   let _ctxMenu    = null;
+  let _splitActive = false;
 
   /* ----------------------------------------------------------
      INIT
@@ -65,13 +66,18 @@
   function _bindState() {
     state.on('mode:changed',    ({ mode }) => {
       _updateModeUI(mode);
-      // Bloquear toolbar en RUN
       const toolbar = document.querySelector('.toolbar');
       if (toolbar) toolbar.style.pointerEvents = mode === 'RUN' ? 'none' : '';
       const toolbarOp = mode === 'RUN' ? '0.4' : '1';
-      if (toolbar) toolbar.style.opacity = toolbarOp;
-      // Limpiar herramienta activa al entrar en RUN
+      if (!_splitActive && toolbar) toolbar.style.opacity = toolbarOp;
       if (mode === 'RUN') state.clearTool();
+      if (mode === 'STOP' && _splitActive) _deactivateSplit();
+      // Mostrar botón split solo en RUN con ejercicio cargado
+      const btnSplit = utils.byId('btn-split');
+      if (btnSplit) {
+        const hasEx = !!state.getActiveExercise();
+        btnSplit.style.display = (mode === 'RUN' && hasEx) ? '' : 'none';
+      }
     });
     state.on('scan:tick',       ({ cycle, ms }) => _updateStatusBar(cycle, ms));
     state.on('scan:reset',      () => _updateStatusBar(0, 0));
@@ -162,6 +168,10 @@
       _zoom = 1.0;
       _canvasEl.style.transform = 'scale(1)';
     });
+    // Split view
+    utils.byId('btn-split')?.addEventListener('click', () => {
+      _toggleSplit();
+    });
 
     utils.byId('btn-run')?.addEventListener('click',  () => global.LLT.simulator.start());
     utils.byId('btn-stop')?.addEventListener('click', () => global.LLT.simulator.stop());
@@ -248,22 +258,96 @@
         if (e.key === 'Enter') utils.byId('btn-add-var')?.click();
       });
     });
+}  // ← cierre de _bindToolbar
 
-    function _applyTheme(theme) {
+  /* ----------------------------------------------------------
+     SPLIT VIEW
+  ---------------------------------------------------------- */
+  function _toggleSplit() {
+    _splitActive ? _deactivateSplit() : _activateSplit();
+  }
+
+  function _activateSplit() {
+    const ex = state.getActiveExercise();
+    if (!ex) { utils.toast('Carga un ejercicio primero', 'warning', 2000); return; }
+
+    _splitActive = true;
+    const btn = utils.byId('btn-split');
+    if (btn) { btn.textContent = '⊠ Split'; btn.classList.add('active'); }
+
+    // Ocultar toolbar izquierda
+    const toolbar = document.querySelector('.toolbar');
+    if (toolbar) { toolbar.style.display = 'none'; }
+
+    // app-shell: cambiar a grid de 2 columnas (canvas + escena) + panel IO
+    const appShell = document.querySelector('.app-shell');
+    if (appShell) {
+      appShell.style.gridTemplateColumns = '1fr 1fr var(--io-panel-width)';
+    }
+
+    // Crear panel de escena si no existe
+    let scenePanel = utils.byId('split-scene-panel');
+    if (!scenePanel) {
+      scenePanel = document.createElement('div');
+      scenePanel.id = 'split-scene-panel';
+      scenePanel.style.cssText = `
+        background: var(--clr-bg-deep);
+        border-left: 1px solid var(--clr-border-subtle);
+        overflow: hidden;
+        position: relative;
+        min-height: 0;
+      `;
+      // Insertar entre canvas-area y io-panel
+      const ioPanel = document.querySelector('.io-panel');
+      appShell.insertBefore(scenePanel, ioPanel);
+    }
+    scenePanel.style.display = 'block';
+
+    // Cargar escena en el panel split
+    global.LLT.sceneEngine.loadSceneInto(ex.id, scenePanel);
+
+    setTimeout(() => { global.LLT.canvas.resize(_viewport.clientWidth, _viewport.clientHeight); }, 50);
+  }
+
+  function _deactivateSplit() {
+    _splitActive = false;
+    const btn = utils.byId('btn-split');
+    if (btn) { btn.textContent = '⊞ Split'; btn.classList.remove('active'); }
+
+    // Mostrar toolbar
+    const toolbar = document.querySelector('.toolbar');
+    if (toolbar) toolbar.style.display = '';
+
+    // Restaurar app-shell
+    const appShell = document.querySelector('.app-shell');
+    if (appShell) appShell.style.gridTemplateColumns = '';
+
+    // Ocultar panel escena
+    const scenePanel = utils.byId('split-scene-panel');
+    if (scenePanel) scenePanel.style.display = 'none';
+
+    // Restaurar escena en contenedor original
+    const ex = state.getActiveExercise();
+    if (ex && global.LLT.sceneEngine) global.LLT.sceneEngine.loadScene(ex.id);
+
+    setTimeout(() => { global.LLT.canvas.resize(_viewport.clientWidth, _viewport.clientHeight); }, 50);
+  }
+
+  /* ----------------------------------------------------------
+     TEMA
+  ---------------------------------------------------------- */
+  function _applyTheme(theme) {
     document.documentElement.dataset.theme = theme;
     const btn = utils.byId('btn-theme');
     if (btn) {
       btn.textContent = theme === 'dark' ? '☀' : '🌙';
       btn.title       = theme === 'dark' ? 'Modo diurno' : 'Modo nocturno';
     }
-    // Actualizar colores del canvas
     global.LLT.canvas.render();
-    // Recargar la escena activa para aplicar el nuevo tema
     const ex = global.LLT.state.getActiveExercise();
     if (ex && global.LLT.sceneEngine) {
       global.LLT.sceneEngine.loadScene(ex.id);
     }
-  }
   }
 
   /* ----------------------------------------------------------
@@ -689,11 +773,46 @@
     }
     sigs.forEach(sig => {
       const tr = document.createElement('tr');
-      [sig.address, sig.name, sig.type].forEach(t => {
-        const td = document.createElement('td');
-        td.textContent = t;
-        tr.appendChild(td);
+      // Dirección
+      const tdAddr = document.createElement('td');
+      tdAddr.textContent = sig.address;
+      tdAddr.style.fontFamily = 'var(--font-mono)';
+      tr.appendChild(tdAddr);
+
+      // Nombre — editable con click
+      const tdName = document.createElement('td');
+      tdName.textContent = sig.name;
+      tdName.style.cursor = 'pointer';
+      tdName.title = 'Click para editar nombre';
+      tdName.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type      = 'text';
+        input.value     = sig.name;
+        input.className = 'var-form__input';
+        input.style.cssText = 'width:100%;font-size:var(--text-xs);padding:2px 4px';
+        tdName.replaceWith(input);
+        input.focus();
+        input.select();
+        const apply = () => {
+          const newName = input.value.trim();
+          if (newName && newName !== sig.name) {
+            state.updateSignalName(sig.address, newName);
+            utils.toast(`${sig.address} renombrada a "${newName}"`, 'success', 2000);
+          }
+          // _buildVarTable se llama por el evento signal:updated
+        };
+        input.addEventListener('blur',    apply);
+        input.addEventListener('keydown', e => {
+          if (e.key === 'Enter')  { e.preventDefault(); apply(); input.blur(); }
+          if (e.key === 'Escape') { input.replaceWith(tdName); }
+        });
       });
+      tr.appendChild(tdName);
+
+      // Tipo
+      const tdType = document.createElement('td');
+      tdType.textContent = sig.type;
+      tr.appendChild(tdType);
       // Botón eliminar
       const tdDel = document.createElement('td');
       const btnDel = document.createElement('button');
@@ -905,6 +1024,12 @@
     if (resultEl) resultEl.style.display = 'none';
 
     _showExerciseModal(ex);
+
+    // Mostrar botón split si está en RUN
+    const btnSplit = utils.byId('btn-split');
+    if (btnSplit) {
+      btnSplit.style.display = state.getMode() === 'RUN' ? '' : 'none';
+    }
 
     // ← LÍNEA NUEVA: cargar escena visual
     global.LLT.sceneEngine.loadScene(exId);

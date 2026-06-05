@@ -23,7 +23,14 @@
         { "address": "Q0.4", "name": "Lampara_5",     "type": "output", "initial": false },
         { "address": "Q0.5", "name": "Lampara_6",     "type": "output", "initial": false },
         { "address": "Q0.6", "name": "Lampara_7",     "type": "output", "initial": false },
-        { "address": "Q0.7", "name": "Lampara_8",     "type": "output", "initial": false }
+        { "address": "Q0.7", "name": "Lampara_8",     "type": "output", "initial": false },
+        { "address": "AIW10", "name": "Analog_In_1",  "type": "analog", "initial": 0 },
+        { "address": "AIW12", "name": "Analog_In_2",  "type": "analog", "initial": 0 },
+        { "address": "AQW10", "name": "Analog_Out_1", "type": "analog", "initial": 0 },
+        { "address": "AQW12", "name": "Analog_Out_2", "type": "analog", "initial": 0 },
+        { "address": "MD100", "name": "Memoria_1",    "type": "analog", "initial": 0 },
+        { "address": "MD104", "name": "Memoria_2",    "type": "analog", "initial": 0 },
+        { "address": "MD108", "name": "Memoria_3",    "type": "analog", "initial": 0 }
       ],
       "hint_steps": [
         "Los pulsadores (I0.0–I0.3) son momentáneos.",
