@@ -476,5 +476,31 @@
       ],
       "validation": null
     }
+
+,{
+      "id": "ex_15",
+      "title": "Control de temperatura — Horno industrial",
+      "level": 6,
+      "description": "Horno industrial con sensor analógico de temperatura. El ventilador se activa por histéresis y una alarma avisa si se supera el límite crítico.",
+      "objective": "Escalar AIW10 a °C (0–300). Activar Q0.0 cuando MD104 > 80°C y desactivar cuando < 60°C. Activar alarma Q0.1 cuando MD104 > 250°C.",
+      "signals": [
+        { "address": "AIW10", "name": "Sensor_Temp",   "type": "analog", "initial": 0 },
+        { "address": "MD100", "name": "Temp_Norm",     "type": "analog", "initial": 0 },
+        { "address": "MD104", "name": "Temp_Celsius",  "type": "analog", "initial": 0 },
+        { "address": "M0.0",  "name": "Estado_Vent",   "type": "mark",   "initial": false },
+        { "address": "Q0.0",  "name": "Ventilador",    "type": "output", "initial": false },
+        { "address": "Q0.1",  "name": "Alarma",        "type": "output", "initial": false }
+      ],
+      "hint_steps": [
+        "Rung 1: AIW10 → [NORM min=0 max=27648] → MD100.",
+        "Rung 2: MD100 → [SCALE min=0 max=300] → MD104.",
+        "Rung 3: [CMP > MD104 / 80] → (S) M0.0  — activa ventilador.",
+        "Rung 4: [CMP < MD104 / 60] → (R) M0.0  — apaga ventilador.",
+        "Rung 5: M0.0 contacto NO → ( ) Q0.0.",
+        "Rung 6: [CMP > MD104 / 250] → ( ) Q0.1 — alarma crítica."
+      ],
+      "validation": null
+    }
+
   ]
 }

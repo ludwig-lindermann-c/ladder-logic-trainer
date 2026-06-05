@@ -1,0 +1,181 @@
+{
+  "program": {
+    "name": "EX_15",
+    "description": "",
+    "createdAt": 1780632276779,
+    "modifiedAt": 1780633049563,
+    "rungs": [
+      {
+        "id": "rung_mdhxwj",
+        "index": 0,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_ticwkz",
+            "type": "norm",
+            "address": "AIW10",
+            "name": "",
+            "energized": false,
+            "rawMin": 0,
+            "rawMax": 27648,
+            "addrOut": "MD100",
+            "result": 0,
+            "currentVal": 0
+          },
+          {
+            "id": "cell_gb6brg",
+            "type": "scale",
+            "address": "MD100",
+            "name": "",
+            "energized": false,
+            "engMin": 0,
+            "engMax": 300,
+            "addrOut": "MD104",
+            "result": 0,
+            "currentVal": 0
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_ehfc8h",
+        "index": 1,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_fjwgbs",
+            "type": "cmp-ge",
+            "address": "MD104",
+            "name": "",
+            "energized": false,
+            "address2": "",
+            "setpoint": 80,
+            "result": false,
+            "currentVal": 0
+          },
+          {
+            "id": "cell_6zzj6e",
+            "type": "coil-set",
+            "address": "Q0.0",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_rn63ke",
+        "index": 2,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_qplkcy",
+            "type": "cmp-le",
+            "address": "MD104",
+            "name": "",
+            "energized": false,
+            "address2": "",
+            "setpoint": 60,
+            "result": false,
+            "currentVal": 0
+          },
+          {
+            "id": "cell_uimxc2",
+            "type": "coil-reset",
+            "address": "Q0.0",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      },
+      {
+        "id": "rung_fvg0q5",
+        "index": 3,
+        "comment": "",
+        "elements": [
+          {
+            "id": "cell_5o03aj",
+            "type": "cmp-ge",
+            "address": "MD104",
+            "name": "",
+            "energized": false,
+            "address2": "",
+            "setpoint": 250,
+            "result": false,
+            "currentVal": 0
+          },
+          {
+            "id": "cell_y3d17l",
+            "type": "coil",
+            "address": "Q0.1",
+            "name": "",
+            "energized": false
+          }
+        ],
+        "energized": false
+      }
+    ]
+  },
+  "signals": {
+    "AIW10": {
+      "address": "AIW10",
+      "name": "Sensor_Temp",
+      "type": "analog",
+      "value": 0,
+      "forced": true,
+      "forceVal": 0,
+      "min": 0,
+      "max": 27648,
+      "unit": ""
+    },
+    "MD100": {
+      "address": "MD100",
+      "name": "Temp_Norm",
+      "type": "analog",
+      "value": 0,
+      "forced": false,
+      "forceVal": 0,
+      "min": -3.4e+38,
+      "max": 3.4e+38,
+      "unit": "",
+      "subtype": "real"
+    },
+    "MD104": {
+      "address": "MD104",
+      "name": "Temp_Celsius",
+      "type": "analog",
+      "value": 0,
+      "forced": false,
+      "forceVal": 0,
+      "min": -3.4e+38,
+      "max": 3.4e+38,
+      "unit": "",
+      "subtype": "real"
+    },
+    "M0.0": {
+      "address": "M0.0",
+      "name": "Estado_Vent",
+      "type": "mark",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.0": {
+      "address": "Q0.0",
+      "name": "Ventilador",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    },
+    "Q0.1": {
+      "address": "Q0.1",
+      "name": "Alarma",
+      "type": "output",
+      "value": false,
+      "forced": false,
+      "forceVal": false
+    }
+  }
+}
