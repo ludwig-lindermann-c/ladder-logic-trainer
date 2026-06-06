@@ -414,8 +414,8 @@ function render() {
     const cx   = x + cw / 2;
     const col  = on ? C.COL_ON : C.COL_CONTACT;
 
-    // Dirección (encima)
-    if (cell.address) {
+    // Dirección (encima) — solo para bloques y bobinas, los contactos la dibujan abajo
+    if (cell.address && !def?.isBlock && !cell.type.startsWith('contact-')) {
       _ctx.fillStyle = on ? C.COL_ADDR_ON : C.COL_ADDR;
       _ctx.font      = C.FONT_ADDR;
       _ctx.textAlign = 'center';
@@ -447,7 +447,20 @@ function render() {
         visualOn = !sigVal;
       }
 
-      _drawSymbol(cell.type, cx, wireY, visualOn, cw);
+      // Estado real de la señal
+      const sigVal = cell.address ? !!state.getSignalValue(cell.address) : false;
+
+      // Dirección: verde si señal activa
+      if (cell.address) {
+        _ctx.fillStyle = sigVal ? C.COL_ADDR_ON : C.COL_ADDR;
+        _ctx.font      = C.FONT_ADDR;
+        _ctx.textAlign = 'center';
+        _ctx.fillText(cell.address, cx, wireY - C.CELL_H / 2 - 3);
+      }
+
+      // Símbolo: NC se ilumina cuando señal=0, NO cuando señal=1
+      const symbolOn = cell.type === 'contact-nc' ? !sigVal : sigVal;
+      _drawSymbol(cell.type, cx, wireY, cell.type.startsWith('contact-') ? symbolOn : visualOn, cw);
     }
 
     // Nombre simbólico (debajo)
